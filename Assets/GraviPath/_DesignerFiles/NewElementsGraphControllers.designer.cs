@@ -227,10 +227,6 @@ public abstract class GravityObjectControllerBase : UniverseObjectController {
     
     public abstract void InitializeGravityObject(GravityObjectViewModel gravityObject);
     
-    public override ViewModel CreateEmpty() {
-        return new GravityObjectViewModel(this);
-    }
-    
     public virtual GravityObjectViewModel CreateGravityObject() {
         return ((GravityObjectViewModel)(this.Create()));
     }
@@ -244,10 +240,6 @@ public abstract class GravityObjectControllerBase : UniverseObjectController {
 public abstract class PlanetControllerBase : GravityObjectController {
     
     public abstract void InitializePlanet(PlanetViewModel planet);
-    
-    public override ViewModel CreateEmpty() {
-        return new PlanetViewModel(this);
-    }
     
     public virtual PlanetViewModel CreatePlanet() {
         return ((PlanetViewModel)(this.Create()));
@@ -263,10 +255,6 @@ public abstract class AsteroidControllerBase : GravityObjectController {
     
     public abstract void InitializeAsteroid(AsteroidViewModel asteroid);
     
-    public override ViewModel CreateEmpty() {
-        return new AsteroidViewModel(this);
-    }
-    
     public virtual AsteroidViewModel CreateAsteroid() {
         return ((AsteroidViewModel)(this.Create()));
     }
@@ -281,10 +269,6 @@ public abstract class BlackholeControllerBase : GravityObjectController {
     
     public abstract void InitializeBlackhole(BlackholeViewModel blackhole);
     
-    public override ViewModel CreateEmpty() {
-        return new BlackholeViewModel(this);
-    }
-    
     public virtual BlackholeViewModel CreateBlackhole() {
         return ((BlackholeViewModel)(this.Create()));
     }
@@ -295,20 +279,146 @@ public abstract class BlackholeControllerBase : GravityObjectController {
     }
 }
 
-public abstract class MiniAsteroidControllerBase : UniverseObjectController {
+public abstract class MiniObjectControllerBase : UniverseObjectController {
     
-    public abstract void InitializeMiniAsteroid(MiniAsteroidViewModel miniAsteroid);
+    public abstract void InitializeMiniObject(MiniObjectViewModel miniObject);
     
     public override ViewModel CreateEmpty() {
-        return new MiniAsteroidViewModel(this);
+        return new MiniObjectViewModel(this);
     }
     
-    public virtual MiniAsteroidViewModel CreateMiniAsteroid() {
-        return ((MiniAsteroidViewModel)(this.Create()));
+    public virtual MiniObjectViewModel CreateMiniObject() {
+        return ((MiniObjectViewModel)(this.Create()));
     }
     
     public override void Initialize(ViewModel viewModel) {
         base.Initialize(viewModel);
-        this.InitializeMiniAsteroid(((MiniAsteroidViewModel)(viewModel)));
+        this.InitializeMiniObject(((MiniObjectViewModel)(viewModel)));
+    }
+}
+
+public abstract class SimplePlanet1ControllerBase : PlanetController {
+    
+    public abstract void InitializeSimplePlanet1(SimplePlanet1ViewModel simplePlanet1);
+    
+    public override ViewModel CreateEmpty() {
+        return new SimplePlanet1ViewModel(this);
+    }
+    
+    public virtual SimplePlanet1ViewModel CreateSimplePlanet1() {
+        return ((SimplePlanet1ViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializeSimplePlanet1(((SimplePlanet1ViewModel)(viewModel)));
+    }
+}
+
+public abstract class SimplePlanet2ControllerBase : PlanetController {
+    
+    public abstract void InitializeSimplePlanet2(SimplePlanet2ViewModel simplePlanet2);
+    
+    public override ViewModel CreateEmpty() {
+        return new SimplePlanet2ViewModel(this);
+    }
+    
+    public virtual SimplePlanet2ViewModel CreateSimplePlanet2() {
+        return ((SimplePlanet2ViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializeSimplePlanet2(((SimplePlanet2ViewModel)(viewModel)));
+    }
+}
+
+public abstract class SimpleAsteroid1ControllerBase : AsteroidController {
+    
+    public abstract void InitializeSimpleAsteroid1(SimpleAsteroid1ViewModel simpleAsteroid1);
+    
+    public override ViewModel CreateEmpty() {
+        return new SimpleAsteroid1ViewModel(this);
+    }
+    
+    public virtual SimpleAsteroid1ViewModel CreateSimpleAsteroid1() {
+        return ((SimpleAsteroid1ViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializeSimpleAsteroid1(((SimpleAsteroid1ViewModel)(viewModel)));
+    }
+}
+
+public abstract class SimpleAsteroid2ControllerBase : AsteroidController {
+    
+    public abstract void InitializeSimpleAsteroid2(SimpleAsteroid2ViewModel simpleAsteroid2);
+    
+    public override ViewModel CreateEmpty() {
+        return new SimpleAsteroid2ViewModel(this);
+    }
+    
+    public virtual SimpleAsteroid2ViewModel CreateSimpleAsteroid2() {
+        return ((SimpleAsteroid2ViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializeSimpleAsteroid2(((SimpleAsteroid2ViewModel)(viewModel)));
+    }
+}
+
+public abstract class SimpleAsteroid3ControllerBase : AsteroidController {
+    
+    public abstract void InitializeSimpleAsteroid3(SimpleAsteroid3ViewModel simpleAsteroid3);
+    
+    public override ViewModel CreateEmpty() {
+        return new SimpleAsteroid3ViewModel(this);
+    }
+    
+    public virtual SimpleAsteroid3ViewModel CreateSimpleAsteroid3() {
+        return ((SimpleAsteroid3ViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializeSimpleAsteroid3(((SimpleAsteroid3ViewModel)(viewModel)));
+    }
+}
+
+public abstract class SimpleAsteroid4ControllerBase : AsteroidController {
+    
+    public abstract void InitializeSimpleAsteroid4(SimpleAsteroid4ViewModel simpleAsteroid4);
+    
+    public override ViewModel CreateEmpty() {
+        return new SimpleAsteroid4ViewModel(this);
+    }
+    
+    public virtual SimpleAsteroid4ViewModel CreateSimpleAsteroid4() {
+        return ((SimpleAsteroid4ViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializeSimpleAsteroid4(((SimpleAsteroid4ViewModel)(viewModel)));
+    }
+}
+
+public abstract class SimpleBlackholeControllerBase : BlackholeController {
+    
+    public abstract void InitializeSimpleBlackhole(SimpleBlackholeViewModel simpleBlackhole);
+    
+    public override ViewModel CreateEmpty() {
+        return new SimpleBlackholeViewModel(this);
+    }
+    
+    public virtual SimpleBlackholeViewModel CreateSimpleBlackhole() {
+        return ((SimpleBlackholeViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializeSimpleBlackhole(((SimpleBlackholeViewModel)(viewModel)));
     }
 }

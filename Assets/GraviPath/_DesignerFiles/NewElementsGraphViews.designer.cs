@@ -454,17 +454,17 @@ public abstract class BlackholeViewBase : GravityObjectViewBase {
 }
 
 [DiagramInfoAttribute("GraviPath")]
-public abstract class MiniAsteroidViewBase : UniverseObjectViewBase {
+public abstract class MiniObjectViewBase : UniverseObjectViewBase {
     
     public override System.Type ViewModelType {
         get {
-            return typeof(MiniAsteroidViewModel);
+            return typeof(MiniObjectViewModel);
         }
     }
     
-    public MiniAsteroidViewModel MiniAsteroid {
+    public MiniObjectViewModel MiniObject {
         get {
-            return ((MiniAsteroidViewModel)(this.ViewModelObject));
+            return ((MiniObjectViewModel)(this.ViewModelObject));
         }
         set {
             this.ViewModelObject = value;
@@ -472,7 +472,196 @@ public abstract class MiniAsteroidViewBase : UniverseObjectViewBase {
     }
     
     public override ViewModel CreateModel() {
-        return this.RequestViewModel(GameManager.Container.Resolve<MiniAsteroidController>());
+        return this.RequestViewModel(GameManager.Container.Resolve<MiniObjectController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class SimplePlanet1ViewBase : PlanetViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimplePlanet1ViewModel);
+        }
+    }
+    
+    public SimplePlanet1ViewModel SimplePlanet1 {
+        get {
+            return ((SimplePlanet1ViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimplePlanet1Controller>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class SimplePlanet2ViewBase : PlanetViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimplePlanet2ViewModel);
+        }
+    }
+    
+    public SimplePlanet2ViewModel SimplePlanet2 {
+        get {
+            return ((SimplePlanet2ViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimplePlanet2Controller>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class SimpleAsteroid1ViewBase : AsteroidViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimpleAsteroid1ViewModel);
+        }
+    }
+    
+    public SimpleAsteroid1ViewModel SimpleAsteroid1 {
+        get {
+            return ((SimpleAsteroid1ViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimpleAsteroid1Controller>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class SimpleAsteroid2ViewBase : AsteroidViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimpleAsteroid2ViewModel);
+        }
+    }
+    
+    public SimpleAsteroid2ViewModel SimpleAsteroid2 {
+        get {
+            return ((SimpleAsteroid2ViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimpleAsteroid2Controller>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class SimpleAsteroid3ViewBase : AsteroidViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimpleAsteroid3ViewModel);
+        }
+    }
+    
+    public SimpleAsteroid3ViewModel SimpleAsteroid3 {
+        get {
+            return ((SimpleAsteroid3ViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimpleAsteroid3Controller>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class SimpleAsteroid4ViewBase : AsteroidViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimpleAsteroid4ViewModel);
+        }
+    }
+    
+    public SimpleAsteroid4ViewModel SimpleAsteroid4 {
+        get {
+            return ((SimpleAsteroid4ViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimpleAsteroid4Controller>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class SimpleBlackholeViewBase : BlackholeViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimpleBlackholeViewModel);
+        }
+    }
+    
+    public SimpleBlackholeViewModel SimpleBlackhole {
+        get {
+            return ((SimpleBlackholeViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimpleBlackholeController>());
     }
     
     protected override void InitializeViewModel(ViewModel viewModel) {
@@ -904,7 +1093,7 @@ public class GravityObjectViewViewBase : UniverseObjectView {
     }
 }
 
-public partial class GravityObjectView : GravityObjectViewViewBase {
+public abstract partial class GravityObjectView : GravityObjectViewViewBase {
 }
 
 public class UniverseViewViewBase : UniverseViewBase {
@@ -979,7 +1168,7 @@ public class PlanetViewViewBase : GravityObjectView {
     }
 }
 
-public partial class PlanetView : PlanetViewViewBase {
+public abstract partial class PlanetView : PlanetViewViewBase {
 }
 
 public class AsteroidViewViewBase : GravityObjectView {
@@ -1012,7 +1201,7 @@ public class AsteroidViewViewBase : GravityObjectView {
     }
 }
 
-public partial class AsteroidView : AsteroidViewViewBase {
+public abstract partial class AsteroidView : AsteroidViewViewBase {
 }
 
 public class BlackholeViewViewBase : GravityObjectView {
@@ -1045,14 +1234,14 @@ public class BlackholeViewViewBase : GravityObjectView {
     }
 }
 
-public partial class BlackholeView : BlackholeViewViewBase {
+public abstract partial class BlackholeView : BlackholeViewViewBase {
 }
 
-public class MiniAsteroidViewViewBase : UniverseObjectView {
+public class MiniObjectViewViewBase : UniverseObjectView {
     
-    public MiniAsteroidViewModel MiniAsteroid {
+    public MiniObjectViewModel MiniObject {
         get {
-            return ((MiniAsteroidViewModel)(this.ViewModelObject));
+            return ((MiniObjectViewModel)(this.ViewModelObject));
         }
         set {
             this.ViewModelObject = value;
@@ -1061,12 +1250,12 @@ public class MiniAsteroidViewViewBase : UniverseObjectView {
     
     public override System.Type ViewModelType {
         get {
-            return typeof(MiniAsteroidViewModel);
+            return typeof(MiniObjectViewModel);
         }
     }
     
     public override ViewModel CreateModel() {
-        return this.RequestViewModel(GameManager.Container.Resolve<MiniAsteroidController>());
+        return this.RequestViewModel(GameManager.Container.Resolve<MiniObjectController>());
     }
     
     public override void Bind() {
@@ -1078,7 +1267,238 @@ public class MiniAsteroidViewViewBase : UniverseObjectView {
     }
 }
 
-public partial class MiniAsteroidView : MiniAsteroidViewViewBase {
+public partial class MiniObjectView : MiniObjectViewViewBase {
+}
+
+public class SimplePlanet1ViewViewBase : PlanetView {
+    
+    public SimplePlanet1ViewModel SimplePlanet1 {
+        get {
+            return ((SimplePlanet1ViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimplePlanet1ViewModel);
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimplePlanet1Controller>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+public partial class SimplePlanet1View : SimplePlanet1ViewViewBase {
+}
+
+public class SimplePlanet2ViewViewBase : PlanetView {
+    
+    public SimplePlanet2ViewModel SimplePlanet2 {
+        get {
+            return ((SimplePlanet2ViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimplePlanet2ViewModel);
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimplePlanet2Controller>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+public partial class SimplePlanet2View : SimplePlanet2ViewViewBase {
+}
+
+public class SimpleAsteroid1ViewViewBase : AsteroidView {
+    
+    public SimpleAsteroid1ViewModel SimpleAsteroid1 {
+        get {
+            return ((SimpleAsteroid1ViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimpleAsteroid1ViewModel);
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimpleAsteroid1Controller>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+public partial class SimpleAsteroid1View : SimpleAsteroid1ViewViewBase {
+}
+
+public class SimpleAsteroid2ViewViewBase : AsteroidView {
+    
+    public SimpleAsteroid2ViewModel SimpleAsteroid2 {
+        get {
+            return ((SimpleAsteroid2ViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimpleAsteroid2ViewModel);
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimpleAsteroid2Controller>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+public partial class SimpleAsteroid2View : SimpleAsteroid2ViewViewBase {
+}
+
+public class SimpleAsteroid3ViewViewBase : AsteroidView {
+    
+    public SimpleAsteroid3ViewModel SimpleAsteroid3 {
+        get {
+            return ((SimpleAsteroid3ViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimpleAsteroid3ViewModel);
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimpleAsteroid3Controller>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+public partial class SimpleAsteroid3View : SimpleAsteroid3ViewViewBase {
+}
+
+public class SimpleAsteroid4ViewViewBase : AsteroidView {
+    
+    public SimpleAsteroid4ViewModel SimpleAsteroid4 {
+        get {
+            return ((SimpleAsteroid4ViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimpleAsteroid4ViewModel);
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimpleAsteroid4Controller>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+public partial class SimpleAsteroid4View : SimpleAsteroid4ViewViewBase {
+}
+
+public class SimpleBlackholeViewViewBase : BlackholeView {
+    
+    public SimpleBlackholeViewModel SimpleBlackhole {
+        get {
+            return ((SimpleBlackholeViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SimpleBlackholeViewModel);
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SimpleBlackholeController>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+public partial class SimpleBlackholeView : SimpleBlackholeViewViewBase {
 }
 
 public partial class ShipController : ViewComponent {

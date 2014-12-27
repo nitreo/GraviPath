@@ -50,7 +50,21 @@ public class LevelSceneManagerBase : SceneManager {
     
     private BlackholeController _BlackholeController;
     
-    private MiniAsteroidController _MiniAsteroidController;
+    private MiniObjectController _MiniObjectController;
+    
+    private SimplePlanet1Controller _SimplePlanet1Controller;
+    
+    private SimplePlanet2Controller _SimplePlanet2Controller;
+    
+    private SimpleAsteroid1Controller _SimpleAsteroid1Controller;
+    
+    private SimpleAsteroid2Controller _SimpleAsteroid2Controller;
+    
+    private SimpleAsteroid3Controller _SimpleAsteroid3Controller;
+    
+    private SimpleAsteroid4Controller _SimpleAsteroid4Controller;
+    
+    private SimpleBlackholeController _SimpleBlackholeController;
     
     public LevelSceneManagerSettings _LevelSceneManagerSettings = new LevelSceneManagerSettings();
     
@@ -198,15 +212,106 @@ public class LevelSceneManagerBase : SceneManager {
     }
     
     [Inject()]
-    public virtual MiniAsteroidController MiniAsteroidController {
+    public virtual MiniObjectController MiniObjectController {
         get {
-            if ((this._MiniAsteroidController == null)) {
-                this._MiniAsteroidController = new MiniAsteroidController() { Container = Container };
+            if ((this._MiniObjectController == null)) {
+                this._MiniObjectController = new MiniObjectController() { Container = Container };
             }
-            return this._MiniAsteroidController;
+            return this._MiniObjectController;
         }
         set {
-            _MiniAsteroidController = value;
+            _MiniObjectController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimplePlanet1Controller SimplePlanet1Controller {
+        get {
+            if ((this._SimplePlanet1Controller == null)) {
+                this._SimplePlanet1Controller = new SimplePlanet1Controller() { Container = Container };
+            }
+            return this._SimplePlanet1Controller;
+        }
+        set {
+            _SimplePlanet1Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimplePlanet2Controller SimplePlanet2Controller {
+        get {
+            if ((this._SimplePlanet2Controller == null)) {
+                this._SimplePlanet2Controller = new SimplePlanet2Controller() { Container = Container };
+            }
+            return this._SimplePlanet2Controller;
+        }
+        set {
+            _SimplePlanet2Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleAsteroid1Controller SimpleAsteroid1Controller {
+        get {
+            if ((this._SimpleAsteroid1Controller == null)) {
+                this._SimpleAsteroid1Controller = new SimpleAsteroid1Controller() { Container = Container };
+            }
+            return this._SimpleAsteroid1Controller;
+        }
+        set {
+            _SimpleAsteroid1Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleAsteroid2Controller SimpleAsteroid2Controller {
+        get {
+            if ((this._SimpleAsteroid2Controller == null)) {
+                this._SimpleAsteroid2Controller = new SimpleAsteroid2Controller() { Container = Container };
+            }
+            return this._SimpleAsteroid2Controller;
+        }
+        set {
+            _SimpleAsteroid2Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleAsteroid3Controller SimpleAsteroid3Controller {
+        get {
+            if ((this._SimpleAsteroid3Controller == null)) {
+                this._SimpleAsteroid3Controller = new SimpleAsteroid3Controller() { Container = Container };
+            }
+            return this._SimpleAsteroid3Controller;
+        }
+        set {
+            _SimpleAsteroid3Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleAsteroid4Controller SimpleAsteroid4Controller {
+        get {
+            if ((this._SimpleAsteroid4Controller == null)) {
+                this._SimpleAsteroid4Controller = new SimpleAsteroid4Controller() { Container = Container };
+            }
+            return this._SimpleAsteroid4Controller;
+        }
+        set {
+            _SimpleAsteroid4Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleBlackholeController SimpleBlackholeController {
+        get {
+            if ((this._SimpleBlackholeController == null)) {
+                this._SimpleBlackholeController = new SimpleBlackholeController() { Container = Container };
+            }
+            return this._SimpleBlackholeController;
+        }
+        set {
+            _SimpleBlackholeController = value;
         }
     }
     
@@ -228,7 +333,14 @@ public class LevelSceneManagerBase : SceneManager {
         Container.RegisterController<PlanetController>(PlanetController);
         Container.RegisterController<AsteroidController>(AsteroidController);
         Container.RegisterController<BlackholeController>(BlackholeController);
-        Container.RegisterController<MiniAsteroidController>(MiniAsteroidController);
+        Container.RegisterController<MiniObjectController>(MiniObjectController);
+        Container.RegisterController<SimplePlanet1Controller>(SimplePlanet1Controller);
+        Container.RegisterController<SimplePlanet2Controller>(SimplePlanet2Controller);
+        Container.RegisterController<SimpleAsteroid1Controller>(SimpleAsteroid1Controller);
+        Container.RegisterController<SimpleAsteroid2Controller>(SimpleAsteroid2Controller);
+        Container.RegisterController<SimpleAsteroid3Controller>(SimpleAsteroid3Controller);
+        Container.RegisterController<SimpleAsteroid4Controller>(SimpleAsteroid4Controller);
+        Container.RegisterController<SimpleBlackholeController>(SimpleBlackholeController);
         this.Container.InjectAll();
         LevelRootController.Initialize(LevelRoot);
     }
@@ -370,7 +482,21 @@ public class EditorSceneManagerBase : SceneManager {
     
     private BlackholeController _BlackholeController;
     
-    private MiniAsteroidController _MiniAsteroidController;
+    private MiniObjectController _MiniObjectController;
+    
+    private SimplePlanet1Controller _SimplePlanet1Controller;
+    
+    private SimplePlanet2Controller _SimplePlanet2Controller;
+    
+    private SimpleAsteroid1Controller _SimpleAsteroid1Controller;
+    
+    private SimpleAsteroid2Controller _SimpleAsteroid2Controller;
+    
+    private SimpleAsteroid3Controller _SimpleAsteroid3Controller;
+    
+    private SimpleAsteroid4Controller _SimpleAsteroid4Controller;
+    
+    private SimpleBlackholeController _SimpleBlackholeController;
     
     public EditorSceneManagerSettings _EditorSceneManagerSettings = new EditorSceneManagerSettings();
     
@@ -492,15 +618,106 @@ public class EditorSceneManagerBase : SceneManager {
     }
     
     [Inject()]
-    public virtual MiniAsteroidController MiniAsteroidController {
+    public virtual MiniObjectController MiniObjectController {
         get {
-            if ((this._MiniAsteroidController == null)) {
-                this._MiniAsteroidController = new MiniAsteroidController() { Container = Container };
+            if ((this._MiniObjectController == null)) {
+                this._MiniObjectController = new MiniObjectController() { Container = Container };
             }
-            return this._MiniAsteroidController;
+            return this._MiniObjectController;
         }
         set {
-            _MiniAsteroidController = value;
+            _MiniObjectController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimplePlanet1Controller SimplePlanet1Controller {
+        get {
+            if ((this._SimplePlanet1Controller == null)) {
+                this._SimplePlanet1Controller = new SimplePlanet1Controller() { Container = Container };
+            }
+            return this._SimplePlanet1Controller;
+        }
+        set {
+            _SimplePlanet1Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimplePlanet2Controller SimplePlanet2Controller {
+        get {
+            if ((this._SimplePlanet2Controller == null)) {
+                this._SimplePlanet2Controller = new SimplePlanet2Controller() { Container = Container };
+            }
+            return this._SimplePlanet2Controller;
+        }
+        set {
+            _SimplePlanet2Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleAsteroid1Controller SimpleAsteroid1Controller {
+        get {
+            if ((this._SimpleAsteroid1Controller == null)) {
+                this._SimpleAsteroid1Controller = new SimpleAsteroid1Controller() { Container = Container };
+            }
+            return this._SimpleAsteroid1Controller;
+        }
+        set {
+            _SimpleAsteroid1Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleAsteroid2Controller SimpleAsteroid2Controller {
+        get {
+            if ((this._SimpleAsteroid2Controller == null)) {
+                this._SimpleAsteroid2Controller = new SimpleAsteroid2Controller() { Container = Container };
+            }
+            return this._SimpleAsteroid2Controller;
+        }
+        set {
+            _SimpleAsteroid2Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleAsteroid3Controller SimpleAsteroid3Controller {
+        get {
+            if ((this._SimpleAsteroid3Controller == null)) {
+                this._SimpleAsteroid3Controller = new SimpleAsteroid3Controller() { Container = Container };
+            }
+            return this._SimpleAsteroid3Controller;
+        }
+        set {
+            _SimpleAsteroid3Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleAsteroid4Controller SimpleAsteroid4Controller {
+        get {
+            if ((this._SimpleAsteroid4Controller == null)) {
+                this._SimpleAsteroid4Controller = new SimpleAsteroid4Controller() { Container = Container };
+            }
+            return this._SimpleAsteroid4Controller;
+        }
+        set {
+            _SimpleAsteroid4Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleBlackholeController SimpleBlackholeController {
+        get {
+            if ((this._SimpleBlackholeController == null)) {
+                this._SimpleBlackholeController = new SimpleBlackholeController() { Container = Container };
+            }
+            return this._SimpleBlackholeController;
+        }
+        set {
+            _SimpleBlackholeController = value;
         }
     }
     
@@ -520,7 +737,14 @@ public class EditorSceneManagerBase : SceneManager {
         Container.RegisterController<PlanetController>(PlanetController);
         Container.RegisterController<AsteroidController>(AsteroidController);
         Container.RegisterController<BlackholeController>(BlackholeController);
-        Container.RegisterController<MiniAsteroidController>(MiniAsteroidController);
+        Container.RegisterController<MiniObjectController>(MiniObjectController);
+        Container.RegisterController<SimplePlanet1Controller>(SimplePlanet1Controller);
+        Container.RegisterController<SimplePlanet2Controller>(SimplePlanet2Controller);
+        Container.RegisterController<SimpleAsteroid1Controller>(SimpleAsteroid1Controller);
+        Container.RegisterController<SimpleAsteroid2Controller>(SimpleAsteroid2Controller);
+        Container.RegisterController<SimpleAsteroid3Controller>(SimpleAsteroid3Controller);
+        Container.RegisterController<SimpleAsteroid4Controller>(SimpleAsteroid4Controller);
+        Container.RegisterController<SimpleBlackholeController>(SimpleBlackholeController);
         this.Container.InjectAll();
         EditorRootController.Initialize(EditorRoot);
     }

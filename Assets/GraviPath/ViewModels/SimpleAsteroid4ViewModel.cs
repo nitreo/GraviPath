@@ -5,5 +5,5 @@ using System.Linq;
 using UnityEngine;
 
 
-public partial class MiniAsteroidViewModel {
+public partial class SimpleAsteroid4ViewModel {
 }

@@ -30,6 +30,8 @@ public class LevelSceneManagerBase : SceneManager {
     
     private LevelRootViewModel _LevelRoot;
     
+    private UniverseRepositoryViewModel _UniverseRepository;
+    
     private LevelRootController _LevelRootController;
     
     private PlayerController _PlayerController;
@@ -64,7 +66,11 @@ public class LevelSceneManagerBase : SceneManager {
     
     private SimpleAsteroid4Controller _SimpleAsteroid4Controller;
     
-    private SimpleBlackholeController _SimpleBlackholeController;
+    private SimpleBlackhole1Controller _SimpleBlackhole1Controller;
+    
+    private SpaceGarbageAreaController _SpaceGarbageAreaController;
+    
+    private UniverseRepositoryController _UniverseRepositoryController;
     
     public LevelSceneManagerSettings _LevelSceneManagerSettings = new LevelSceneManagerSettings();
     
@@ -78,6 +84,19 @@ public class LevelSceneManagerBase : SceneManager {
         }
         set {
             _LevelRoot = value;
+        }
+    }
+    
+    [Inject("UniverseRepository")]
+    public virtual UniverseRepositoryViewModel UniverseRepository {
+        get {
+            if ((this._UniverseRepository == null)) {
+                this._UniverseRepository = CreateInstanceViewModel<UniverseRepositoryViewModel>(UniverseRepositoryController, "UniverseRepository");
+            }
+            return this._UniverseRepository;
+        }
+        set {
+            _UniverseRepository = value;
         }
     }
     
@@ -303,15 +322,41 @@ public class LevelSceneManagerBase : SceneManager {
     }
     
     [Inject()]
-    public virtual SimpleBlackholeController SimpleBlackholeController {
+    public virtual SimpleBlackhole1Controller SimpleBlackhole1Controller {
         get {
-            if ((this._SimpleBlackholeController == null)) {
-                this._SimpleBlackholeController = new SimpleBlackholeController() { Container = Container };
+            if ((this._SimpleBlackhole1Controller == null)) {
+                this._SimpleBlackhole1Controller = new SimpleBlackhole1Controller() { Container = Container };
             }
-            return this._SimpleBlackholeController;
+            return this._SimpleBlackhole1Controller;
         }
         set {
-            _SimpleBlackholeController = value;
+            _SimpleBlackhole1Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SpaceGarbageAreaController SpaceGarbageAreaController {
+        get {
+            if ((this._SpaceGarbageAreaController == null)) {
+                this._SpaceGarbageAreaController = new SpaceGarbageAreaController() { Container = Container };
+            }
+            return this._SpaceGarbageAreaController;
+        }
+        set {
+            _SpaceGarbageAreaController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual UniverseRepositoryController UniverseRepositoryController {
+        get {
+            if ((this._UniverseRepositoryController == null)) {
+                this._UniverseRepositoryController = new UniverseRepositoryController() { Container = Container };
+            }
+            return this._UniverseRepositoryController;
+        }
+        set {
+            _UniverseRepositoryController = value;
         }
     }
     
@@ -323,6 +368,7 @@ public class LevelSceneManagerBase : SceneManager {
     public override void Setup() {
         base.Setup();
         Container.RegisterViewModel<LevelRootViewModel>(LevelRoot,"LevelRoot");
+        Container.RegisterViewModel<UniverseRepositoryViewModel>(UniverseRepository,"UniverseRepository");
         Container.RegisterController<LevelRootController>(LevelRootController);
         Container.RegisterController<PlayerController>(PlayerController);
         Container.RegisterController<TryEntryController>(TryEntryController);
@@ -340,9 +386,12 @@ public class LevelSceneManagerBase : SceneManager {
         Container.RegisterController<SimpleAsteroid2Controller>(SimpleAsteroid2Controller);
         Container.RegisterController<SimpleAsteroid3Controller>(SimpleAsteroid3Controller);
         Container.RegisterController<SimpleAsteroid4Controller>(SimpleAsteroid4Controller);
-        Container.RegisterController<SimpleBlackholeController>(SimpleBlackholeController);
+        Container.RegisterController<SimpleBlackhole1Controller>(SimpleBlackhole1Controller);
+        Container.RegisterController<SpaceGarbageAreaController>(SpaceGarbageAreaController);
+        Container.RegisterController<UniverseRepositoryController>(UniverseRepositoryController);
         this.Container.InjectAll();
         LevelRootController.Initialize(LevelRoot);
+        UniverseRepositoryController.Initialize(UniverseRepository);
     }
     
     public virtual void ToMenuTransitionComplete(MenuSceneManager sceneManager) {
@@ -379,7 +428,43 @@ public class MenuSceneManagerBase : SceneManager {
     
     private MenuRootViewModel _MenuRoot;
     
+    private UniverseRepositoryViewModel _UniverseRepository;
+    
     private MenuRootController _MenuRootController;
+    
+    private UniverseController _UniverseController;
+    
+    private UniverseObjectController _UniverseObjectController;
+    
+    private ZoneController _ZoneController;
+    
+    private GravityObjectController _GravityObjectController;
+    
+    private PlanetController _PlanetController;
+    
+    private AsteroidController _AsteroidController;
+    
+    private BlackholeController _BlackholeController;
+    
+    private MiniObjectController _MiniObjectController;
+    
+    private SimplePlanet1Controller _SimplePlanet1Controller;
+    
+    private SimplePlanet2Controller _SimplePlanet2Controller;
+    
+    private SimpleAsteroid1Controller _SimpleAsteroid1Controller;
+    
+    private SimpleAsteroid2Controller _SimpleAsteroid2Controller;
+    
+    private SimpleAsteroid3Controller _SimpleAsteroid3Controller;
+    
+    private SimpleAsteroid4Controller _SimpleAsteroid4Controller;
+    
+    private SimpleBlackhole1Controller _SimpleBlackhole1Controller;
+    
+    private SpaceGarbageAreaController _SpaceGarbageAreaController;
+    
+    private UniverseRepositoryController _UniverseRepositoryController;
     
     public MenuSceneManagerSettings _MenuSceneManagerSettings = new MenuSceneManagerSettings();
     
@@ -396,6 +481,19 @@ public class MenuSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject("UniverseRepository")]
+    public virtual UniverseRepositoryViewModel UniverseRepository {
+        get {
+            if ((this._UniverseRepository == null)) {
+                this._UniverseRepository = CreateInstanceViewModel<UniverseRepositoryViewModel>(UniverseRepositoryController, "UniverseRepository");
+            }
+            return this._UniverseRepository;
+        }
+        set {
+            _UniverseRepository = value;
+        }
+    }
+    
     [Inject()]
     public virtual MenuRootController MenuRootController {
         get {
@@ -409,6 +507,227 @@ public class MenuSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual UniverseController UniverseController {
+        get {
+            if ((this._UniverseController == null)) {
+                this._UniverseController = new UniverseController() { Container = Container };
+            }
+            return this._UniverseController;
+        }
+        set {
+            _UniverseController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual UniverseObjectController UniverseObjectController {
+        get {
+            if ((this._UniverseObjectController == null)) {
+                this._UniverseObjectController = new UniverseObjectController() { Container = Container };
+            }
+            return this._UniverseObjectController;
+        }
+        set {
+            _UniverseObjectController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual ZoneController ZoneController {
+        get {
+            if ((this._ZoneController == null)) {
+                this._ZoneController = new ZoneController() { Container = Container };
+            }
+            return this._ZoneController;
+        }
+        set {
+            _ZoneController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual GravityObjectController GravityObjectController {
+        get {
+            if ((this._GravityObjectController == null)) {
+                this._GravityObjectController = new GravityObjectController() { Container = Container };
+            }
+            return this._GravityObjectController;
+        }
+        set {
+            _GravityObjectController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual PlanetController PlanetController {
+        get {
+            if ((this._PlanetController == null)) {
+                this._PlanetController = new PlanetController() { Container = Container };
+            }
+            return this._PlanetController;
+        }
+        set {
+            _PlanetController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual AsteroidController AsteroidController {
+        get {
+            if ((this._AsteroidController == null)) {
+                this._AsteroidController = new AsteroidController() { Container = Container };
+            }
+            return this._AsteroidController;
+        }
+        set {
+            _AsteroidController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual BlackholeController BlackholeController {
+        get {
+            if ((this._BlackholeController == null)) {
+                this._BlackholeController = new BlackholeController() { Container = Container };
+            }
+            return this._BlackholeController;
+        }
+        set {
+            _BlackholeController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual MiniObjectController MiniObjectController {
+        get {
+            if ((this._MiniObjectController == null)) {
+                this._MiniObjectController = new MiniObjectController() { Container = Container };
+            }
+            return this._MiniObjectController;
+        }
+        set {
+            _MiniObjectController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimplePlanet1Controller SimplePlanet1Controller {
+        get {
+            if ((this._SimplePlanet1Controller == null)) {
+                this._SimplePlanet1Controller = new SimplePlanet1Controller() { Container = Container };
+            }
+            return this._SimplePlanet1Controller;
+        }
+        set {
+            _SimplePlanet1Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimplePlanet2Controller SimplePlanet2Controller {
+        get {
+            if ((this._SimplePlanet2Controller == null)) {
+                this._SimplePlanet2Controller = new SimplePlanet2Controller() { Container = Container };
+            }
+            return this._SimplePlanet2Controller;
+        }
+        set {
+            _SimplePlanet2Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleAsteroid1Controller SimpleAsteroid1Controller {
+        get {
+            if ((this._SimpleAsteroid1Controller == null)) {
+                this._SimpleAsteroid1Controller = new SimpleAsteroid1Controller() { Container = Container };
+            }
+            return this._SimpleAsteroid1Controller;
+        }
+        set {
+            _SimpleAsteroid1Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleAsteroid2Controller SimpleAsteroid2Controller {
+        get {
+            if ((this._SimpleAsteroid2Controller == null)) {
+                this._SimpleAsteroid2Controller = new SimpleAsteroid2Controller() { Container = Container };
+            }
+            return this._SimpleAsteroid2Controller;
+        }
+        set {
+            _SimpleAsteroid2Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleAsteroid3Controller SimpleAsteroid3Controller {
+        get {
+            if ((this._SimpleAsteroid3Controller == null)) {
+                this._SimpleAsteroid3Controller = new SimpleAsteroid3Controller() { Container = Container };
+            }
+            return this._SimpleAsteroid3Controller;
+        }
+        set {
+            _SimpleAsteroid3Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleAsteroid4Controller SimpleAsteroid4Controller {
+        get {
+            if ((this._SimpleAsteroid4Controller == null)) {
+                this._SimpleAsteroid4Controller = new SimpleAsteroid4Controller() { Container = Container };
+            }
+            return this._SimpleAsteroid4Controller;
+        }
+        set {
+            _SimpleAsteroid4Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SimpleBlackhole1Controller SimpleBlackhole1Controller {
+        get {
+            if ((this._SimpleBlackhole1Controller == null)) {
+                this._SimpleBlackhole1Controller = new SimpleBlackhole1Controller() { Container = Container };
+            }
+            return this._SimpleBlackhole1Controller;
+        }
+        set {
+            _SimpleBlackhole1Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SpaceGarbageAreaController SpaceGarbageAreaController {
+        get {
+            if ((this._SpaceGarbageAreaController == null)) {
+                this._SpaceGarbageAreaController = new SpaceGarbageAreaController() { Container = Container };
+            }
+            return this._SpaceGarbageAreaController;
+        }
+        set {
+            _SpaceGarbageAreaController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual UniverseRepositoryController UniverseRepositoryController {
+        get {
+            if ((this._UniverseRepositoryController == null)) {
+                this._UniverseRepositoryController = new UniverseRepositoryController() { Container = Container };
+            }
+            return this._UniverseRepositoryController;
+        }
+        set {
+            _UniverseRepositoryController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -417,9 +736,28 @@ public class MenuSceneManagerBase : SceneManager {
     public override void Setup() {
         base.Setup();
         Container.RegisterViewModel<MenuRootViewModel>(MenuRoot,"MenuRoot");
+        Container.RegisterViewModel<UniverseRepositoryViewModel>(UniverseRepository,"UniverseRepository");
         Container.RegisterController<MenuRootController>(MenuRootController);
+        Container.RegisterController<UniverseController>(UniverseController);
+        Container.RegisterController<UniverseObjectController>(UniverseObjectController);
+        Container.RegisterController<ZoneController>(ZoneController);
+        Container.RegisterController<GravityObjectController>(GravityObjectController);
+        Container.RegisterController<PlanetController>(PlanetController);
+        Container.RegisterController<AsteroidController>(AsteroidController);
+        Container.RegisterController<BlackholeController>(BlackholeController);
+        Container.RegisterController<MiniObjectController>(MiniObjectController);
+        Container.RegisterController<SimplePlanet1Controller>(SimplePlanet1Controller);
+        Container.RegisterController<SimplePlanet2Controller>(SimplePlanet2Controller);
+        Container.RegisterController<SimpleAsteroid1Controller>(SimpleAsteroid1Controller);
+        Container.RegisterController<SimpleAsteroid2Controller>(SimpleAsteroid2Controller);
+        Container.RegisterController<SimpleAsteroid3Controller>(SimpleAsteroid3Controller);
+        Container.RegisterController<SimpleAsteroid4Controller>(SimpleAsteroid4Controller);
+        Container.RegisterController<SimpleBlackhole1Controller>(SimpleBlackhole1Controller);
+        Container.RegisterController<SpaceGarbageAreaController>(SpaceGarbageAreaController);
+        Container.RegisterController<UniverseRepositoryController>(UniverseRepositoryController);
         this.Container.InjectAll();
         MenuRootController.Initialize(MenuRoot);
+        UniverseRepositoryController.Initialize(UniverseRepository);
     }
     
     public virtual void StartLevelTransitionComplete(LevelSceneManager sceneManager) {
@@ -466,6 +804,8 @@ public class EditorSceneManagerBase : SceneManager {
     
     private EditorRootViewModel _EditorRoot;
     
+    private UniverseRepositoryViewModel _UniverseRepository;
+    
     private EditorRootController _EditorRootController;
     
     private UniverseController _UniverseController;
@@ -496,7 +836,11 @@ public class EditorSceneManagerBase : SceneManager {
     
     private SimpleAsteroid4Controller _SimpleAsteroid4Controller;
     
-    private SimpleBlackholeController _SimpleBlackholeController;
+    private SimpleBlackhole1Controller _SimpleBlackhole1Controller;
+    
+    private SpaceGarbageAreaController _SpaceGarbageAreaController;
+    
+    private UniverseRepositoryController _UniverseRepositoryController;
     
     public EditorSceneManagerSettings _EditorSceneManagerSettings = new EditorSceneManagerSettings();
     
@@ -510,6 +854,19 @@ public class EditorSceneManagerBase : SceneManager {
         }
         set {
             _EditorRoot = value;
+        }
+    }
+    
+    [Inject("UniverseRepository")]
+    public virtual UniverseRepositoryViewModel UniverseRepository {
+        get {
+            if ((this._UniverseRepository == null)) {
+                this._UniverseRepository = CreateInstanceViewModel<UniverseRepositoryViewModel>(UniverseRepositoryController, "UniverseRepository");
+            }
+            return this._UniverseRepository;
+        }
+        set {
+            _UniverseRepository = value;
         }
     }
     
@@ -709,15 +1066,41 @@ public class EditorSceneManagerBase : SceneManager {
     }
     
     [Inject()]
-    public virtual SimpleBlackholeController SimpleBlackholeController {
+    public virtual SimpleBlackhole1Controller SimpleBlackhole1Controller {
         get {
-            if ((this._SimpleBlackholeController == null)) {
-                this._SimpleBlackholeController = new SimpleBlackholeController() { Container = Container };
+            if ((this._SimpleBlackhole1Controller == null)) {
+                this._SimpleBlackhole1Controller = new SimpleBlackhole1Controller() { Container = Container };
             }
-            return this._SimpleBlackholeController;
+            return this._SimpleBlackhole1Controller;
         }
         set {
-            _SimpleBlackholeController = value;
+            _SimpleBlackhole1Controller = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual SpaceGarbageAreaController SpaceGarbageAreaController {
+        get {
+            if ((this._SpaceGarbageAreaController == null)) {
+                this._SpaceGarbageAreaController = new SpaceGarbageAreaController() { Container = Container };
+            }
+            return this._SpaceGarbageAreaController;
+        }
+        set {
+            _SpaceGarbageAreaController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual UniverseRepositoryController UniverseRepositoryController {
+        get {
+            if ((this._UniverseRepositoryController == null)) {
+                this._UniverseRepositoryController = new UniverseRepositoryController() { Container = Container };
+            }
+            return this._UniverseRepositoryController;
+        }
+        set {
+            _UniverseRepositoryController = value;
         }
     }
     
@@ -729,6 +1112,7 @@ public class EditorSceneManagerBase : SceneManager {
     public override void Setup() {
         base.Setup();
         Container.RegisterViewModel<EditorRootViewModel>(EditorRoot,"EditorRoot");
+        Container.RegisterViewModel<UniverseRepositoryViewModel>(UniverseRepository,"UniverseRepository");
         Container.RegisterController<EditorRootController>(EditorRootController);
         Container.RegisterController<UniverseController>(UniverseController);
         Container.RegisterController<UniverseObjectController>(UniverseObjectController);
@@ -744,9 +1128,12 @@ public class EditorSceneManagerBase : SceneManager {
         Container.RegisterController<SimpleAsteroid2Controller>(SimpleAsteroid2Controller);
         Container.RegisterController<SimpleAsteroid3Controller>(SimpleAsteroid3Controller);
         Container.RegisterController<SimpleAsteroid4Controller>(SimpleAsteroid4Controller);
-        Container.RegisterController<SimpleBlackholeController>(SimpleBlackholeController);
+        Container.RegisterController<SimpleBlackhole1Controller>(SimpleBlackhole1Controller);
+        Container.RegisterController<SpaceGarbageAreaController>(SpaceGarbageAreaController);
+        Container.RegisterController<UniverseRepositoryController>(UniverseRepositoryController);
         this.Container.InjectAll();
         EditorRootController.Initialize(EditorRoot);
+        UniverseRepositoryController.Initialize(UniverseRepository);
     }
     
     public virtual void ToMenuTransitionComplete(MenuSceneManager sceneManager) {

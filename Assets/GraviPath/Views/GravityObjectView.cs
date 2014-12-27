@@ -12,4 +12,17 @@ public partial class GravityObjectView {
     public override void ResetExecuted() {
         base.ResetExecuted();
     }
+
+
+
+
+    public override void Read(ISerializerStream stream)
+    {
+    /*
+        base.Read(stream);
+        Debug.Log("Called");
+        transform.position = stream.DeserializeVector3("Position");
+        transform.rotation= stream.DeserializeQuaternion("Rotation");
+    */
+    }
 }

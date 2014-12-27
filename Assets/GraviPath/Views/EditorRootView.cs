@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Parse;
 using UnityEngine;
 using UniRx;
 
@@ -19,16 +20,7 @@ public partial class EditorRootView {
     public override void SerializeExecuted() {
         base.SerializeExecuted();
 
-        var universe = EditorRoot.CurrentUniverse;
 
-        var storage = new StringSerializerStorage();
-        var stream = new JsonStream();
-        stream.DeepSerialize = true;
-
-        stream.SerializeObject("Universe",universe);
-        storage.Save(stream);
-
-        Debug.Log(storage.ToString());
 
     }
 

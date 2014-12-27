@@ -264,6 +264,18 @@ public abstract class EditorRootViewBase : ViewBase {
 [DiagramInfoAttribute("GraviPath")]
 public abstract class UniverseViewBase : ViewBase {
     
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public String _Name;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public String _Author;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public String _MetaData;
+    
     public override System.Type ViewModelType {
         get {
             return typeof(UniverseViewModel);
@@ -284,6 +296,18 @@ public abstract class UniverseViewBase : ViewBase {
     }
     
     protected override void InitializeViewModel(ViewModel viewModel) {
+        UniverseViewModel universe = ((UniverseViewModel)(viewModel));
+        universe.Name = this._Name;
+        universe.Author = this._Author;
+        universe.MetaData = this._MetaData;
+    }
+    
+    public virtual void ExecuteLoad(String arg) {
+        this.ExecuteCommand(Universe.Load, arg);
+    }
+    
+    public virtual void ExecuteSave() {
+        this.ExecuteCommand(Universe.Save);
     }
 }
 
@@ -643,17 +667,17 @@ public abstract class SimpleAsteroid4ViewBase : AsteroidViewBase {
 }
 
 [DiagramInfoAttribute("GraviPath")]
-public abstract class SimpleBlackholeViewBase : BlackholeViewBase {
+public abstract class SimpleBlackhole1ViewBase : BlackholeViewBase {
     
     public override System.Type ViewModelType {
         get {
-            return typeof(SimpleBlackholeViewModel);
+            return typeof(SimpleBlackhole1ViewModel);
         }
     }
     
-    public SimpleBlackholeViewModel SimpleBlackhole {
+    public SimpleBlackhole1ViewModel SimpleBlackhole1 {
         get {
-            return ((SimpleBlackholeViewModel)(this.ViewModelObject));
+            return ((SimpleBlackhole1ViewModel)(this.ViewModelObject));
         }
         set {
             this.ViewModelObject = value;
@@ -661,11 +685,70 @@ public abstract class SimpleBlackholeViewBase : BlackholeViewBase {
     }
     
     public override ViewModel CreateModel() {
-        return this.RequestViewModel(GameManager.Container.Resolve<SimpleBlackholeController>());
+        return this.RequestViewModel(GameManager.Container.Resolve<SimpleBlackhole1Controller>());
     }
     
     protected override void InitializeViewModel(ViewModel viewModel) {
         base.InitializeViewModel(viewModel);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class SpaceGarbageAreaViewBase : UniverseObjectViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(SpaceGarbageAreaViewModel);
+        }
+    }
+    
+    public SpaceGarbageAreaViewModel SpaceGarbageArea {
+        get {
+            return ((SpaceGarbageAreaViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<SpaceGarbageAreaController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class UniverseRepositoryViewBase : ViewBase {
+    
+    public override string DefaultIdentifier {
+        get {
+            return "UniverseRepository";
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(UniverseRepositoryViewModel);
+        }
+    }
+    
+    public UniverseRepositoryViewModel UniverseRepository {
+        get {
+            return ((UniverseRepositoryViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<UniverseRepositoryController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
     }
 }
 
@@ -1468,11 +1551,11 @@ public class SimpleAsteroid4ViewViewBase : AsteroidView {
 public partial class SimpleAsteroid4View : SimpleAsteroid4ViewViewBase {
 }
 
-public class SimpleBlackholeViewViewBase : BlackholeView {
+public class SimpleBlackhole1ViewViewBase : BlackholeView {
     
-    public SimpleBlackholeViewModel SimpleBlackhole {
+    public SimpleBlackhole1ViewModel SimpleBlackhole1 {
         get {
-            return ((SimpleBlackholeViewModel)(this.ViewModelObject));
+            return ((SimpleBlackhole1ViewModel)(this.ViewModelObject));
         }
         set {
             this.ViewModelObject = value;
@@ -1481,12 +1564,12 @@ public class SimpleBlackholeViewViewBase : BlackholeView {
     
     public override System.Type ViewModelType {
         get {
-            return typeof(SimpleBlackholeViewModel);
+            return typeof(SimpleBlackhole1ViewModel);
         }
     }
     
     public override ViewModel CreateModel() {
-        return this.RequestViewModel(GameManager.Container.Resolve<SimpleBlackholeController>());
+        return this.RequestViewModel(GameManager.Container.Resolve<SimpleBlackhole1Controller>());
     }
     
     public override void Bind() {
@@ -1498,7 +1581,7 @@ public class SimpleBlackholeViewViewBase : BlackholeView {
     }
 }
 
-public partial class SimpleBlackholeView : SimpleBlackholeViewViewBase {
+public partial class SimpleBlackhole1View : SimpleBlackhole1ViewViewBase {
 }
 
 public partial class ShipController : ViewComponent {

@@ -21,6 +21,7 @@ public abstract class MenuRootControllerBase : Controller {
     [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
     [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
     [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    [Inject("UniverseRepository")] public UniverseRepositoryViewModel UniverseRepository { get; set; }
     public abstract void InitializeMenuRoot(MenuRootViewModel menuRoot);
     
     public override ViewModel CreateEmpty() {
@@ -47,6 +48,7 @@ public abstract class LevelRootControllerBase : Controller {
     [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
     [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
     [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    [Inject("UniverseRepository")] public UniverseRepositoryViewModel UniverseRepository { get; set; }
     [Inject] public PlayerController PlayerController {get;set;}
     [Inject] public TryEntryController TryEntryController {get;set;}
     public abstract void InitializeLevelRoot(LevelRootViewModel levelRoot);
@@ -75,6 +77,7 @@ public abstract class PlayerControllerBase : Controller {
     [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
     [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
     [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    [Inject("UniverseRepository")] public UniverseRepositoryViewModel UniverseRepository { get; set; }
     [Inject] public LevelRootController LevelRootController {get;set;}
     [Inject] public TryEntryController TryEntryController {get;set;}
     public abstract void InitializePlayer(PlayerViewModel player);
@@ -112,6 +115,7 @@ public abstract class TryEntryControllerBase : Controller {
     [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
     [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
     [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    [Inject("UniverseRepository")] public UniverseRepositoryViewModel UniverseRepository { get; set; }
     [Inject] public LevelRootController LevelRootController {get;set;}
     [Inject] public PlayerController PlayerController {get;set;}
     public abstract void InitializeTryEntry(TryEntryViewModel tryEntry);
@@ -134,6 +138,7 @@ public abstract class EditorRootControllerBase : Controller {
     [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
     [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
     [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    [Inject("UniverseRepository")] public UniverseRepositoryViewModel UniverseRepository { get; set; }
     [Inject] public UniverseController UniverseController {get;set;}
     public abstract void InitializeEditorRoot(EditorRootViewModel editorRoot);
     
@@ -164,6 +169,7 @@ public abstract class UniverseControllerBase : Controller {
     [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
     [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
     [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    [Inject("UniverseRepository")] public UniverseRepositoryViewModel UniverseRepository { get; set; }
     [Inject] public EditorRootController EditorRootController {get;set;}
     [Inject] public UniverseObjectController UniverseObjectController {get;set;}
     public abstract void InitializeUniverse(UniverseViewModel universe);
@@ -179,6 +185,12 @@ public abstract class UniverseControllerBase : Controller {
     public override void Initialize(ViewModel viewModel) {
         this.InitializeUniverse(((UniverseViewModel)(viewModel)));
     }
+    
+    public virtual void Load(UniverseViewModel universe, String arg) {
+    }
+    
+    public virtual void Save(UniverseViewModel universe) {
+    }
 }
 
 public abstract class UniverseObjectControllerBase : Controller {
@@ -186,6 +198,7 @@ public abstract class UniverseObjectControllerBase : Controller {
     [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
     [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
     [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    [Inject("UniverseRepository")] public UniverseRepositoryViewModel UniverseRepository { get; set; }
     [Inject] public UniverseController UniverseController {get;set;}
     public abstract void InitializeUniverseObject(UniverseObjectViewModel universeObject);
     
@@ -405,20 +418,59 @@ public abstract class SimpleAsteroid4ControllerBase : AsteroidController {
     }
 }
 
-public abstract class SimpleBlackholeControllerBase : BlackholeController {
+public abstract class SimpleBlackhole1ControllerBase : BlackholeController {
     
-    public abstract void InitializeSimpleBlackhole(SimpleBlackholeViewModel simpleBlackhole);
+    public abstract void InitializeSimpleBlackhole1(SimpleBlackhole1ViewModel simpleBlackhole1);
     
     public override ViewModel CreateEmpty() {
-        return new SimpleBlackholeViewModel(this);
+        return new SimpleBlackhole1ViewModel(this);
     }
     
-    public virtual SimpleBlackholeViewModel CreateSimpleBlackhole() {
-        return ((SimpleBlackholeViewModel)(this.Create()));
+    public virtual SimpleBlackhole1ViewModel CreateSimpleBlackhole1() {
+        return ((SimpleBlackhole1ViewModel)(this.Create()));
     }
     
     public override void Initialize(ViewModel viewModel) {
         base.Initialize(viewModel);
-        this.InitializeSimpleBlackhole(((SimpleBlackholeViewModel)(viewModel)));
+        this.InitializeSimpleBlackhole1(((SimpleBlackhole1ViewModel)(viewModel)));
+    }
+}
+
+public abstract class SpaceGarbageAreaControllerBase : UniverseObjectController {
+    
+    public abstract void InitializeSpaceGarbageArea(SpaceGarbageAreaViewModel spaceGarbageArea);
+    
+    public override ViewModel CreateEmpty() {
+        return new SpaceGarbageAreaViewModel(this);
+    }
+    
+    public virtual SpaceGarbageAreaViewModel CreateSpaceGarbageArea() {
+        return ((SpaceGarbageAreaViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializeSpaceGarbageArea(((SpaceGarbageAreaViewModel)(viewModel)));
+    }
+}
+
+public abstract class UniverseRepositoryControllerBase : Controller {
+    
+    [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
+    [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
+    [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    [Inject("UniverseRepository")] public UniverseRepositoryViewModel UniverseRepository { get; set; }
+    public abstract void InitializeUniverseRepository(UniverseRepositoryViewModel universeRepository);
+    
+    public override ViewModel CreateEmpty() {
+        return new UniverseRepositoryViewModel(this);
+    }
+    
+    public virtual UniverseRepositoryViewModel CreateUniverseRepository() {
+        return ((UniverseRepositoryViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        this.InitializeUniverseRepository(((UniverseRepositoryViewModel)(viewModel)));
     }
 }

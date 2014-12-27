@@ -1,0 +1,39 @@
+fileFormatVersion: 2
+guid: f457ec00be7e3ab49bca9424820977f9
+MonoAssemblyImporter:
+  serializedVersion: 1
+  iconMap:
+    Thinksquirrel.Phys2D.AngleJoint2DExt: {fileID: 2800000, guid: 18d1946918c1340d48860a4c63832df6,
+      type: 3}
+    Thinksquirrel.Phys2D.BuoyancyController2DExt: {fileID: 2800000, guid: ed203b211fddb4302a9d04a73284168c,
+      type: 3}
+    Thinksquirrel.Phys2D.ControllerFilter2DExt: {fileID: 2800000, guid: b730fdd80ecbb448e8ec55fb39d772dd,
+      type: 3}
+    Thinksquirrel.Phys2D.DistanceJoint2DExt: {fileID: 2800000, guid: e9e46c1d909c1466090b6a842bd5e565,
+      type: 3}
+    Thinksquirrel.Phys2D.DragControl2DExt: {fileID: 2800000, guid: cbd21a96fbd78444cb7c3d323741f75b,
+      type: 3}
+    Thinksquirrel.Phys2D.FrictionJoint2DExt: {fileID: 2800000, guid: 61c2d8624f51b4e11bbdea17815fde15,
+      type: 3}
+    Thinksquirrel.Phys2D.GearJoint2DExt: {fileID: 2800000, guid: b72d0ac66a30747c7bd7c73ea2b2551f,
+      type: 3}
+    Thinksquirrel.Phys2D.GravityController2DExt: {fileID: 2800000, guid: 748b1db6905c9403b820394364ada11f,
+      type: 3}
+    Thinksquirrel.Phys2D.HingeJoint2DExt: {fileID: 2800000, guid: 419a2849fa106416285f88f4f3adf0e7,
+      type: 3}
+    Thinksquirrel.Phys2D.PulleyJoint2DExt: {fileID: 2800000, guid: 8d13622f0422240f89b51ea20a8bdba6,
+      type: 3}
+    Thinksquirrel.Phys2D.SliderJoint2DExt: {fileID: 2800000, guid: 79655ce30b26e4706aef132fbed2e751,
+      type: 3}
+    Thinksquirrel.Phys2D.SpringJoint2DExt: {fileID: 2800000, guid: 5c5657a4ba44840c7a2356269d00c012,
+      type: 3}
+    Thinksquirrel.Phys2D.VelocityLimitController2DExt: {fileID: 2800000, guid: 13518e4337f724e3cab68102429a68f1,
+      type: 3}
+    Thinksquirrel.Phys2D.WeldJoint2DExt: {fileID: 2800000, guid: d38b2749d466b4efa9a731e85803c9f6,
+      type: 3}
+    Thinksquirrel.Phys2D.WheelJoint2DExt: {fileID: 2800000, guid: fe3f413b4d6eb4aa2b257c874cc90c96,
+      type: 3}
+    Thinksquirrel.Phys2D.WindController2DExt: {fileID: 2800000, guid: 4180a2a643fbf4457a8332608850c753,
+      type: 3}
+  executionOrder: {}
+  userData: 

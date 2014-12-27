@@ -50,6 +50,10 @@ public abstract class MenuRootViewBase : ViewBase {
     public virtual void ExecuteStartLevel(String arg) {
         this.ExecuteCommand(MenuRoot.StartLevel, arg);
     }
+    
+    public virtual void ExecuteStartEditor() {
+        this.ExecuteCommand(MenuRoot.StartEditor);
+    }
 }
 
 [DiagramInfoAttribute("GraviPath")]
@@ -204,6 +208,157 @@ public abstract class TryEntryViewBase : ViewBase {
         TryEntryViewModel tryEntry = ((TryEntryViewModel)(viewModel));
         tryEntry.Number = this._Number;
         tryEntry.Target = this._Target == null ? null : this._Target.ViewModelObject as PlayerViewModel;
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class EditorRootViewBase : ViewBase {
+    
+    public override string DefaultIdentifier {
+        get {
+            return "EditorRoot";
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(EditorRootViewModel);
+        }
+    }
+    
+    public EditorRootViewModel EditorRoot {
+        get {
+            return ((EditorRootViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<EditorRootController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+    }
+    
+    public virtual void ExecuteToMenu() {
+        this.ExecuteCommand(EditorRoot.ToMenu);
+    }
+    
+    public virtual void ExecuteSerialize() {
+        this.ExecuteCommand(EditorRoot.Serialize);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class UniverseViewBase : ViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(UniverseViewModel);
+        }
+    }
+    
+    public UniverseViewModel Universe {
+        get {
+            return ((UniverseViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<UniverseController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class UniverseObjectViewBase : ViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(UniverseObjectViewModel);
+        }
+    }
+    
+    public UniverseObjectViewModel UniverseObject {
+        get {
+            return ((UniverseObjectViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<UniverseObjectController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        UniverseObjectViewModel universeObject = ((UniverseObjectViewModel)(viewModel));
+    }
+    
+    public virtual void ExecuteReset() {
+        this.ExecuteCommand(UniverseObject.Reset);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class ZoneViewBase : UniverseObjectViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(ZoneViewModel);
+        }
+    }
+    
+    public ZoneViewModel Zone {
+        get {
+            return ((ZoneViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<ZoneController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class GravityObjectViewBase : UniverseObjectViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(GravityObjectViewModel);
+        }
+    }
+    
+    public GravityObjectViewModel GravityObject {
+        get {
+            return ((GravityObjectViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<GravityObjectController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
     }
 }
 
@@ -473,6 +628,160 @@ public class MenuRootViewViewBase : MenuRootViewBase {
 }
 
 public partial class MenuRootView : MenuRootViewViewBase {
+}
+
+public class EditorRootViewViewBase : EditorRootViewBase {
+    
+    [UFToggleGroup("Serialize")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindSerialize = true;
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<EditorRootController>());
+    }
+    
+    /// Invokes SerializeExecuted when the Serialize command is executed.
+    public virtual void SerializeExecuted() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        if (this._BindSerialize) {
+            this.BindCommandExecuted(EditorRoot.Serialize, SerializeExecuted);
+        }
+    }
+}
+
+public partial class EditorRootView : EditorRootViewViewBase {
+}
+
+public class UniverseObjectViewViewBase : UniverseObjectViewBase {
+    
+    private IDisposable _PositionDisposable;
+    
+    private IDisposable _RotationDisposable;
+    
+    [UFToggleGroup("Reset")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindReset = true;
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<UniverseObjectController>());
+    }
+    
+    /// Invokes ResetExecuted when the Reset command is executed.
+    public virtual void ResetExecuted() {
+    }
+    
+    public virtual void ResetPosition() {
+        if (_PositionDisposable != null) _PositionDisposable.Dispose();
+        _PositionDisposable = GetPositionObservable().Subscribe(UniverseObject._PositionProperty).DisposeWith(this);
+    }
+    
+    protected virtual Vector3 CalculatePosition() {
+        return default(Vector3);
+    }
+    
+    protected virtual UniRx.IObservable<Vector3> GetPositionObservable() {
+        return this.UpdateAsObservable().Select(p => CalculatePosition());
+    }
+    
+    public virtual void ResetRotation() {
+        if (_RotationDisposable != null) _RotationDisposable.Dispose();
+        _RotationDisposable = GetRotationObservable().Subscribe(UniverseObject._RotationProperty).DisposeWith(this);
+    }
+    
+    protected virtual Vector3 CalculateRotation() {
+        return default(Vector3);
+    }
+    
+    protected virtual UniRx.IObservable<Vector3> GetRotationObservable() {
+        return this.UpdateAsObservable().Select(p => CalculateRotation());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        ResetPosition();
+        ResetRotation();
+        if (this._BindReset) {
+            this.BindCommandExecuted(UniverseObject.Reset, ResetExecuted);
+        }
+    }
+}
+
+public partial class UniverseObjectView : UniverseObjectViewViewBase {
+}
+
+public class ZoneViewViewBase : UniverseObjectView {
+    
+    public ZoneViewModel Zone {
+        get {
+            return ((ZoneViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(ZoneViewModel);
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<ZoneController>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+public partial class ZoneView : ZoneViewViewBase {
+}
+
+public class GravityObjectViewViewBase : GravityObjectViewBase {
+    
+    [UFToggleGroup("Reset")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindReset = true;
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<GravityObjectController>());
+    }
+    
+    /// Invokes ResetExecuted when the Reset command is executed.
+    public virtual void ResetExecuted() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        if (this._BindReset) {
+            this.BindCommandExecuted(GravityObject.Reset, ResetExecuted);
+        }
+    }
+}
+
+public partial class GravityObjectView : GravityObjectViewViewBase {
+}
+
+public class UniverseViewViewBase : UniverseViewBase {
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<UniverseController>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+}
+
+public partial class UniverseView : UniverseViewViewBase {
 }
 
 public partial class ShipController : ViewComponent {

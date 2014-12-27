@@ -20,6 +20,7 @@ public abstract class MenuRootControllerBase : Controller {
     
     [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
     [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
+    [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
     public abstract void InitializeMenuRoot(MenuRootViewModel menuRoot);
     
     public override ViewModel CreateEmpty() {
@@ -36,12 +37,16 @@ public abstract class MenuRootControllerBase : Controller {
     
     public virtual void StartLevel(MenuRootViewModel menuRoot, String arg) {
     }
+    
+    public virtual void StartEditor(MenuRootViewModel menuRoot) {
+    }
 }
 
 public abstract class LevelRootControllerBase : Controller {
     
     [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
     [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
+    [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
     [Inject] public PlayerController PlayerController {get;set;}
     [Inject] public TryEntryController TryEntryController {get;set;}
     public abstract void InitializeLevelRoot(LevelRootViewModel levelRoot);
@@ -69,6 +74,7 @@ public abstract class PlayerControllerBase : Controller {
     
     [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
     [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
+    [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
     [Inject] public LevelRootController LevelRootController {get;set;}
     [Inject] public TryEntryController TryEntryController {get;set;}
     public abstract void InitializePlayer(PlayerViewModel player);
@@ -105,6 +111,7 @@ public abstract class TryEntryControllerBase : Controller {
     
     [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
     [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
+    [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
     [Inject] public LevelRootController LevelRootController {get;set;}
     [Inject] public PlayerController PlayerController {get;set;}
     public abstract void InitializeTryEntry(TryEntryViewModel tryEntry);
@@ -119,5 +126,112 @@ public abstract class TryEntryControllerBase : Controller {
     
     public override void Initialize(ViewModel viewModel) {
         this.InitializeTryEntry(((TryEntryViewModel)(viewModel)));
+    }
+}
+
+public abstract class EditorRootControllerBase : Controller {
+    
+    [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
+    [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
+    [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    public abstract void InitializeEditorRoot(EditorRootViewModel editorRoot);
+    
+    public override ViewModel CreateEmpty() {
+        return new EditorRootViewModel(this);
+    }
+    
+    public virtual EditorRootViewModel CreateEditorRoot() {
+        return ((EditorRootViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        this.InitializeEditorRoot(((EditorRootViewModel)(viewModel)));
+    }
+    
+    public virtual void ToMenu(EditorRootViewModel editorRoot) {
+    }
+    
+    public virtual void Serialize(EditorRootViewModel editorRoot) {
+    }
+}
+
+public abstract class UniverseControllerBase : Controller {
+    
+    [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
+    [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
+    [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    [Inject] public UniverseObjectController UniverseObjectController {get;set;}
+    public abstract void InitializeUniverse(UniverseViewModel universe);
+    
+    public override ViewModel CreateEmpty() {
+        return new UniverseViewModel(this);
+    }
+    
+    public virtual UniverseViewModel CreateUniverse() {
+        return ((UniverseViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        this.InitializeUniverse(((UniverseViewModel)(viewModel)));
+    }
+}
+
+public abstract class UniverseObjectControllerBase : Controller {
+    
+    [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
+    [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
+    [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    [Inject] public UniverseController UniverseController {get;set;}
+    public abstract void InitializeUniverseObject(UniverseObjectViewModel universeObject);
+    
+    public override ViewModel CreateEmpty() {
+        return new UniverseObjectViewModel(this);
+    }
+    
+    public virtual UniverseObjectViewModel CreateUniverseObject() {
+        return ((UniverseObjectViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        this.InitializeUniverseObject(((UniverseObjectViewModel)(viewModel)));
+    }
+    
+    public virtual void Reset(UniverseObjectViewModel universeObject) {
+    }
+}
+
+public abstract class ZoneControllerBase : UniverseObjectController {
+    
+    public abstract void InitializeZone(ZoneViewModel zone);
+    
+    public override ViewModel CreateEmpty() {
+        return new ZoneViewModel(this);
+    }
+    
+    public virtual ZoneViewModel CreateZone() {
+        return ((ZoneViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializeZone(((ZoneViewModel)(viewModel)));
+    }
+}
+
+public abstract class GravityObjectControllerBase : UniverseObjectController {
+    
+    public abstract void InitializeGravityObject(GravityObjectViewModel gravityObject);
+    
+    public override ViewModel CreateEmpty() {
+        return new GravityObjectViewModel(this);
+    }
+    
+    public virtual GravityObjectViewModel CreateGravityObject() {
+        return ((GravityObjectViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializeGravityObject(((GravityObjectViewModel)(viewModel)));
     }
 }

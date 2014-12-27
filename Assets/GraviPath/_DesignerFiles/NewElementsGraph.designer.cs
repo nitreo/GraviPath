@@ -20,6 +20,8 @@ public class MenuRootViewModelBase : ViewModel {
     
     protected CommandWithSenderAndArgument<MenuRootViewModel, String> _StartLevel;
     
+    protected CommandWithSender<MenuRootViewModel> _StartEditor;
+    
     public MenuRootViewModelBase(MenuRootControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
     }
@@ -52,9 +54,19 @@ public partial class MenuRootViewModel : MenuRootViewModelBase {
         }
     }
     
+    public virtual CommandWithSender<MenuRootViewModel> StartEditor {
+        get {
+            return _StartEditor;
+        }
+        set {
+            _StartEditor = value;
+        }
+    }
+    
     protected override void WireCommands(Controller controller) {
         var menuRoot = controller as MenuRootControllerBase;
         this.StartLevel = new CommandWithSenderAndArgument<MenuRootViewModel, String>(this, menuRoot.StartLevel);
+        this.StartEditor = new CommandWithSender<MenuRootViewModel>(this, menuRoot.StartEditor);
     }
     
     public override void Write(ISerializerStream stream) {
@@ -76,6 +88,7 @@ public partial class MenuRootViewModel : MenuRootViewModelBase {
     protected override void FillCommands(List<ViewModelCommandInfo> list) {
         base.FillCommands(list);;
         list.Add(new ViewModelCommandInfo("StartLevel", StartLevel) { ParameterType = typeof(String) });
+        list.Add(new ViewModelCommandInfo("StartEditor", StartEditor) { ParameterType = typeof(void) });
     }
 }
 
@@ -648,6 +661,376 @@ public partial class TryEntryViewModel : TryEntryViewModelBase {
         list.Add(new ViewModelPropertyInfo(_NumberProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_TargetProperty, true, false, false));
         list.Add(new ViewModelPropertyInfo(_PathLengthProperty, false, false, false));
+    }
+    
+    protected override void FillCommands(List<ViewModelCommandInfo> list) {
+        base.FillCommands(list);;
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public class EditorRootViewModelBase : ViewModel {
+    
+    protected CommandWithSender<EditorRootViewModel> _ToMenu;
+    
+    protected CommandWithSender<EditorRootViewModel> _Serialize;
+    
+    public EditorRootViewModelBase(EditorRootControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public EditorRootViewModelBase() : 
+            base() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+}
+
+public partial class EditorRootViewModel : EditorRootViewModelBase {
+    
+    public EditorRootViewModel(EditorRootControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public EditorRootViewModel() : 
+            base() {
+    }
+    
+    public virtual CommandWithSender<EditorRootViewModel> ToMenu {
+        get {
+            return _ToMenu;
+        }
+        set {
+            _ToMenu = value;
+        }
+    }
+    
+    public virtual CommandWithSender<EditorRootViewModel> Serialize {
+        get {
+            return _Serialize;
+        }
+        set {
+            _Serialize = value;
+        }
+    }
+    
+    protected override void WireCommands(Controller controller) {
+        var editorRoot = controller as EditorRootControllerBase;
+        this.ToMenu = new CommandWithSender<EditorRootViewModel>(this, editorRoot.ToMenu);
+        this.Serialize = new CommandWithSender<EditorRootViewModel>(this, editorRoot.Serialize);
+    }
+    
+    public override void Write(ISerializerStream stream) {
+		base.Write(stream);
+    }
+    
+    public override void Read(ISerializerStream stream) {
+		base.Read(stream);
+    }
+    
+    public override void Unbind() {
+        base.Unbind();
+    }
+    
+    protected override void FillProperties(List<ViewModelPropertyInfo> list) {
+        base.FillProperties(list);;
+    }
+    
+    protected override void FillCommands(List<ViewModelCommandInfo> list) {
+        base.FillCommands(list);;
+        list.Add(new ViewModelCommandInfo("ToMenu", ToMenu) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("Serialize", Serialize) { ParameterType = typeof(void) });
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public class UniverseViewModelBase : ViewModel {
+    
+    public ModelCollection<UniverseObjectViewModel> _ObjectsProperty;
+    
+    public UniverseViewModelBase(UniverseControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public UniverseViewModelBase() : 
+            base() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        _ObjectsProperty = new ModelCollection<UniverseObjectViewModel>(this, "Objects");
+        _ObjectsProperty.CollectionChanged += ObjectsCollectionChanged;
+    }
+    
+    protected virtual void ObjectsCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) {
+    }
+}
+
+public partial class UniverseViewModel : UniverseViewModelBase {
+    
+    public UniverseViewModel(UniverseControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public UniverseViewModel() : 
+            base() {
+    }
+    
+    public virtual ModelCollection<UniverseObjectViewModel> Objects {
+        get {
+            return this._ObjectsProperty;
+        }
+    }
+    
+    protected override void WireCommands(Controller controller) {
+    }
+    
+    public override void Write(ISerializerStream stream) {
+		base.Write(stream);
+        if (stream.DeepSerialize) stream.SerializeArray("Objects", this.Objects);
+    }
+    
+    public override void Read(ISerializerStream stream) {
+		base.Read(stream);
+if (stream.DeepSerialize) {
+        this.Objects.Clear();
+        this.Objects.AddRange(stream.DeserializeObjectArray<UniverseObjectViewModel>("Objects"));
+}
+    }
+    
+    public override void Unbind() {
+        base.Unbind();
+        _ObjectsProperty.CollectionChanged -= ObjectsCollectionChanged;
+    }
+    
+    protected override void FillProperties(List<ViewModelPropertyInfo> list) {
+        base.FillProperties(list);;
+        list.Add(new ViewModelPropertyInfo(_ObjectsProperty, true, true, false));
+    }
+    
+    protected override void FillCommands(List<ViewModelCommandInfo> list) {
+        base.FillCommands(list);;
+    }
+    
+    protected override void ObjectsCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) {
+        foreach (var item in args.NewItems.OfType<UniverseObjectViewModel>()) item.ParentUniverse = this;;
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public class UniverseObjectViewModelBase : ViewModel {
+    
+    public P<Vector3> _PositionProperty;
+    
+    public P<Vector3> _RotationProperty;
+    
+    protected CommandWithSender<UniverseObjectViewModel> _Reset;
+    
+    public UniverseObjectViewModelBase(UniverseObjectControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public UniverseObjectViewModelBase() : 
+            base() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        _PositionProperty = new P<Vector3>(this, "Position");
+        _RotationProperty = new P<Vector3>(this, "Rotation");
+    }
+}
+
+public partial class UniverseObjectViewModel : UniverseObjectViewModelBase {
+    
+    private UniverseViewModel _ParentUniverse;
+    
+    public UniverseObjectViewModel(UniverseObjectControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public UniverseObjectViewModel() : 
+            base() {
+    }
+    
+    public virtual P<Vector3> PositionProperty {
+        get {
+            return this._PositionProperty;
+        }
+    }
+    
+    public virtual Vector3 Position {
+        get {
+            return _PositionProperty.Value;
+        }
+        set {
+            _PositionProperty.Value = value;
+        }
+    }
+    
+    public virtual P<Vector3> RotationProperty {
+        get {
+            return this._RotationProperty;
+        }
+    }
+    
+    public virtual Vector3 Rotation {
+        get {
+            return _RotationProperty.Value;
+        }
+        set {
+            _RotationProperty.Value = value;
+        }
+    }
+    
+    public virtual CommandWithSender<UniverseObjectViewModel> Reset {
+        get {
+            return _Reset;
+        }
+        set {
+            _Reset = value;
+        }
+    }
+    
+    public virtual UniverseViewModel ParentUniverse {
+        get {
+            return this._ParentUniverse;
+        }
+        set {
+            _ParentUniverse = value;
+        }
+    }
+    
+    protected override void WireCommands(Controller controller) {
+        var universeObject = controller as UniverseObjectControllerBase;
+        this.Reset = new CommandWithSender<UniverseObjectViewModel>(this, universeObject.Reset);
+    }
+    
+    public override void Write(ISerializerStream stream) {
+		base.Write(stream);
+        stream.SerializeVector3("Position", this.Position);
+        stream.SerializeVector3("Rotation", this.Rotation);
+    }
+    
+    public override void Read(ISerializerStream stream) {
+		base.Read(stream);
+        		this.Position = stream.DeserializeVector3("Position");;
+        		this.Rotation = stream.DeserializeVector3("Rotation");;
+    }
+    
+    public override void Unbind() {
+        base.Unbind();
+    }
+    
+    protected override void FillProperties(List<ViewModelPropertyInfo> list) {
+        base.FillProperties(list);;
+        list.Add(new ViewModelPropertyInfo(_PositionProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_RotationProperty, false, false, false));
+    }
+    
+    protected override void FillCommands(List<ViewModelCommandInfo> list) {
+        base.FillCommands(list);;
+        list.Add(new ViewModelCommandInfo("Reset", Reset) { ParameterType = typeof(void) });
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public class ZoneViewModelBase : UniverseObjectViewModel {
+    
+    public ZoneViewModelBase(ZoneControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public ZoneViewModelBase() : 
+            base() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+}
+
+public partial class ZoneViewModel : ZoneViewModelBase {
+    
+    public ZoneViewModel(ZoneControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public ZoneViewModel() : 
+            base() {
+    }
+    
+    protected override void WireCommands(Controller controller) {
+        base.WireCommands(controller);
+    }
+    
+    public override void Write(ISerializerStream stream) {
+		base.Write(stream);
+    }
+    
+    public override void Read(ISerializerStream stream) {
+		base.Read(stream);
+    }
+    
+    public override void Unbind() {
+        base.Unbind();
+    }
+    
+    protected override void FillProperties(List<ViewModelPropertyInfo> list) {
+        base.FillProperties(list);;
+    }
+    
+    protected override void FillCommands(List<ViewModelCommandInfo> list) {
+        base.FillCommands(list);;
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public class GravityObjectViewModelBase : UniverseObjectViewModel {
+    
+    public GravityObjectViewModelBase(GravityObjectControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public GravityObjectViewModelBase() : 
+            base() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+}
+
+public partial class GravityObjectViewModel : GravityObjectViewModelBase {
+    
+    public GravityObjectViewModel(GravityObjectControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public GravityObjectViewModel() : 
+            base() {
+    }
+    
+    protected override void WireCommands(Controller controller) {
+        base.WireCommands(controller);
+    }
+    
+    public override void Write(ISerializerStream stream) {
+		base.Write(stream);
+    }
+    
+    public override void Read(ISerializerStream stream) {
+		base.Read(stream);
+    }
+    
+    public override void Unbind() {
+        base.Unbind();
+    }
+    
+    protected override void FillProperties(List<ViewModelPropertyInfo> list) {
+        base.FillProperties(list);;
     }
     
     protected override void FillCommands(List<ViewModelCommandInfo> list) {

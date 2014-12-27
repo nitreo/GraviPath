@@ -36,6 +36,14 @@ public class LevelSceneManagerBase : SceneManager {
     
     private TryEntryController _TryEntryController;
     
+    private UniverseController _UniverseController;
+    
+    private UniverseObjectController _UniverseObjectController;
+    
+    private ZoneController _ZoneController;
+    
+    private GravityObjectController _GravityObjectController;
+    
     public LevelSceneManagerSettings _LevelSceneManagerSettings = new LevelSceneManagerSettings();
     
     [Inject("LevelRoot")]
@@ -90,6 +98,58 @@ public class LevelSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual UniverseController UniverseController {
+        get {
+            if ((this._UniverseController == null)) {
+                this._UniverseController = new UniverseController() { Container = Container };
+            }
+            return this._UniverseController;
+        }
+        set {
+            _UniverseController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual UniverseObjectController UniverseObjectController {
+        get {
+            if ((this._UniverseObjectController == null)) {
+                this._UniverseObjectController = new UniverseObjectController() { Container = Container };
+            }
+            return this._UniverseObjectController;
+        }
+        set {
+            _UniverseObjectController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual ZoneController ZoneController {
+        get {
+            if ((this._ZoneController == null)) {
+                this._ZoneController = new ZoneController() { Container = Container };
+            }
+            return this._ZoneController;
+        }
+        set {
+            _ZoneController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual GravityObjectController GravityObjectController {
+        get {
+            if ((this._GravityObjectController == null)) {
+                this._GravityObjectController = new GravityObjectController() { Container = Container };
+            }
+            return this._GravityObjectController;
+        }
+        set {
+            _GravityObjectController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -101,6 +161,10 @@ public class LevelSceneManagerBase : SceneManager {
         Container.RegisterController<LevelRootController>(LevelRootController);
         Container.RegisterController<PlayerController>(PlayerController);
         Container.RegisterController<TryEntryController>(TryEntryController);
+        Container.RegisterController<UniverseController>(UniverseController);
+        Container.RegisterController<UniverseObjectController>(UniverseObjectController);
+        Container.RegisterController<ZoneController>(ZoneController);
+        Container.RegisterController<GravityObjectController>(GravityObjectController);
         this.Container.InjectAll();
         LevelRootController.Initialize(LevelRoot);
     }
@@ -134,6 +198,8 @@ public sealed partial class MenuSceneManagerSettings {
 public class MenuSceneManagerBase : SceneManager {
     
     public LevelSceneManagerSettings _StartLevelTransition = new LevelSceneManagerSettings();
+    
+    public EditorSceneManagerSettings _StartEditorTransition = new EditorSceneManagerSettings();
     
     private MenuRootViewModel _MenuRoot;
     
@@ -191,8 +257,95 @@ public class MenuSceneManagerBase : SceneManager {
         GameManager.TransitionLevel<LevelSceneManager>((container) =>{container._LevelSceneManagerSettings = _StartLevelTransition; StartLevelTransitionComplete(container); }, this.GetStartLevelScenes(arg).ToArray());
     }
     
+    public virtual void StartEditorTransitionComplete(EditorSceneManager sceneManager) {
+    }
+    
+    public virtual System.Collections.Generic.IEnumerable<string> GetStartEditorScenes() {
+        return this._StartEditorTransition._Scenes;
+    }
+    
+    public virtual void StartEditor() {
+        GameManager.TransitionLevel<EditorSceneManager>((container) =>{container._EditorSceneManagerSettings = _StartEditorTransition; StartEditorTransitionComplete(container); }, this.GetStartEditorScenes().ToArray());
+    }
+    
     public override void Initialize() {
         base.Initialize();
         MenuRoot.StartLevel.Subscribe(_=> StartLevel((String)MenuRoot.StartLevel.Parameter)).DisposeWith(this.gameObject);
+        MenuRoot.StartEditor.Subscribe(_=> StartEditor()).DisposeWith(this.gameObject);
+    }
+}
+
+[System.SerializableAttribute()]
+public sealed partial class EditorSceneManagerSettings {
+    
+    public string[] _Scenes;
+}
+
+// <summary>
+// The responsibility of this class is to manage the scenes Initialization, Loading, Transitioning, and Unloading.
+// </summary>
+public class EditorSceneManagerBase : SceneManager {
+    
+    public MenuSceneManagerSettings _ToMenuTransition = new MenuSceneManagerSettings();
+    
+    private EditorRootViewModel _EditorRoot;
+    
+    private EditorRootController _EditorRootController;
+    
+    public EditorSceneManagerSettings _EditorSceneManagerSettings = new EditorSceneManagerSettings();
+    
+    [Inject("EditorRoot")]
+    public virtual EditorRootViewModel EditorRoot {
+        get {
+            if ((this._EditorRoot == null)) {
+                this._EditorRoot = CreateInstanceViewModel<EditorRootViewModel>(EditorRootController, "EditorRoot");
+            }
+            return this._EditorRoot;
+        }
+        set {
+            _EditorRoot = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual EditorRootController EditorRootController {
+        get {
+            if ((this._EditorRootController == null)) {
+                this._EditorRootController = new EditorRootController() { Container = Container };
+            }
+            return this._EditorRootController;
+        }
+        set {
+            _EditorRootController = value;
+        }
+    }
+    
+    // <summary>
+    // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
+    // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
+    // the 'Inject' attribute on any controller or view-model will automatically be set by uFrame. 
+    // </summary>
+    public override void Setup() {
+        base.Setup();
+        Container.RegisterViewModel<EditorRootViewModel>(EditorRoot,"EditorRoot");
+        Container.RegisterController<EditorRootController>(EditorRootController);
+        this.Container.InjectAll();
+        EditorRootController.Initialize(EditorRoot);
+    }
+    
+    public virtual void ToMenuTransitionComplete(MenuSceneManager sceneManager) {
+    }
+    
+    public virtual System.Collections.Generic.IEnumerable<string> GetToMenuScenes() {
+        return this._ToMenuTransition._Scenes;
+    }
+    
+    public virtual void ToMenu() {
+        GameManager.TransitionLevel<MenuSceneManager>((container) =>{container._MenuSceneManagerSettings = _ToMenuTransition; ToMenuTransitionComplete(container); }, this.GetToMenuScenes().ToArray());
+    }
+    
+    public override void Initialize() {
+        base.Initialize();
+        EditorRoot.ToMenu.Subscribe(_=> ToMenu()).DisposeWith(this.gameObject);
     }
 }

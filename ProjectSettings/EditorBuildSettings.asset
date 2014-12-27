@@ -11,3 +11,5 @@ EditorBuildSettings:
     path: Assets/GraviPath/Scenes/Level1.unity
   - enabled: 1
     path: Assets/uFrameComplete/uFrame/LoadingScreen/Loading.unity
+  - enabled: 1
+    path: Assets/GraviPath/Scenes/Editor.unity

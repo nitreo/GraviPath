@@ -21,13 +21,22 @@ public static class UGUIExtensions
         });
     }
 
-    public static IObservable<string> AsSubmitObservable(this InputField inputField)
+    public static IObservable<string> AsEndEditObservable(this InputField inputField)
     {
         return Observable.Create<string>(observer =>
         {
             UnityAction<string> unityAction = observer.OnNext;
-            inputField.onSubmit.AddListener(unityAction);
-            return Disposable.Create(() => inputField.onSubmit.AddListener(unityAction));
+            inputField.onEndEdit.AddListener(unityAction);
+            return Disposable.Create(() => inputField.onEndEdit.AddListener(unityAction));
+        });
+    }
+    public static IObservable<string> AsValueChangedObservable(this InputField inputField)
+    {
+        return Observable.Create<string>(observer =>
+        {
+            UnityAction<string> unityAction = observer.OnNext;
+            inputField.onValueChange.AddListener(unityAction);
+            return Disposable.Create(() => inputField.onValueChange.AddListener(unityAction));
         });
     }
 

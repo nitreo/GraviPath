@@ -41,6 +41,7 @@ GameObject:
   - 4: {fileID: 400004}
   - 60: {fileID: 6000000}
   - 50: {fileID: 5000000}
+  - 114: {fileID: 11400000}
   m_Layer: 0
   m_Name: SmallAsteroid2
   m_TagString: SmallAsteroid
@@ -118,6 +119,24 @@ PolygonCollider2D:
       - {x: -.350029469, y: -.679103851}
       - {x: -.367268562, y: -.733409882}
       - {x: -1.06206584, y: .0728492737}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70fb693716c67d54ea157af1978febcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
+  _BindReset: 1
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

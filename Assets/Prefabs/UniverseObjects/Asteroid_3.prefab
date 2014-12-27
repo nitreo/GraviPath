@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 400000}
   - 212: {fileID: 21200000}
   m_Layer: 0
-  m_Name: Asteroid_4
+  m_Name: Asteroid_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,8 +27,9 @@ GameObject:
   - 60: {fileID: 6000000}
   - 114: {fileID: 11400000}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400004}
   m_Layer: 0
-  m_Name: Asteroid_4
+  m_Name: Asteroid_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,9 +68,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_LocalRotation: {x: 0, y: 0, z: -.821534634, w: .570158601}
-  m_LocalPosition: {x: 23.427, y: 29.1060009, z: 0}
-  m_LocalScale: {x: 3.61578131, y: 3.61578107, z: 3.61578178}
+  m_LocalRotation: {x: 0, y: 0, z: -.998908997, w: .046700161}
+  m_LocalPosition: {x: 40.5449982, y: -49.4280014, z: 0}
+  m_LocalScale: {x: 3.77179718, y: 3.77179599, z: 3.77179694}
   m_Children:
   - {fileID: 400004}
   m_Father: {fileID: 0}
@@ -98,22 +99,22 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_Poly:
     m_Paths:
-    - - {x: -.274352849, y: .916981578}
-      - {x: .12340463, y: .994443297}
-      - {x: .371355683, y: .952778816}
-      - {x: .553264856, y: .888051927}
-      - {x: .743060172, y: .655667663}
-      - {x: 1.0348841, y: -.119555868}
-      - {x: .870439768, y: -.505618691}
-      - {x: .80828315, y: -.678441584}
-      - {x: .335591197, y: -.923206627}
-      - {x: -.0751637146, y: -.973360479}
-      - {x: -.41142422, y: -.93509382}
-      - {x: -.731038392, y: -.63342917}
-      - {x: -.848645151, y: -.249105841}
-      - {x: -.91316992, y: .167064562}
-      - {x: -.790798128, y: .476267874}
-      - {x: -.530969381, y: .814924777}
+    - - {x: .0786644965, y: 1.16120327}
+      - {x: .216274127, y: 1.10405254}
+      - {x: .353191167, y: .97275579}
+      - {x: .430518478, y: .815454006}
+      - {x: .22219941, y: .402287543}
+      - {x: .340374589, y: .0920673162}
+      - {x: .754320681, y: -.452645421}
+      - {x: .707151294, y: -.823248267}
+      - {x: .399360538, y: -1.06530559}
+      - {x: .0755873993, y: -1.01875317}
+      - {x: -.200682089, y: -.883155465}
+      - {x: -.416096479, y: -.729899466}
+      - {x: -.709936976, y: -.0902668834}
+      - {x: -.500339329, y: .380102456}
+      - {x: -.631995261, y: .738947332}
+      - {x: -.354626417, y: 1.03063416}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -142,13 +143,31 @@ MonoBehaviour:
   _rigidbodies:
   - {fileID: 0}
   m_Offset: {x: 0, y: 0}
-  m_Dimensions: {x: 30, y: 30}
+  m_Dimensions: {x: 40, y: 40}
   m_GravityType: 0
-  m_Strength: 1000
+  m_Strength: 800
   m_MinRadius: 0
   m_MaxRadius: 2000
   m_Points:
   - {x: 0, y: 0}
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c67b9792226acb408a1ae859d6b11c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 0
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: 
+  _Save: 0
+  _BindReset: 1
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -169,7 +188,7 @@ SpriteRenderer:
   m_ScaleInLightmap: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c2687afc39dff454683e3417e5c894cb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cd274a1505992f34588bd5a8309dfb11, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:

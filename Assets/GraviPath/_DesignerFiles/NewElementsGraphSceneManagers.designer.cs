@@ -44,6 +44,14 @@ public class LevelSceneManagerBase : SceneManager {
     
     private GravityObjectController _GravityObjectController;
     
+    private PlanetController _PlanetController;
+    
+    private AsteroidController _AsteroidController;
+    
+    private BlackholeController _BlackholeController;
+    
+    private MiniAsteroidController _MiniAsteroidController;
+    
     public LevelSceneManagerSettings _LevelSceneManagerSettings = new LevelSceneManagerSettings();
     
     [Inject("LevelRoot")]
@@ -150,6 +158,58 @@ public class LevelSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual PlanetController PlanetController {
+        get {
+            if ((this._PlanetController == null)) {
+                this._PlanetController = new PlanetController() { Container = Container };
+            }
+            return this._PlanetController;
+        }
+        set {
+            _PlanetController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual AsteroidController AsteroidController {
+        get {
+            if ((this._AsteroidController == null)) {
+                this._AsteroidController = new AsteroidController() { Container = Container };
+            }
+            return this._AsteroidController;
+        }
+        set {
+            _AsteroidController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual BlackholeController BlackholeController {
+        get {
+            if ((this._BlackholeController == null)) {
+                this._BlackholeController = new BlackholeController() { Container = Container };
+            }
+            return this._BlackholeController;
+        }
+        set {
+            _BlackholeController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual MiniAsteroidController MiniAsteroidController {
+        get {
+            if ((this._MiniAsteroidController == null)) {
+                this._MiniAsteroidController = new MiniAsteroidController() { Container = Container };
+            }
+            return this._MiniAsteroidController;
+        }
+        set {
+            _MiniAsteroidController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -165,6 +225,10 @@ public class LevelSceneManagerBase : SceneManager {
         Container.RegisterController<UniverseObjectController>(UniverseObjectController);
         Container.RegisterController<ZoneController>(ZoneController);
         Container.RegisterController<GravityObjectController>(GravityObjectController);
+        Container.RegisterController<PlanetController>(PlanetController);
+        Container.RegisterController<AsteroidController>(AsteroidController);
+        Container.RegisterController<BlackholeController>(BlackholeController);
+        Container.RegisterController<MiniAsteroidController>(MiniAsteroidController);
         this.Container.InjectAll();
         LevelRootController.Initialize(LevelRoot);
     }

@@ -356,6 +356,22 @@ public class EditorSceneManagerBase : SceneManager {
     
     private EditorRootController _EditorRootController;
     
+    private UniverseController _UniverseController;
+    
+    private UniverseObjectController _UniverseObjectController;
+    
+    private ZoneController _ZoneController;
+    
+    private GravityObjectController _GravityObjectController;
+    
+    private PlanetController _PlanetController;
+    
+    private AsteroidController _AsteroidController;
+    
+    private BlackholeController _BlackholeController;
+    
+    private MiniAsteroidController _MiniAsteroidController;
+    
     public EditorSceneManagerSettings _EditorSceneManagerSettings = new EditorSceneManagerSettings();
     
     [Inject("EditorRoot")]
@@ -384,6 +400,110 @@ public class EditorSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual UniverseController UniverseController {
+        get {
+            if ((this._UniverseController == null)) {
+                this._UniverseController = new UniverseController() { Container = Container };
+            }
+            return this._UniverseController;
+        }
+        set {
+            _UniverseController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual UniverseObjectController UniverseObjectController {
+        get {
+            if ((this._UniverseObjectController == null)) {
+                this._UniverseObjectController = new UniverseObjectController() { Container = Container };
+            }
+            return this._UniverseObjectController;
+        }
+        set {
+            _UniverseObjectController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual ZoneController ZoneController {
+        get {
+            if ((this._ZoneController == null)) {
+                this._ZoneController = new ZoneController() { Container = Container };
+            }
+            return this._ZoneController;
+        }
+        set {
+            _ZoneController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual GravityObjectController GravityObjectController {
+        get {
+            if ((this._GravityObjectController == null)) {
+                this._GravityObjectController = new GravityObjectController() { Container = Container };
+            }
+            return this._GravityObjectController;
+        }
+        set {
+            _GravityObjectController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual PlanetController PlanetController {
+        get {
+            if ((this._PlanetController == null)) {
+                this._PlanetController = new PlanetController() { Container = Container };
+            }
+            return this._PlanetController;
+        }
+        set {
+            _PlanetController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual AsteroidController AsteroidController {
+        get {
+            if ((this._AsteroidController == null)) {
+                this._AsteroidController = new AsteroidController() { Container = Container };
+            }
+            return this._AsteroidController;
+        }
+        set {
+            _AsteroidController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual BlackholeController BlackholeController {
+        get {
+            if ((this._BlackholeController == null)) {
+                this._BlackholeController = new BlackholeController() { Container = Container };
+            }
+            return this._BlackholeController;
+        }
+        set {
+            _BlackholeController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual MiniAsteroidController MiniAsteroidController {
+        get {
+            if ((this._MiniAsteroidController == null)) {
+                this._MiniAsteroidController = new MiniAsteroidController() { Container = Container };
+            }
+            return this._MiniAsteroidController;
+        }
+        set {
+            _MiniAsteroidController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -393,6 +513,14 @@ public class EditorSceneManagerBase : SceneManager {
         base.Setup();
         Container.RegisterViewModel<EditorRootViewModel>(EditorRoot,"EditorRoot");
         Container.RegisterController<EditorRootController>(EditorRootController);
+        Container.RegisterController<UniverseController>(UniverseController);
+        Container.RegisterController<UniverseObjectController>(UniverseObjectController);
+        Container.RegisterController<ZoneController>(ZoneController);
+        Container.RegisterController<GravityObjectController>(GravityObjectController);
+        Container.RegisterController<PlanetController>(PlanetController);
+        Container.RegisterController<AsteroidController>(AsteroidController);
+        Container.RegisterController<BlackholeController>(BlackholeController);
+        Container.RegisterController<MiniAsteroidController>(MiniAsteroidController);
         this.Container.InjectAll();
         EditorRootController.Initialize(EditorRoot);
     }

@@ -134,6 +134,7 @@ public abstract class EditorRootControllerBase : Controller {
     [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
     [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
     [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    [Inject] public UniverseController UniverseController {get;set;}
     public abstract void InitializeEditorRoot(EditorRootViewModel editorRoot);
     
     public override ViewModel CreateEmpty() {
@@ -153,6 +154,9 @@ public abstract class EditorRootControllerBase : Controller {
     
     public virtual void Serialize(EditorRootViewModel editorRoot) {
     }
+    
+    public virtual void LoadUniverse(EditorRootViewModel editorRoot) {
+    }
 }
 
 public abstract class UniverseControllerBase : Controller {
@@ -160,6 +164,7 @@ public abstract class UniverseControllerBase : Controller {
     [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
     [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
     [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    [Inject] public EditorRootController EditorRootController {get;set;}
     [Inject] public UniverseObjectController UniverseObjectController {get;set;}
     public abstract void InitializeUniverse(UniverseViewModel universe);
     

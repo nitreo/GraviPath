@@ -671,9 +671,13 @@ public partial class TryEntryViewModel : TryEntryViewModelBase {
 [DiagramInfoAttribute("GraviPath")]
 public class EditorRootViewModelBase : ViewModel {
     
+    public P<UniverseViewModel> _CurrentUniverseProperty;
+    
     protected CommandWithSender<EditorRootViewModel> _ToMenu;
     
     protected CommandWithSender<EditorRootViewModel> _Serialize;
+    
+    protected CommandWithSender<EditorRootViewModel> _LoadUniverse;
     
     public EditorRootViewModelBase(EditorRootControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
@@ -685,6 +689,7 @@ public class EditorRootViewModelBase : ViewModel {
     
     public override void Bind() {
         base.Bind();
+        _CurrentUniverseProperty = new P<UniverseViewModel>(this, "CurrentUniverse");
     }
 }
 
@@ -696,6 +701,22 @@ public partial class EditorRootViewModel : EditorRootViewModelBase {
     
     public EditorRootViewModel() : 
             base() {
+    }
+    
+    public virtual P<UniverseViewModel> CurrentUniverseProperty {
+        get {
+            return this._CurrentUniverseProperty;
+        }
+    }
+    
+    public virtual UniverseViewModel CurrentUniverse {
+        get {
+            return _CurrentUniverseProperty.Value;
+        }
+        set {
+            _CurrentUniverseProperty.Value = value;
+            if (value != null) value.ParentEditorRoot = this;
+        }
     }
     
     public virtual CommandWithSender<EditorRootViewModel> ToMenu {
@@ -716,18 +737,30 @@ public partial class EditorRootViewModel : EditorRootViewModelBase {
         }
     }
     
+    public virtual CommandWithSender<EditorRootViewModel> LoadUniverse {
+        get {
+            return _LoadUniverse;
+        }
+        set {
+            _LoadUniverse = value;
+        }
+    }
+    
     protected override void WireCommands(Controller controller) {
         var editorRoot = controller as EditorRootControllerBase;
         this.ToMenu = new CommandWithSender<EditorRootViewModel>(this, editorRoot.ToMenu);
         this.Serialize = new CommandWithSender<EditorRootViewModel>(this, editorRoot.Serialize);
+        this.LoadUniverse = new CommandWithSender<EditorRootViewModel>(this, editorRoot.LoadUniverse);
     }
     
     public override void Write(ISerializerStream stream) {
 		base.Write(stream);
+		if (stream.DeepSerialize) stream.SerializeObject("CurrentUniverse", this.CurrentUniverse);
     }
     
     public override void Read(ISerializerStream stream) {
 		base.Read(stream);
+		if (stream.DeepSerialize) this.CurrentUniverse = stream.DeserializeObject<UniverseViewModel>("CurrentUniverse");
     }
     
     public override void Unbind() {
@@ -736,12 +769,14 @@ public partial class EditorRootViewModel : EditorRootViewModelBase {
     
     protected override void FillProperties(List<ViewModelPropertyInfo> list) {
         base.FillProperties(list);;
+        list.Add(new ViewModelPropertyInfo(_CurrentUniverseProperty, true, false, false));
     }
     
     protected override void FillCommands(List<ViewModelCommandInfo> list) {
         base.FillCommands(list);;
         list.Add(new ViewModelCommandInfo("ToMenu", ToMenu) { ParameterType = typeof(void) });
         list.Add(new ViewModelCommandInfo("Serialize", Serialize) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("LoadUniverse", LoadUniverse) { ParameterType = typeof(void) });
     }
 }
 
@@ -770,6 +805,8 @@ public class UniverseViewModelBase : ViewModel {
 
 public partial class UniverseViewModel : UniverseViewModelBase {
     
+    private EditorRootViewModel _ParentEditorRoot;
+    
     public UniverseViewModel(UniverseControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
     }
@@ -781,6 +818,15 @@ public partial class UniverseViewModel : UniverseViewModelBase {
     public virtual ModelCollection<UniverseObjectViewModel> Objects {
         get {
             return this._ObjectsProperty;
+        }
+    }
+    
+    public virtual EditorRootViewModel ParentEditorRoot {
+        get {
+            return this._ParentEditorRoot;
+        }
+        set {
+            _ParentEditorRoot = value;
         }
     }
     

@@ -214,6 +214,10 @@ public abstract class TryEntryViewBase : ViewBase {
 [DiagramInfoAttribute("GraviPath")]
 public abstract class EditorRootViewBase : ViewBase {
     
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public ViewBase _CurrentUniverse;
+    
     public override string DefaultIdentifier {
         get {
             return "EditorRoot";
@@ -240,6 +244,8 @@ public abstract class EditorRootViewBase : ViewBase {
     }
     
     protected override void InitializeViewModel(ViewModel viewModel) {
+        EditorRootViewModel editorRoot = ((EditorRootViewModel)(viewModel));
+        editorRoot.CurrentUniverse = this._CurrentUniverse == null ? null : this._CurrentUniverse.ViewModelObject as UniverseViewModel;
     }
     
     public virtual void ExecuteToMenu() {
@@ -248,6 +254,10 @@ public abstract class EditorRootViewBase : ViewBase {
     
     public virtual void ExecuteSerialize() {
         this.ExecuteCommand(EditorRoot.Serialize);
+    }
+    
+    public virtual void ExecuteLoadUniverse() {
+        this.ExecuteCommand(EditorRoot.LoadUniverse);
     }
 }
 
@@ -744,6 +754,10 @@ public class EditorRootViewViewBase : EditorRootViewBase {
     [UnityEngine.HideInInspector()]
     public bool _BindSerialize = true;
     
+    [UFToggleGroup("CurrentUniverse")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindCurrentUniverse = true;
+    
     public override ViewModel CreateModel() {
         return this.RequestViewModel(GameManager.Container.Resolve<EditorRootController>());
     }
@@ -752,10 +766,17 @@ public class EditorRootViewViewBase : EditorRootViewBase {
     public virtual void SerializeExecuted() {
     }
     
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void CurrentUniverseChanged(UniverseViewModel value) {
+    }
+    
     public override void Bind() {
         base.Bind();
         if (this._BindSerialize) {
             this.BindCommandExecuted(EditorRoot.Serialize, SerializeExecuted);
+        }
+        if (this._BindCurrentUniverse) {
+            this.BindProperty(EditorRoot._CurrentUniverseProperty, this.CurrentUniverseChanged);
         }
     }
 }

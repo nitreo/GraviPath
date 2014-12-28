@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 45f22602105ad4f3499fece9dbeed6c8
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: big_gear
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

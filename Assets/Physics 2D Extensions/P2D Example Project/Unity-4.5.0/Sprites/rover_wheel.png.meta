@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: de7171956704d8245ad87b13d2fe2e0a
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: rover_wheel
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: d04ac607ff3ff0d4888a4fc2a6912bf5
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: metal_box
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

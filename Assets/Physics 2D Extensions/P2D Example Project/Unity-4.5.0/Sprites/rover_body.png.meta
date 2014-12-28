@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 85c308885f64fd844b47c7422f86413c
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: rover_body
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

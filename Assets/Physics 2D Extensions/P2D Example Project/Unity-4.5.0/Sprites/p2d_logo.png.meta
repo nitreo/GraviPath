@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 0658fa0035d09454da3f978e86489517
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: p2d_logo
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

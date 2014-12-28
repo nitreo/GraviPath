@@ -332,7 +332,7 @@ namespace UniRx
             {
                 if (cullingMode == CullingMode.Self)
                 {
-                    Debug.LogWarning("There is already a MainThreadDispatcher in the scene. Removing myself...");
+//                    Debug.LogWarning("There is already a MainThreadDispatcher in the scene. Removing myself...");
                     // Destroy this dispatcher if there's already one in the scene.
                     DestroyDispatcher(this);
                 }

@@ -68,9 +68,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_LocalRotation: {x: 0, y: 0, z: -.998908997, w: .046700161}
-  m_LocalPosition: {x: 40.5449982, y: -49.4280014, z: 0}
-  m_LocalScale: {x: 3.77179718, y: 3.77179599, z: 3.77179694}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.6099999, y: 3.03999996, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400004}
   m_Father: {fileID: 0}
@@ -143,11 +143,11 @@ MonoBehaviour:
   _rigidbodies:
   - {fileID: 0}
   m_Offset: {x: 0, y: 0}
-  m_Dimensions: {x: 40, y: 40}
+  m_Dimensions: {x: 4, y: 4}
   m_GravityType: 0
-  m_Strength: 800
+  m_Strength: 7
   m_MinRadius: 0
-  m_MaxRadius: 2000
+  m_MaxRadius: 4
   m_Points:
   - {x: 0, y: 0}
 --- !u!114 &11400004

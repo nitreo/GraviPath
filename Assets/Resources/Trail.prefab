@@ -24,7 +24,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.50839996, y: -13.0419998, z: 0}
+  m_LocalPosition: {x: 7.19999981, y: -14.7700005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -71,12 +71,12 @@ MonoBehaviour:
       serializedVersion: 2
       m_Curve:
       - time: 0
-        value: 1
+        value: .164072782
         inSlope: 0
         outSlope: 0
         tangentMode: 0
       - time: 1
-        value: 1
+        value: .164072782
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -130,12 +130,12 @@ MonoBehaviour:
       m_NumAlphaKeys: 2
     StretchSizeToFit: 0
     StretchColorToFit: 0
-    MaterialTileLength: 2
+    MaterialTileLength: .5
     UseForwardOverride: 0
     ForwardOverride: {x: 0, y: 0, z: 0}
     ForwardOverrideRelative: 0
   Emit: 1
-  MinVertexDistance: 2
+  MinVertexDistance: .5
   MaxNumberOfPoints: 300
 --- !u!1001 &100100000
 Prefab:

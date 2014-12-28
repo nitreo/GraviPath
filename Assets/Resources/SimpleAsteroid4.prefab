@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 400000}
   - 212: {fileID: 21200000}
   m_Layer: 0
-  m_Name: Asteroid_4
+  m_Name: Art_Asteroid_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24,10 +24,10 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400002}
-  - 60: {fileID: 6000000}
   - 114: {fileID: 11400000}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400004}
+  - 60: {fileID: 6026228}
   m_Layer: 0
   m_Name: SimpleAsteroid4
   m_TagString: Untagged
@@ -56,9 +56,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_LocalRotation: {x: 0, y: 0, z: .821534634, w: .570158601}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .66474694, y: .664747, z: .664746881}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400004}
   m_RootOrder: 0
@@ -88,7 +88,7 @@ Transform:
   - {fileID: 400000}
   m_Father: {fileID: 400002}
   m_RootOrder: 0
---- !u!60 &6000000
+--- !u!60 &6026228
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -99,22 +99,22 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_Poly:
     m_Paths:
-    - - {x: -.274352849, y: .916981578}
-      - {x: .12340463, y: .994443297}
-      - {x: .371355683, y: .952778816}
-      - {x: .553264856, y: .888051927}
-      - {x: .743060172, y: .655667663}
-      - {x: 1.0348841, y: -.119555868}
-      - {x: .870439768, y: -.505618691}
-      - {x: .80828315, y: -.678441584}
-      - {x: .335591197, y: -.923206627}
-      - {x: -.0751637146, y: -.973360479}
-      - {x: -.41142422, y: -.93509382}
-      - {x: -.731038392, y: -.63342917}
-      - {x: -.848645151, y: -.249105841}
-      - {x: -.91316992, y: .167064562}
-      - {x: -.790798128, y: .476267874}
-      - {x: -.530969381, y: .814924777}
+    - - {x: .152176857, y: -.263225317}
+      - {x: .265146732, y: -.149122953}
+      - {x: .263701916, y: -.0758728981}
+      - {x: .295832634, y: .0143055916}
+      - {x: .252088547, y: .140801668}
+      - {x: .136105537, y: .244483709}
+      - {x: -.0344390869, y: .285945654}
+      - {x: -.127056599, y: .266414404}
+      - {x: -.22484827, y: .220329046}
+      - {x: -.283306599, y: .101427317}
+      - {x: -.289852142, y: -.0231983662}
+      - {x: -.269260883, y: -.111463308}
+      - {x: -.20569706, y: -.223058939}
+      - {x: -.139222622, y: -.282963991}
+      - {x: -.033411026, y: -.282725096}
+      - {x: .0934386253, y: -.282039404}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 0}
   m_Dimensions: {x: 8, y: 8}
   m_GravityType: 1
-  m_Strength: 49
+  m_Strength: 90
   m_MinRadius: 0
   m_MaxRadius: 9
   m_Points:

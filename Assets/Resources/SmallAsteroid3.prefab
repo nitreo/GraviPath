@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 400000}
   - 212: {fileID: 21200000}
   m_Layer: 0
-  m_Name: Small_Asteroid_3
+  m_Name: Art_Small_Asteroid_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,8 +39,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400004}
-  - 60: {fileID: 6000000}
   - 50: {fileID: 5000000}
+  - 60: {fileID: 6072040}
   m_Layer: 0
   m_Name: SmallAsteroid3
   m_TagString: SmallAsteroid
@@ -80,7 +80,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 133.449997, y: -44.9599991, z: 0}
+  m_LocalPosition: {x: 130.899994, y: -42.7999992, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -101,7 +101,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
---- !u!60 &6000000
+--- !u!60 &6072040
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -112,17 +112,20 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_Poly:
     m_Paths:
-    - - {x: -.620928049, y: .934877396}
-      - {x: .0559210777, y: 1.17427254}
-      - {x: .77417326, y: .736232758}
-      - {x: .471903563, y: .45083046}
-      - {x: 1.06254709, y: .19934082}
-      - {x: 1.24835694, y: -.305934906}
-      - {x: .928260803, y: -.893463135}
-      - {x: .159672499, y: -1.16856766}
-      - {x: -.469847441, y: -.948694229}
-      - {x: -.716737986, y: -.623577118}
-      - {x: -1.21183896, y: .412334442}
+    - - {x: .210113525, y: -.152389526}
+      - {x: .241851807, y: -.0750656128}
+      - {x: .195892334, y: .0434684753}
+      - {x: .076675415, y: .0793037415}
+      - {x: .145217896, y: .139759064}
+      - {x: .00381469727, y: .219882965}
+      - {x: -.115402222, y: .184207916}
+      - {x: -.234237671, y: .0794410706}
+      - {x: -.182815552, y: -.0181236267}
+      - {x: -.115112305, y: -.141426086}
+      - {x: -.0925598145, y: -.188224792}
+      - {x: -.0330200195, y: -.212844849}
+      - {x: .0107421875, y: -.221164703}
+      - {x: .160690308, y: -.191268921}
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using PathologicalGames;
 using UniRx;
@@ -24,7 +25,7 @@ public class DemoParallaxLayer : MonoBehaviour
     public bool ApplyRandomRotation = true;
     public float Cooldown = 0.5f;
     private double cooldownCounter;
-
+    public float PrewarmStep = 0.1f;
     void Start()
     {
         Observable.Interval(TimeSpan.FromMilliseconds(50)).Subscribe(_ =>
@@ -44,10 +45,21 @@ public class DemoParallaxLayer : MonoBehaviour
          
 
         }).DisposeWith(gameObject);
+ 
+        Observable.Interval(TimeSpan.FromMilliseconds(1000)).Subscribe(_ =>
+        {
+            var toDestroy = CurrentObjects.Where(c => Mathf.Abs(c.transform.position.y - ReferencePoint.position.y) > DespawnDistance).ToList();
+            CurrentObjects.RemoveWhere(c => toDestroy.Contains(c));
+            toDestroy.ForEach(transform1 =>
+                Pool.Despawn(transform1));
+
+ 
+
+        }).DisposeWith(gameObject);
 
         if (Prewarm)
         {
-            for (float i = DespawnDistance; i > -DespawnDistance; i-=0.1f)
+            for (float i = DespawnDistance; i > -DespawnDistance; i -= PrewarmStep)
             {
                 if (UnityEngine.Random.Range(0.0f, 1.0f) < SpawnChance)
                 {
@@ -56,7 +68,7 @@ public class DemoParallaxLayer : MonoBehaviour
                     var allocatedObject = Pool.Spawn(prefab);
                     allocatedObject.transform.parent = transform;
                     allocatedObject.position = transform.position + new Vector3(urnd * XSpread, i, ZIndex);
-                    allocatedObject.localEulerAngles = new Vector3(0, 0, rnd * 36);
+                    if (ApplyRandomRotation) allocatedObject.localEulerAngles = new Vector3(0, 0, rnd * 36);
                     CurrentObjects.Add(allocatedObject);
                 }
             }
@@ -67,17 +79,13 @@ public class DemoParallaxLayer : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-
-
-        var toDestroy = CurrentObjects.Where(c => Mathf.Abs(c.transform.position.y - ReferencePoint.position.y) > DespawnDistance).ToList();
-	    CurrentObjects.RemoveWhere(c => toDestroy.Contains(c));
-        toDestroy.ForEach(transform1 => Destroy(transform1.gameObject));
-
-        CurrentObjects.ToList().ForEach(c =>
-        {
-           //Debug.Log(Time.deltaTime);
-            c.localPosition += MovementSpeed*Time.deltaTime;
-        });
+	    var transforms = CurrentObjects.ToArray();
+	   
+        for (int i = 0; i < transforms.Length; i++)
+	    {
+	        transforms[i].localPosition += MovementSpeed * Time.deltaTime;
+	    }
+       
 	    if (cooldownCounter > 0) cooldownCounter -= Time.deltaTime;
 	}
 

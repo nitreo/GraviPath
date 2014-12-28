@@ -3077,7 +3077,7 @@ Transform:
   m_Children:
   - {fileID: 381710673}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!114 &1504359952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3193,7 +3193,7 @@ GameObject:
   - 4: {fileID: 1562829085}
   - 114: {fileID: 1562829086}
   m_Layer: 0
-  m_Name: _Universe
+  m_Name: Universe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3210,7 +3210,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!114 &1562829086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4556,7 +4556,7 @@ GameObject:
   - 114: {fileID: 2120033763}
   - 114: {fileID: 2120033762}
   m_Layer: 0
-  m_Name: InputManager
+  m_Name: _InputManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4607,4 +4607,4 @@ Transform:
   m_Children:
   - {fileID: 946939655}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 3

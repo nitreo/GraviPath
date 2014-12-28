@@ -709,7 +709,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1090418839
 RectTransform:
   m_ObjectHideFlags: 0
@@ -779,6 +779,7 @@ MonoBehaviour:
   _resolveName: MenuRoot
   _Save: 0
   PlayButton: {fileID: 1611811071}
+  EditorButton: {fileID: 825885966}
 --- !u!1 &1148214493
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UniRx;
 
@@ -22,8 +23,8 @@ public class EditorSceneManager : EditorSceneManagerBase {
     // Setup() and Initialize().  Note: be sure to report progress to the delgate supplied in the first parameter.  It will 
     // update the loading screen to display a nice status message.
     // </summary>
-    public override System.Collections.IEnumerator Load(UpdateProgressDelegate progress) {
-        // Use the controllers to create the game.
+    public override System.Collections.IEnumerator Load(UpdateProgressDelegate progress)
+    {
         yield break;
     }
     

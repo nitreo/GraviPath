@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Parse;
 using UniRx;
 
 
@@ -54,7 +55,19 @@ public class MenuSceneManager : MenuSceneManagerBase {
 
     public override IEnumerable<string> GetStartLevelScenes(string arg)
     {
-        UnityEngine.Debug.Log("gmm");
         return new[] {arg};
+    }
+
+    public override IEnumerable<string> GetStartEditorScenes()
+    {
+        return new[] { "Editor" };
+    }
+
+
+    public override void StartEditorTransitionComplete(EditorSceneManager sceneManager)
+    {
+        base.StartEditorTransitionComplete(sceneManager);
+        UnityEngine.Debug.Log("HERE WE SETUP");
+
     }
 }

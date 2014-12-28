@@ -218,6 +218,14 @@ public abstract class EditorRootViewBase : ViewBase {
     [UnityEngine.HideInInspector()]
     public ViewBase _CurrentUniverse;
     
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public ViewBase _NewUniverseData;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Boolean _IsUniverseDirty;
+    
     public override string DefaultIdentifier {
         get {
             return "EditorRoot";
@@ -246,18 +254,28 @@ public abstract class EditorRootViewBase : ViewBase {
     protected override void InitializeViewModel(ViewModel viewModel) {
         EditorRootViewModel editorRoot = ((EditorRootViewModel)(viewModel));
         editorRoot.CurrentUniverse = this._CurrentUniverse == null ? null : this._CurrentUniverse.ViewModelObject as UniverseViewModel;
+        editorRoot.NewUniverseData = this._NewUniverseData == null ? null : this._NewUniverseData.ViewModelObject as NewUniverseSubEditorViewModel;
+        editorRoot.IsUniverseDirty = this._IsUniverseDirty;
     }
     
     public virtual void ExecuteToMenu() {
         this.ExecuteCommand(EditorRoot.ToMenu);
     }
     
-    public virtual void ExecuteSerialize() {
-        this.ExecuteCommand(EditorRoot.Serialize);
+    public virtual void ExecuteLoadUniverse(UniverseViewModel universe) {
+        this.ExecuteCommand(EditorRoot.LoadUniverse, universe);
     }
     
-    public virtual void ExecuteLoadUniverse() {
-        this.ExecuteCommand(EditorRoot.LoadUniverse);
+    public virtual void ExecuteCreateNewUniverse() {
+        this.ExecuteCommand(EditorRoot.CreateNewUniverse);
+    }
+    
+    public virtual void ExecuteToggleNewUniverseSubEditor() {
+        this.ExecuteCommand(EditorRoot.ToggleNewUniverseSubEditor);
+    }
+    
+    public virtual void ExecuteSaveCurrentUniverse() {
+        this.ExecuteCommand(EditorRoot.SaveCurrentUniverse);
     }
 }
 
@@ -271,10 +289,6 @@ public abstract class UniverseViewBase : ViewBase {
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
     public String _Author;
-    
-    [UFGroup("View Model Properties")]
-    [UnityEngine.HideInInspector()]
-    public String _MetaData;
     
     public override System.Type ViewModelType {
         get {
@@ -299,7 +313,6 @@ public abstract class UniverseViewBase : ViewBase {
         UniverseViewModel universe = ((UniverseViewModel)(viewModel));
         universe.Name = this._Name;
         universe.Author = this._Author;
-        universe.MetaData = this._MetaData;
     }
     
     public virtual void ExecuteLoad(String arg) {
@@ -752,6 +765,52 @@ public abstract class UniverseRepositoryViewBase : ViewBase {
     }
 }
 
+[DiagramInfoAttribute("GraviPath")]
+public abstract class NewUniverseSubEditorViewBase : ViewBase {
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public String _Name;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public String _Description;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Boolean _IsActive;
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(NewUniverseSubEditorViewModel);
+        }
+    }
+    
+    public NewUniverseSubEditorViewModel NewUniverseSubEditor {
+        get {
+            return ((NewUniverseSubEditorViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<NewUniverseSubEditorController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        NewUniverseSubEditorViewModel newUniverseSubEditor = ((NewUniverseSubEditorViewModel)(viewModel));
+        newUniverseSubEditor.Name = this._Name;
+        newUniverseSubEditor.Description = this._Description;
+        newUniverseSubEditor.IsActive = this._IsActive;
+    }
+    
+    public virtual void ExecuteCreate() {
+        this.ExecuteCommand(NewUniverseSubEditor.Create);
+    }
+}
+
 public class PlayerSpaceShipViewViewBase : PlayerViewBase {
     
     [UnityEngine.SerializeField()]
@@ -1022,33 +1081,37 @@ public partial class MenuRootView : MenuRootViewViewBase {
 
 public class EditorRootViewViewBase : EditorRootViewBase {
     
-    [UFToggleGroup("Serialize")]
-    [UnityEngine.HideInInspector()]
-    public bool _BindSerialize = true;
-    
     [UFToggleGroup("CurrentUniverse")]
     [UnityEngine.HideInInspector()]
     public bool _BindCurrentUniverse = true;
     
+    [UFToggleGroup("AvailableUniverses")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindAvailableUniverses = true;
+    
     public override ViewModel CreateModel() {
         return this.RequestViewModel(GameManager.Container.Resolve<EditorRootController>());
-    }
-    
-    /// Invokes SerializeExecuted when the Serialize command is executed.
-    public virtual void SerializeExecuted() {
     }
     
     /// Subscribes to the property and is notified anytime the value changes.
     public virtual void CurrentUniverseChanged(UniverseViewModel value) {
     }
     
+    /// Subscribes to collection modifications.  Add & Remove methods are invoked for each modification.
+    public virtual void AvailableUniversesAdded(UniverseViewModel item) {
+    }
+    
+    /// Subscribes to collection modifications.  Add & Remove methods are invoked for each modification.
+    public virtual void AvailableUniversesRemoved(UniverseViewModel item) {
+    }
+    
     public override void Bind() {
         base.Bind();
-        if (this._BindSerialize) {
-            this.BindCommandExecuted(EditorRoot.Serialize, SerializeExecuted);
-        }
         if (this._BindCurrentUniverse) {
             this.BindProperty(EditorRoot._CurrentUniverseProperty, this.CurrentUniverseChanged);
+        }
+        if (this._BindAvailableUniverses) {
+            this.BindCollection(EditorRoot._AvailableUniversesProperty, AvailableUniversesAdded, AvailableUniversesRemoved);
         }
     }
 }
@@ -1582,6 +1645,78 @@ public class SimpleBlackhole1ViewViewBase : BlackholeView {
 }
 
 public partial class SimpleBlackhole1View : SimpleBlackhole1ViewViewBase {
+}
+
+public class UniverseEditorNewUniverseWindowViewBase : NewUniverseSubEditorViewBase {
+    
+    [UFToggleGroup("Name")]
+    [UnityEngine.HideInInspector()]
+    [UFRequireInstanceMethod("NameChanged")]
+    public bool _BindName = true;
+    
+    [UFToggleGroup("Description")]
+    [UnityEngine.HideInInspector()]
+    [UFRequireInstanceMethod("DescriptionChanged")]
+    public bool _BindDescription = true;
+    
+    [UFToggleGroup("IsValid")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindIsValid = true;
+    
+    [UFToggleGroup("Create")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindCreate = true;
+    
+    [UFToggleGroup("IsActive")]
+    [UnityEngine.HideInInspector()]
+    [UFRequireInstanceMethod("IsActiveChanged")]
+    public bool _BindIsActive = true;
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<NewUniverseSubEditorController>());
+    }
+    
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void NameChanged(String value) {
+    }
+    
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void DescriptionChanged(String value) {
+    }
+    
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void IsValidChanged(Boolean value) {
+    }
+    
+    /// Invokes CreateExecuted when the Create command is executed.
+    public virtual void CreateExecuted() {
+    }
+    
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void IsActiveChanged(Boolean value) {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        if (this._BindName) {
+            this.BindProperty(NewUniverseSubEditor._NameProperty, this.NameChanged);
+        }
+        if (this._BindDescription) {
+            this.BindProperty(NewUniverseSubEditor._DescriptionProperty, this.DescriptionChanged);
+        }
+        if (this._BindIsValid) {
+            this.BindProperty(NewUniverseSubEditor._IsValidProperty, this.IsValidChanged);
+        }
+        if (this._BindCreate) {
+            this.BindCommandExecuted(NewUniverseSubEditor.Create, CreateExecuted);
+        }
+        if (this._BindIsActive) {
+            this.BindProperty(NewUniverseSubEditor._IsActiveProperty, this.IsActiveChanged);
+        }
+    }
+}
+
+public partial class UniverseEditorNewUniverseWindow : UniverseEditorNewUniverseWindowViewBase {
 }
 
 public partial class ShipController : ViewComponent {

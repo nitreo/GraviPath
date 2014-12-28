@@ -140,6 +140,7 @@ public abstract class EditorRootControllerBase : Controller {
     [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
     [Inject("UniverseRepository")] public UniverseRepositoryViewModel UniverseRepository { get; set; }
     [Inject] public UniverseController UniverseController {get;set;}
+    [Inject] public NewUniverseSubEditorController NewUniverseSubEditorController {get;set;}
     public abstract void InitializeEditorRoot(EditorRootViewModel editorRoot);
     
     public override ViewModel CreateEmpty() {
@@ -157,10 +158,16 @@ public abstract class EditorRootControllerBase : Controller {
     public virtual void ToMenu(EditorRootViewModel editorRoot) {
     }
     
-    public virtual void Serialize(EditorRootViewModel editorRoot) {
+    public virtual void LoadUniverse(EditorRootViewModel editorRoot, UniverseViewModel arg) {
     }
     
-    public virtual void LoadUniverse(EditorRootViewModel editorRoot) {
+    public virtual void CreateNewUniverse(EditorRootViewModel editorRoot) {
+    }
+    
+    public virtual void ToggleNewUniverseSubEditor(EditorRootViewModel editorRoot) {
+    }
+    
+    public virtual void SaveCurrentUniverse(EditorRootViewModel editorRoot) {
     }
 }
 
@@ -472,5 +479,30 @@ public abstract class UniverseRepositoryControllerBase : Controller {
     
     public override void Initialize(ViewModel viewModel) {
         this.InitializeUniverseRepository(((UniverseRepositoryViewModel)(viewModel)));
+    }
+}
+
+public abstract class NewUniverseSubEditorControllerBase : Controller {
+    
+    [Inject("MenuRoot")] public MenuRootViewModel MenuRoot { get; set; }
+    [Inject("LevelRoot")] public LevelRootViewModel LevelRoot { get; set; }
+    [Inject("EditorRoot")] public EditorRootViewModel EditorRoot { get; set; }
+    [Inject("UniverseRepository")] public UniverseRepositoryViewModel UniverseRepository { get; set; }
+    [Inject] public EditorRootController EditorRootController {get;set;}
+    public abstract void InitializeNewUniverseSubEditor(NewUniverseSubEditorViewModel newUniverseSubEditor);
+    
+    public override ViewModel CreateEmpty() {
+        return new NewUniverseSubEditorViewModel(this);
+    }
+    
+    public virtual NewUniverseSubEditorViewModel CreateNewUniverseSubEditor() {
+        return ((NewUniverseSubEditorViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        this.InitializeNewUniverseSubEditor(((NewUniverseSubEditorViewModel)(viewModel)));
+    }
+    
+    public virtual void Create(NewUniverseSubEditorViewModel newUniverseSubEditor) {
     }
 }

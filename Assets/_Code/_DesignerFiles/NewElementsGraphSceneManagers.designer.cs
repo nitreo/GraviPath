@@ -810,6 +810,8 @@ public class EditorSceneManagerBase : SceneManager {
     
     private UniverseController _UniverseController;
     
+    private NewUniverseSubEditorController _NewUniverseSubEditorController;
+    
     private UniverseObjectController _UniverseObjectController;
     
     private ZoneController _ZoneController;
@@ -893,6 +895,19 @@ public class EditorSceneManagerBase : SceneManager {
         }
         set {
             _UniverseController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual NewUniverseSubEditorController NewUniverseSubEditorController {
+        get {
+            if ((this._NewUniverseSubEditorController == null)) {
+                this._NewUniverseSubEditorController = new NewUniverseSubEditorController() { Container = Container };
+            }
+            return this._NewUniverseSubEditorController;
+        }
+        set {
+            _NewUniverseSubEditorController = value;
         }
     }
     
@@ -1115,6 +1130,7 @@ public class EditorSceneManagerBase : SceneManager {
         Container.RegisterViewModel<UniverseRepositoryViewModel>(UniverseRepository,"UniverseRepository");
         Container.RegisterController<EditorRootController>(EditorRootController);
         Container.RegisterController<UniverseController>(UniverseController);
+        Container.RegisterController<NewUniverseSubEditorController>(NewUniverseSubEditorController);
         Container.RegisterController<UniverseObjectController>(UniverseObjectController);
         Container.RegisterController<ZoneController>(ZoneController);
         Container.RegisterController<GravityObjectController>(GravityObjectController);

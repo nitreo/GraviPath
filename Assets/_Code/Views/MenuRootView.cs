@@ -11,6 +11,7 @@ public partial class MenuRootView
 {
 
     public Button PlayButton;
+    public Button EditorButton;
 
 
     public override void Bind()
@@ -20,6 +21,14 @@ public partial class MenuRootView
         {
             ExecuteStartLevel("Level1");
         }).DisposeWith(this);
+
+
+        EditorButton.AsClickObservable()
+        .Subscribe(_ =>
+        {
+            ExecuteStartEditor();
+        })
+        .DisposeWith(this);
 
     }
 }

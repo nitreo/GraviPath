@@ -673,11 +673,21 @@ public class EditorRootViewModelBase : ViewModel {
     
     public P<UniverseViewModel> _CurrentUniverseProperty;
     
+    public P<NewUniverseSubEditorViewModel> _NewUniverseDataProperty;
+    
+    public P<Boolean> _IsUniverseDirtyProperty;
+    
+    public ModelCollection<UniverseViewModel> _AvailableUniversesProperty;
+    
     protected CommandWithSender<EditorRootViewModel> _ToMenu;
     
-    protected CommandWithSender<EditorRootViewModel> _Serialize;
+    protected CommandWithSenderAndArgument<EditorRootViewModel, UniverseViewModel> _LoadUniverse;
     
-    protected CommandWithSender<EditorRootViewModel> _LoadUniverse;
+    protected CommandWithSender<EditorRootViewModel> _CreateNewUniverse;
+    
+    protected CommandWithSender<EditorRootViewModel> _ToggleNewUniverseSubEditor;
+    
+    protected CommandWithSender<EditorRootViewModel> _SaveCurrentUniverse;
     
     public EditorRootViewModelBase(EditorRootControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
@@ -690,6 +700,13 @@ public class EditorRootViewModelBase : ViewModel {
     public override void Bind() {
         base.Bind();
         _CurrentUniverseProperty = new P<UniverseViewModel>(this, "CurrentUniverse");
+        _NewUniverseDataProperty = new P<NewUniverseSubEditorViewModel>(this, "NewUniverseData");
+        _IsUniverseDirtyProperty = new P<Boolean>(this, "IsUniverseDirty");
+        _AvailableUniversesProperty = new ModelCollection<UniverseViewModel>(this, "AvailableUniverses");
+        _AvailableUniversesProperty.CollectionChanged += AvailableUniversesCollectionChanged;
+    }
+    
+    protected virtual void AvailableUniversesCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) {
     }
 }
 
@@ -719,6 +736,43 @@ public partial class EditorRootViewModel : EditorRootViewModelBase {
         }
     }
     
+    public virtual P<NewUniverseSubEditorViewModel> NewUniverseDataProperty {
+        get {
+            return this._NewUniverseDataProperty;
+        }
+    }
+    
+    public virtual NewUniverseSubEditorViewModel NewUniverseData {
+        get {
+            return _NewUniverseDataProperty.Value;
+        }
+        set {
+            _NewUniverseDataProperty.Value = value;
+            if (value != null) value.ParentEditorRoot = this;
+        }
+    }
+    
+    public virtual P<Boolean> IsUniverseDirtyProperty {
+        get {
+            return this._IsUniverseDirtyProperty;
+        }
+    }
+    
+    public virtual Boolean IsUniverseDirty {
+        get {
+            return _IsUniverseDirtyProperty.Value;
+        }
+        set {
+            _IsUniverseDirtyProperty.Value = value;
+        }
+    }
+    
+    public virtual ModelCollection<UniverseViewModel> AvailableUniverses {
+        get {
+            return this._AvailableUniversesProperty;
+        }
+    }
+    
     public virtual CommandWithSender<EditorRootViewModel> ToMenu {
         get {
             return _ToMenu;
@@ -728,16 +782,7 @@ public partial class EditorRootViewModel : EditorRootViewModelBase {
         }
     }
     
-    public virtual CommandWithSender<EditorRootViewModel> Serialize {
-        get {
-            return _Serialize;
-        }
-        set {
-            _Serialize = value;
-        }
-    }
-    
-    public virtual CommandWithSender<EditorRootViewModel> LoadUniverse {
+    public virtual CommandWithSenderAndArgument<EditorRootViewModel, UniverseViewModel> LoadUniverse {
         get {
             return _LoadUniverse;
         }
@@ -746,37 +791,85 @@ public partial class EditorRootViewModel : EditorRootViewModelBase {
         }
     }
     
+    public virtual CommandWithSender<EditorRootViewModel> CreateNewUniverse {
+        get {
+            return _CreateNewUniverse;
+        }
+        set {
+            _CreateNewUniverse = value;
+        }
+    }
+    
+    public virtual CommandWithSender<EditorRootViewModel> ToggleNewUniverseSubEditor {
+        get {
+            return _ToggleNewUniverseSubEditor;
+        }
+        set {
+            _ToggleNewUniverseSubEditor = value;
+        }
+    }
+    
+    public virtual CommandWithSender<EditorRootViewModel> SaveCurrentUniverse {
+        get {
+            return _SaveCurrentUniverse;
+        }
+        set {
+            _SaveCurrentUniverse = value;
+        }
+    }
+    
     protected override void WireCommands(Controller controller) {
         var editorRoot = controller as EditorRootControllerBase;
         this.ToMenu = new CommandWithSender<EditorRootViewModel>(this, editorRoot.ToMenu);
-        this.Serialize = new CommandWithSender<EditorRootViewModel>(this, editorRoot.Serialize);
-        this.LoadUniverse = new CommandWithSender<EditorRootViewModel>(this, editorRoot.LoadUniverse);
+        this.LoadUniverse = new CommandWithSenderAndArgument<EditorRootViewModel, UniverseViewModel>(this, editorRoot.LoadUniverse);
+        this.CreateNewUniverse = new CommandWithSender<EditorRootViewModel>(this, editorRoot.CreateNewUniverse);
+        this.ToggleNewUniverseSubEditor = new CommandWithSender<EditorRootViewModel>(this, editorRoot.ToggleNewUniverseSubEditor);
+        this.SaveCurrentUniverse = new CommandWithSender<EditorRootViewModel>(this, editorRoot.SaveCurrentUniverse);
     }
     
     public override void Write(ISerializerStream stream) {
 		base.Write(stream);
 		if (stream.DeepSerialize) stream.SerializeObject("CurrentUniverse", this.CurrentUniverse);
+		if (stream.DeepSerialize) stream.SerializeObject("NewUniverseData", this.NewUniverseData);
+        stream.SerializeBool("IsUniverseDirty", this.IsUniverseDirty);
+        if (stream.DeepSerialize) stream.SerializeArray("AvailableUniverses", this.AvailableUniverses);
     }
     
     public override void Read(ISerializerStream stream) {
 		base.Read(stream);
 		if (stream.DeepSerialize) this.CurrentUniverse = stream.DeserializeObject<UniverseViewModel>("CurrentUniverse");
+		if (stream.DeepSerialize) this.NewUniverseData = stream.DeserializeObject<NewUniverseSubEditorViewModel>("NewUniverseData");
+        		this.IsUniverseDirty = stream.DeserializeBool("IsUniverseDirty");;
+if (stream.DeepSerialize) {
+        this.AvailableUniverses.Clear();
+        this.AvailableUniverses.AddRange(stream.DeserializeObjectArray<UniverseViewModel>("AvailableUniverses"));
+}
     }
     
     public override void Unbind() {
         base.Unbind();
+        _AvailableUniversesProperty.CollectionChanged -= AvailableUniversesCollectionChanged;
     }
     
     protected override void FillProperties(List<ViewModelPropertyInfo> list) {
         base.FillProperties(list);;
         list.Add(new ViewModelPropertyInfo(_CurrentUniverseProperty, true, false, false));
+        list.Add(new ViewModelPropertyInfo(_NewUniverseDataProperty, true, false, false));
+        list.Add(new ViewModelPropertyInfo(_IsUniverseDirtyProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_AvailableUniversesProperty, true, true, false));
     }
     
     protected override void FillCommands(List<ViewModelCommandInfo> list) {
         base.FillCommands(list);;
         list.Add(new ViewModelCommandInfo("ToMenu", ToMenu) { ParameterType = typeof(void) });
-        list.Add(new ViewModelCommandInfo("Serialize", Serialize) { ParameterType = typeof(void) });
-        list.Add(new ViewModelCommandInfo("LoadUniverse", LoadUniverse) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("LoadUniverse", LoadUniverse) { ParameterType = typeof(UniverseViewModel) });
+        list.Add(new ViewModelCommandInfo("CreateNewUniverse", CreateNewUniverse) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("ToggleNewUniverseSubEditor", ToggleNewUniverseSubEditor) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("SaveCurrentUniverse", SaveCurrentUniverse) { ParameterType = typeof(void) });
+    }
+    
+    protected override void AvailableUniversesCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) {
+        foreach (var item in args.NewItems.OfType<UniverseViewModel>()) item.ParentEditorRoot = this;;
     }
 }
 
@@ -786,8 +879,6 @@ public class UniverseViewModelBase : ViewModel {
     public P<String> _NameProperty;
     
     public P<String> _AuthorProperty;
-    
-    public P<String> _MetaDataProperty;
     
     public ModelCollection<UniverseObjectViewModel> _ObjectsProperty;
     
@@ -807,7 +898,6 @@ public class UniverseViewModelBase : ViewModel {
         base.Bind();
         _NameProperty = new P<String>(this, "Name");
         _AuthorProperty = new P<String>(this, "Author");
-        _MetaDataProperty = new P<String>(this, "MetaData");
         _ObjectsProperty = new ModelCollection<UniverseObjectViewModel>(this, "Objects");
         _ObjectsProperty.CollectionChanged += ObjectsCollectionChanged;
     }
@@ -858,21 +948,6 @@ public partial class UniverseViewModel : UniverseViewModelBase {
         }
     }
     
-    public virtual P<String> MetaDataProperty {
-        get {
-            return this._MetaDataProperty;
-        }
-    }
-    
-    public virtual String MetaData {
-        get {
-            return _MetaDataProperty.Value;
-        }
-        set {
-            _MetaDataProperty.Value = value;
-        }
-    }
-    
     public virtual ModelCollection<UniverseObjectViewModel> Objects {
         get {
             return this._ObjectsProperty;
@@ -916,7 +991,6 @@ public partial class UniverseViewModel : UniverseViewModelBase {
 		base.Write(stream);
         stream.SerializeString("Name", this.Name);
         stream.SerializeString("Author", this.Author);
-        stream.SerializeString("MetaData", this.MetaData);
         if (stream.DeepSerialize) stream.SerializeArray("Objects", this.Objects);
     }
     
@@ -924,7 +998,6 @@ public partial class UniverseViewModel : UniverseViewModelBase {
 		base.Read(stream);
         		this.Name = stream.DeserializeString("Name");;
         		this.Author = stream.DeserializeString("Author");;
-        		this.MetaData = stream.DeserializeString("MetaData");;
 if (stream.DeepSerialize) {
         this.Objects.Clear();
         this.Objects.AddRange(stream.DeserializeObjectArray<UniverseObjectViewModel>("Objects"));
@@ -940,7 +1013,6 @@ if (stream.DeepSerialize) {
         base.FillProperties(list);;
         list.Add(new ViewModelPropertyInfo(_NameProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_AuthorProperty, false, false, false));
-        list.Add(new ViewModelPropertyInfo(_MetaDataProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_ObjectsProperty, true, true, false));
     }
     
@@ -1843,5 +1915,180 @@ public partial class UniverseRepositoryViewModel : UniverseRepositoryViewModelBa
     
     protected override void FillCommands(List<ViewModelCommandInfo> list) {
         base.FillCommands(list);;
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public class NewUniverseSubEditorViewModelBase : ViewModel {
+    
+    private IDisposable _IsValidDisposable;
+    
+    public P<String> _NameProperty;
+    
+    public P<String> _DescriptionProperty;
+    
+    public P<Boolean> _IsActiveProperty;
+    
+    public P<Boolean> _IsValidProperty;
+    
+    protected CommandWithSender<NewUniverseSubEditorViewModel> _Create;
+    
+    public NewUniverseSubEditorViewModelBase(NewUniverseSubEditorControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public NewUniverseSubEditorViewModelBase() : 
+            base() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        _NameProperty = new P<String>(this, "Name");
+        _DescriptionProperty = new P<String>(this, "Description");
+        _IsActiveProperty = new P<Boolean>(this, "IsActive");
+        _IsValidProperty = new P<Boolean>(this, "IsValid");
+        this.ResetIsValid();
+    }
+    
+    public virtual void ResetIsValid() {
+        if (_IsValidDisposable != null) _IsValidDisposable.Dispose();
+        _IsValidDisposable = _IsValidProperty.ToComputed( ComputeIsValid, this.GetIsValidDependents().ToArray() ).DisposeWith(this);
+    }
+    
+    public virtual Boolean ComputeIsValid() {
+        return default(Boolean);
+    }
+    
+    public virtual IEnumerable<IObservableProperty> GetIsValidDependents() {
+        yield return _NameProperty;
+        yield return _DescriptionProperty;
+        yield break;
+    }
+}
+
+public partial class NewUniverseSubEditorViewModel : NewUniverseSubEditorViewModelBase {
+    
+    private EditorRootViewModel _ParentEditorRoot;
+    
+    public NewUniverseSubEditorViewModel(NewUniverseSubEditorControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public NewUniverseSubEditorViewModel() : 
+            base() {
+    }
+    
+    public virtual P<String> NameProperty {
+        get {
+            return this._NameProperty;
+        }
+    }
+    
+    public virtual String Name {
+        get {
+            return _NameProperty.Value;
+        }
+        set {
+            _NameProperty.Value = value;
+        }
+    }
+    
+    public virtual P<String> DescriptionProperty {
+        get {
+            return this._DescriptionProperty;
+        }
+    }
+    
+    public virtual String Description {
+        get {
+            return _DescriptionProperty.Value;
+        }
+        set {
+            _DescriptionProperty.Value = value;
+        }
+    }
+    
+    public virtual P<Boolean> IsActiveProperty {
+        get {
+            return this._IsActiveProperty;
+        }
+    }
+    
+    public virtual Boolean IsActive {
+        get {
+            return _IsActiveProperty.Value;
+        }
+        set {
+            _IsActiveProperty.Value = value;
+        }
+    }
+    
+    public virtual P<Boolean> IsValidProperty {
+        get {
+            return this._IsValidProperty;
+        }
+    }
+    
+    public virtual Boolean IsValid {
+        get {
+            return _IsValidProperty.Value;
+        }
+        set {
+            _IsValidProperty.Value = value;
+        }
+    }
+    
+    public virtual CommandWithSender<NewUniverseSubEditorViewModel> Create {
+        get {
+            return _Create;
+        }
+        set {
+            _Create = value;
+        }
+    }
+    
+    public virtual EditorRootViewModel ParentEditorRoot {
+        get {
+            return this._ParentEditorRoot;
+        }
+        set {
+            _ParentEditorRoot = value;
+        }
+    }
+    
+    protected override void WireCommands(Controller controller) {
+        var newUniverseSubEditor = controller as NewUniverseSubEditorControllerBase;
+        this.Create = new CommandWithSender<NewUniverseSubEditorViewModel>(this, newUniverseSubEditor.Create);
+    }
+    
+    public override void Write(ISerializerStream stream) {
+		base.Write(stream);
+        stream.SerializeString("Name", this.Name);
+        stream.SerializeString("Description", this.Description);
+        stream.SerializeBool("IsActive", this.IsActive);
+    }
+    
+    public override void Read(ISerializerStream stream) {
+		base.Read(stream);
+        		this.Name = stream.DeserializeString("Name");;
+        		this.Description = stream.DeserializeString("Description");;
+        		this.IsActive = stream.DeserializeBool("IsActive");;
+    }
+    
+    public override void Unbind() {
+        base.Unbind();
+    }
+    
+    protected override void FillProperties(List<ViewModelPropertyInfo> list) {
+        base.FillProperties(list);;
+        list.Add(new ViewModelPropertyInfo(_NameProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_DescriptionProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_IsActiveProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_IsValidProperty, false, false, false, true));
+    }
+    
+    protected override void FillCommands(List<ViewModelCommandInfo> list) {
+        base.FillCommands(list);;
+        list.Add(new ViewModelCommandInfo("Create", Create) { ParameterType = typeof(void) });
     }
 }

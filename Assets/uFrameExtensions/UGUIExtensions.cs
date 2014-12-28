@@ -27,16 +27,27 @@ public static class UGUIExtensions
         {
             UnityAction<string> unityAction = observer.OnNext;
             inputField.onEndEdit.AddListener(unityAction);
+<<<<<<< HEAD
             return Disposable.Create(() => inputField.onEndEdit.AddListener(unityAction));
         });
     }
+=======
+            return Disposable.Create(() => inputField.onEndEdit.RemoveListener(unityAction));
+        });
+    }
+
+>>>>>>> origin/EnterprisingUniverseObjects-ElementBasedObjects
     public static IObservable<string> AsValueChangedObservable(this InputField inputField)
     {
         return Observable.Create<string>(observer =>
         {
             UnityAction<string> unityAction = observer.OnNext;
             inputField.onValueChange.AddListener(unityAction);
+<<<<<<< HEAD
             return Disposable.Create(() => inputField.onValueChange.AddListener(unityAction));
+=======
+            return Disposable.Create(() => inputField.onValueChange.RemoveListener(unityAction));
+>>>>>>> origin/EnterprisingUniverseObjects-ElementBasedObjects
         });
     }
 

@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: 2a49753f0dac8874aa4fc045ddffaca3
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: rope_knot
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

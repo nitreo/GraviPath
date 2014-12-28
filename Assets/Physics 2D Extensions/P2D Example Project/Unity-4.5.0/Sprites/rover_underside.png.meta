@@ -1,8 +1,7 @@
 fileFormatVersion: 2
 guid: ba6eab08f4b457149813169adddf8b60
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: rover_underside
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

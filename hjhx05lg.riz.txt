@@ -1,0 +1,270 @@
+﻿Merge remote-tracking branch 'origin/EnterprisingUniverseObjects-ElementBasedObjects'
+
+Conflicts:
+	Assets/GraviPath/Scenes/Level1.unity
+	Assets/UnityVS/Editor/UnityVS.VersionSpecific.dll
+	Assets/uFrameComplete/bin/Editor/Invert.Common.dll.mdb
+	Assets/uFrameComplete/bin/Editor/Invert.MVVM.dll.mdb
+	Assets/uFrameComplete/bin/Editor/Invert.uFrame.CodeGen.dll.mdb
+	Assets/uFrameComplete/bin/Editor/Invert.uFrame.Editor.dll.mdb
+	Assets/uFrameExtensions/UGUIExtensions.cs
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please remove the file
+#	.git/MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# All conflicts fixed but you are still merging.
+#
+# Changes to be committed:
+#	new file:   Assets/AssetStoreFiles.meta
+#	new file:   Assets/AssetStoreFiles/README.txt
+#	new file:   Assets/AssetStoreFiles/README.txt.meta
+#	new file:   Assets/AssetStoreFiles/Unity-Slide.png
+#	new file:   Assets/AssetStoreFiles/Unity-Slide.png.meta
+#	new file:   Assets/AssetStoreFiles/big.png
+#	new file:   Assets/AssetStoreFiles/big.png.meta
+#	new file:   Assets/AssetStoreFiles/big.psd
+#	new file:   Assets/AssetStoreFiles/big.psd.meta
+#	new file:   Assets/AssetStoreFiles/icon.png
+#	new file:   Assets/AssetStoreFiles/icon.png.meta
+#	new file:   Assets/AssetStoreFiles/parse-1.png
+#	new file:   Assets/AssetStoreFiles/parse-1.png.meta
+#	new file:   Assets/AssetStoreFiles/parse-2.png
+#	new file:   Assets/AssetStoreFiles/parse-2.png.meta
+#	new file:   Assets/AssetStoreFiles/small.png
+#	new file:   Assets/AssetStoreFiles/small.png.meta
+#	new file:   Assets/AssetStoreFiles/small.psd
+#	new file:   Assets/AssetStoreFiles/small.psd.meta
+#	new file:   Assets/GraviPath/Controllers/AsteroidController.cs
+#	new file:   Assets/GraviPath/Controllers/AsteroidController.cs.meta
+#	new file:   Assets/GraviPath/Controllers/BlackholeController.cs
+#	new file:   Assets/GraviPath/Controllers/BlackholeController.cs.meta
+#	new file:   Assets/GraviPath/Controllers/EditorRootController.cs
+#	new file:   Assets/GraviPath/Controllers/EditorRootController.cs.meta
+#	new file:   Assets/GraviPath/Controllers/GravityObjectController.cs
+#	new file:   Assets/GraviPath/Controllers/GravityObjectController.cs.meta
+#	new file:   Assets/GraviPath/Controllers/MiniObjectController.cs
+#	new file:   Assets/GraviPath/Controllers/MiniObjectController.cs.meta
+#	new file:   Assets/GraviPath/Controllers/ParseUniverseRepositoryController.cs
+#	new file:   Assets/GraviPath/Controllers/ParseUniverseRepositoryController.cs.meta
+#	new file:   Assets/GraviPath/Controllers/PlanetController.cs
+#	new file:   Assets/GraviPath/Controllers/PlanetController.cs.meta
+#	new file:   Assets/GraviPath/Controllers/SimpleAsteroid1Controller.cs
+#	new file:   Assets/GraviPath/Controllers/SimpleAsteroid1Controller.cs.meta
+#	new file:   Assets/GraviPath/Controllers/SimpleAsteroid2Controller.cs
+#	new file:   Assets/GraviPath/Controllers/SimpleAsteroid2Controller.cs.meta
+#	new file:   Assets/GraviPath/Controllers/SimpleAsteroid3Controller.cs
+#	new file:   Assets/GraviPath/Controllers/SimpleAsteroid3Controller.cs.meta
+#	new file:   Assets/GraviPath/Controllers/SimpleAsteroid4Controller.cs
+#	new file:   Assets/GraviPath/Controllers/SimpleAsteroid4Controller.cs.meta
+#	new file:   Assets/GraviPath/Controllers/SimpleBlackhole1Controller.cs
+#	new file:   Assets/GraviPath/Controllers/SimpleBlackhole1Controller.cs.meta
+#	new file:   Assets/GraviPath/Controllers/SimplePlanet1Controller.cs
+#	new file:   Assets/GraviPath/Controllers/SimplePlanet1Controller.cs.meta
+#	new file:   Assets/GraviPath/Controllers/SimplePlanet2Controller.cs
+#	new file:   Assets/GraviPath/Controllers/SimplePlanet2Controller.cs.meta
+#	new file:   Assets/GraviPath/Controllers/SpaceGarbageAreaController.cs
+#	new file:   Assets/GraviPath/Controllers/SpaceGarbageAreaController.cs.meta
+#	new file:   Assets/GraviPath/Controllers/UniverseController.cs
+#	new file:   Assets/GraviPath/Controllers/UniverseController.cs.meta
+#	new file:   Assets/GraviPath/Controllers/UniverseObjectController.cs
+#	new file:   Assets/GraviPath/Controllers/UniverseObjectController.cs.meta
+#	new file:   Assets/GraviPath/Controllers/UniverseRepositoryController.cs
+#	new file:   Assets/GraviPath/Controllers/UniverseRepositoryController.cs.meta
+#	new file:   Assets/GraviPath/Controllers/ZoneController.cs
+#	new file:   Assets/GraviPath/Controllers/ZoneController.cs.meta
+#	modified:   Assets/GraviPath/NewElementsGraph.asset
+#	new file:   Assets/GraviPath/SceneManagers/EditorSceneManager.cs
+#	new file:   Assets/GraviPath/SceneManagers/EditorSceneManager.cs.meta
+#	new file:   Assets/GraviPath/SceneManagers/EditorSceneManagerSettings.cs
+#	new file:   Assets/GraviPath/SceneManagers/EditorSceneManagerSettings.cs.meta
+#	new file:   Assets/GraviPath/Scenes/Editor.unity
+#	new file:   Assets/GraviPath/Scenes/Editor.unity.meta
+#	modified:   Assets/GraviPath/Scenes/Level1.unity
+#	modified:   Assets/GraviPath/Scenes/MainMenu.unity
+#	new file:   Assets/GraviPath/ViewModels/AsteroidViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/AsteroidViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/BlackholeViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/BlackholeViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/EditorRootViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/EditorRootViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/GravityObjectViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/GravityObjectViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/MiniObjectViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/MiniObjectViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/ParseUniverseRepositoryViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/ParseUniverseRepositoryViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/PlanetViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/PlanetViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/SimpleAsteroid1ViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/SimpleAsteroid1ViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/SimpleAsteroid2ViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/SimpleAsteroid2ViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/SimpleAsteroid3ViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/SimpleAsteroid3ViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/SimpleAsteroid4ViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/SimpleAsteroid4ViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/SimpleBlackhole1ViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/SimpleBlackhole1ViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/SimplePlanet1ViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/SimplePlanet1ViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/SimplePlanet2ViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/SimplePlanet2ViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/SpaceGarbageAreaViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/SpaceGarbageAreaViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/UniverseObjectViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/UniverseObjectViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/UniverseRepositoryViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/UniverseRepositoryViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/UniverseViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/UniverseViewModel.cs.meta
+#	new file:   Assets/GraviPath/ViewModels/ZoneViewModel.cs
+#	new file:   Assets/GraviPath/ViewModels/ZoneViewModel.cs.meta
+#	new file:   Assets/GraviPath/Views/AsteroidView.cs
+#	new file:   Assets/GraviPath/Views/AsteroidView.cs.meta
+#	new file:   Assets/GraviPath/Views/BlackholeView.cs
+#	new file:   Assets/GraviPath/Views/BlackholeView.cs.meta
+#	new file:   Assets/GraviPath/Views/EditorRootView.cs
+#	new file:   Assets/GraviPath/Views/EditorRootView.cs.meta
+#	new file:   Assets/GraviPath/Views/GravityObjectView.cs
+#	new file:   Assets/GraviPath/Views/GravityObjectView.cs.meta
+#	new file:   Assets/GraviPath/Views/MiniObjectView.cs
+#	new file:   Assets/GraviPath/Views/MiniObjectView.cs.meta
+#	new file:   Assets/GraviPath/Views/PlanetView.cs
+#	new file:   Assets/GraviPath/Views/PlanetView.cs.meta
+#	new file:   Assets/GraviPath/Views/SimpleAsteroid1View.cs
+#	new file:   Assets/GraviPath/Views/SimpleAsteroid1View.cs.meta
+#	new file:   Assets/GraviPath/Views/SimpleAsteroid2View.cs
+#	new file:   Assets/GraviPath/Views/SimpleAsteroid2View.cs.meta
+#	new file:   Assets/GraviPath/Views/SimpleAsteroid3View.cs
+#	new file:   Assets/GraviPath/Views/SimpleAsteroid3View.cs.meta
+#	new file:   Assets/GraviPath/Views/SimpleAsteroid4View.cs
+#	new file:   Assets/GraviPath/Views/SimpleAsteroid4View.cs.meta
+#	new file:   Assets/GraviPath/Views/SimpleBlackhole1View.cs
+#	new file:   Assets/GraviPath/Views/SimpleBlackhole1View.cs.meta
+#	new file:   Assets/GraviPath/Views/SimplePlanet1View.cs
+#	new file:   Assets/GraviPath/Views/SimplePlanet1View.cs.meta
+#	new file:   Assets/GraviPath/Views/SimplePlanet2View.cs
+#	new file:   Assets/GraviPath/Views/SimplePlanet2View.cs.meta
+#	new file:   Assets/GraviPath/Views/UniverseObjectView.cs
+#	new file:   Assets/GraviPath/Views/UniverseObjectView.cs.meta
+#	new file:   Assets/GraviPath/Views/UniverseView.cs
+#	new file:   Assets/GraviPath/Views/UniverseView.cs.meta
+#	new file:   Assets/GraviPath/Views/ZoneView.cs
+#	new file:   Assets/GraviPath/Views/ZoneView.cs.meta
+#	modified:   Assets/GraviPath/_DesignerFiles/NewElementsGraph.designer.cs
+#	modified:   Assets/GraviPath/_DesignerFiles/NewElementsGraphControllers.designer.cs
+#	modified:   Assets/GraviPath/_DesignerFiles/NewElementsGraphSceneManagers.designer.cs
+#	modified:   Assets/GraviPath/_DesignerFiles/NewElementsGraphViews.designer.cs
+#	modified:   Assets/GravityObject.cs
+#	new file:   Assets/Parse/Parse.Unity.xml
+#	new file:   Assets/Parse/Parse.Unity.xml.meta
+#	new file:   Assets/Parse/README.txt
+#	new file:   Assets/Parse/README.txt.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/axle.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/big_gear.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/cloud1.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/cloud2.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/cloud3.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/gear.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/metal_box.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/moon.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/p2d_logo.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/pinion.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/planet.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/rack.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/rope_knot.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/rover_body.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/rover_underside.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/rover_wheel.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/sun.png.meta
+#	modified:   Assets/Physics 2D Extensions/P2D Example Project/Unity-4.5.0/Sprites/water.png.meta
+#	deleted:    Assets/PigeonCoopToolkit/__SharedDemoAssets/Sword/sword.obj.meta
+#	new file:   Assets/Plugins/Deferred.dll.mdb
+#	new file:   Assets/Plugins/Deferred.dll.mdb.meta
+#	new file:   Assets/Resources.meta
+#	renamed:    Assets/Prefabs.meta -> Assets/Resources/Prefabs.meta
+#	renamed:    Assets/Prefabs/Button_1.prefab -> Assets/Resources/Prefabs/Button_1.prefab
+#	renamed:    Assets/Prefabs/Button_1.prefab.meta -> Assets/Resources/Prefabs/Button_1.prefab.meta
+#	renamed:    Assets/Prefabs/Cross.prefab -> Assets/Resources/Prefabs/Cross.prefab
+#	renamed:    Assets/Prefabs/Cross.prefab.meta -> Assets/Resources/Prefabs/Cross.prefab.meta
+#	renamed:    Assets/Prefabs/DemoObjects.meta -> Assets/Resources/Prefabs/DemoObjects.meta
+#	renamed:    Assets/Prefabs/DemoObjects/DemoAsteroid1.prefab -> Assets/Resources/Prefabs/DemoObjects/DemoAsteroid1.prefab
+#	renamed:    Assets/Prefabs/DemoObjects/DemoAsteroid1.prefab.meta -> Assets/Resources/Prefabs/DemoObjects/DemoAsteroid1.prefab.meta
+#	renamed:    Assets/Prefabs/DemoObjects/DemoPlanet_1.prefab -> Assets/Resources/Prefabs/DemoObjects/DemoPlanet_1.prefab
+#	renamed:    Assets/Prefabs/DemoObjects/DemoPlanet_1.prefab.meta -> Assets/Resources/Prefabs/DemoObjects/DemoPlanet_1.prefab.meta
+#	renamed:    Assets/Prefabs/DemoObjects/DemoPlanet_2.prefab -> Assets/Resources/Prefabs/DemoObjects/DemoPlanet_2.prefab
+#	renamed:    Assets/Prefabs/DemoObjects/DemoPlanet_2.prefab.meta -> Assets/Resources/Prefabs/DemoObjects/DemoPlanet_2.prefab.meta
+#	renamed:    Assets/Prefabs/DemoObjects/DemoPlanet_3.prefab -> Assets/Resources/Prefabs/DemoObjects/DemoPlanet_3.prefab
+#	renamed:    Assets/Prefabs/DemoObjects/DemoPlanet_3.prefab.meta -> Assets/Resources/Prefabs/DemoObjects/DemoPlanet_3.prefab.meta
+#	renamed:    Assets/Prefabs/DemoObjects/DemoSmallAsteroid1.prefab -> Assets/Resources/Prefabs/DemoObjects/DemoSmallAsteroid1.prefab
+#	renamed:    Assets/Prefabs/DemoObjects/DemoSmallAsteroid1.prefab.meta -> Assets/Resources/Prefabs/DemoObjects/DemoSmallAsteroid1.prefab.meta
+#	renamed:    Assets/Prefabs/DemoObjects/DemoSmallAsteroid2.prefab -> Assets/Resources/Prefabs/DemoObjects/DemoSmallAsteroid2.prefab
+#	renamed:    Assets/Prefabs/DemoObjects/DemoSmallAsteroid2.prefab.meta -> Assets/Resources/Prefabs/DemoObjects/DemoSmallAsteroid2.prefab.meta
+#	renamed:    Assets/Prefabs/DemoObjects/DemoSmallAsteroid3.prefab -> Assets/Resources/Prefabs/DemoObjects/DemoSmallAsteroid3.prefab
+#	renamed:    Assets/Prefabs/DemoObjects/DemoSmallAsteroid3.prefab.meta -> Assets/Resources/Prefabs/DemoObjects/DemoSmallAsteroid3.prefab.meta
+#	renamed:    Assets/Prefabs/DemoObjects/DemoStar1.prefab -> Assets/Resources/Prefabs/DemoObjects/DemoStar1.prefab
+#	renamed:    Assets/Prefabs/DemoObjects/DemoStar1.prefab.meta -> Assets/Resources/Prefabs/DemoObjects/DemoStar1.prefab.meta
+#	renamed:    Assets/Prefabs/DemoObjects/DemoStar2.prefab -> Assets/Resources/Prefabs/DemoObjects/DemoStar2.prefab
+#	renamed:    Assets/Prefabs/DemoObjects/DemoStar2.prefab.meta -> Assets/Resources/Prefabs/DemoObjects/DemoStar2.prefab.meta
+#	renamed:    Assets/Prefabs/DirectionIndicator.prefab -> Assets/Resources/Prefabs/DirectionIndicator.prefab
+#	renamed:    Assets/Prefabs/DirectionIndicator.prefab.meta -> Assets/Resources/Prefabs/DirectionIndicator.prefab.meta
+#	renamed:    Assets/Prefabs/Ship.prefab -> Assets/Resources/Prefabs/Ship.prefab
+#	renamed:    Assets/Prefabs/Ship.prefab.meta -> Assets/Resources/Prefabs/Ship.prefab.meta
+#	renamed:    Assets/Prefabs/Trail.prefab -> Assets/Resources/Prefabs/Trail.prefab
+#	renamed:    Assets/Prefabs/Trail.prefab.meta -> Assets/Resources/Prefabs/Trail.prefab.meta
+#	renamed:    Assets/Prefabs/Asteroid_1.prefab -> Assets/Resources/SimpleAsteroid1.prefab
+#	renamed:    Assets/Prefabs/Asteroid_1.prefab.meta -> Assets/Resources/SimpleAsteroid1.prefab.meta
+#	renamed:    Assets/Prefabs/Asteroid_2 1.prefab -> Assets/Resources/SimpleAsteroid2.prefab
+#	renamed:    Assets/Prefabs/Asteroid_2 1.prefab.meta -> Assets/Resources/SimpleAsteroid2.prefab.meta
+#	renamed:    Assets/Prefabs/Asteroid_3.prefab -> Assets/Resources/SimpleAsteroid3.prefab
+#	renamed:    Assets/Prefabs/Asteroid_3.prefab.meta -> Assets/Resources/SimpleAsteroid3.prefab.meta
+#	renamed:    Assets/Prefabs/Asteroid_4.prefab -> Assets/Resources/SimpleAsteroid4.prefab
+#	renamed:    Assets/Prefabs/Asteroid_4.prefab.meta -> Assets/Resources/SimpleAsteroid4.prefab.meta
+#	renamed:    Assets/Prefabs/Blackhole_1.prefab -> Assets/Resources/SimpleBlackhole1.prefab
+#	renamed:    Assets/Prefabs/Blackhole_1.prefab.meta -> Assets/Resources/SimpleBlackhole1.prefab.meta
+#	renamed:    Assets/Prefabs/Planet_1.prefab -> Assets/Resources/SimplePlanet1.prefab
+#	renamed:    Assets/Prefabs/Planet_1.prefab.meta -> Assets/Resources/SimplePlanet1.prefab.meta
+#	renamed:    Assets/Prefabs/Planet_2.prefab -> Assets/Resources/SimplePlanet2.prefab
+#	renamed:    Assets/Prefabs/Planet_2.prefab.meta -> Assets/Resources/SimplePlanet2.prefab.meta
+#	renamed:    Assets/Prefabs/SmallAsteroid1.prefab -> Assets/Resources/SmallAsteroid1.prefab
+#	renamed:    Assets/Prefabs/SmallAsteroid1.prefab.meta -> Assets/Resources/SmallAsteroid1.prefab.meta
+#	renamed:    Assets/Prefabs/SmallAsteroid2.prefab -> Assets/Resources/SmallAsteroid2.prefab
+#	renamed:    Assets/Prefabs/SmallAsteroid2.prefab.meta -> Assets/Resources/SmallAsteroid2.prefab.meta
+#	renamed:    Assets/Prefabs/SmallAsteroid3.prefab -> Assets/Resources/SmallAsteroid3.prefab
+#	renamed:    Assets/Prefabs/SmallAsteroid3.prefab.meta -> Assets/Resources/SmallAsteroid3.prefab.meta
+#	new file:   Assets/Resources/StartZone.prefab
+#	new file:   Assets/Resources/StartZone.prefab.meta
+#	new file:   Assets/Resources/WinZone.prefab
+#	new file:   Assets/Resources/WinZone.prefab.meta
+#	new file:   Assets/Resources/_ParseInitializer.prefab
+#	new file:   Assets/Resources/_ParseInitializer.prefab.meta
+#	modified:   Assets/SineMover.cs
+#	new file:   Assets/Sprites/Objects/UI/Buttons/restart_button_1.png
+#	new file:   Assets/Sprites/Objects/UI/Buttons/restart_button_1.png.meta
+#	renamed:    Assets/Sprites/Objects/UI/score_frame.png -> Assets/Sprites/Objects/UI/Buttons/score_frame.png
+#	renamed:    Assets/Sprites/Objects/UI/score_frame.png.meta -> Assets/Sprites/Objects/UI/Buttons/score_frame.png.meta
+#	new file:   Assets/Sprites/Objects/UI/Buttons/score_text.png
+#	new file:   Assets/Sprites/Objects/UI/Buttons/score_text.png.meta
+#	new file:   Assets/Sprites/Objects/UI/Menu.png
+#	new file:   Assets/Sprites/Objects/UI/Menu.png.meta
+#	new file:   Assets/SubclassRegister.cs
+#	new file:   Assets/SubclassRegister.cs.meta
+#	deleted:    Assets/TouchScript/Editor/TouchScript.Windows.Editor.dll.meta
+#	deleted:    Assets/TouchScript/Plugins/TouchScript.Windows.dll.meta
+#	modified:   Assets/UnityVS/Editor/UnityVS.VersionSpecific.dll.meta
+#	modified:   Assets/uFrameComplete/uFrame/LoadingScreen/UnityGUILevelLoaderView.cs
+#	new file:   Assets/uFrameExtensions/JsonPrints.cs
+#	new file:   Assets/uFrameExtensions/JsonPrints.cs.meta
+#	modified:   Assets/uFrameExtensions/UGUIExtensions.cs
+#	modified:   ProjectSettings/EditorBuildSettings.asset
+#	modified:   ProjectSettings/TagManager.asset
+#
+

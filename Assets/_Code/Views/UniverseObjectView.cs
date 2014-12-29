@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Thinksquirrel.Phys2D;
+using ThinksquirrelSoftware.Phys2D;
 using UnityEngine;
 using UniRx;
 using UnityEditor;
@@ -34,11 +36,19 @@ public partial class UniverseObjectView
             {
                 handles.SetActive(true);
             }
+
+            GetComponent<GravityController2DExt>().enabled = false;
+            GetComponent<PolygonCollider2D>().enabled = false;
+
         }
         else
         {
             if(handles!=null)
             handles.SetActive(false);
+
+            GetComponent<GravityController2DExt>().enabled = true;
+            GetComponent<PolygonCollider2D>().enabled = true;
+
         }
     }
  

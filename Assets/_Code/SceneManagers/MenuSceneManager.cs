@@ -53,9 +53,9 @@ public class MenuSceneManager : MenuSceneManagerBase {
         base.Setup();
     }
 
-    public override IEnumerable<string> GetStartLevelScenes(string arg)
+    public override IEnumerable<string> GetStartLevelScenes(StartLevelDescriptor arg)
     {
-        return new[] {arg};
+        return new[] {"Level1"};
     }
 
     public override IEnumerable<string> GetStartEditorScenes()
@@ -63,11 +63,22 @@ public class MenuSceneManager : MenuSceneManagerBase {
         return new[] { "Editor" };
     }
 
+    public override void StartLevel(StartLevelDescriptor arg)
+    {
+        this._MenuSceneManagerSettings.UniverseToPlay = arg.Universe;
+        base.StartLevel(arg);
+    }
+
+    public override void StartLevelTransitionComplete(LevelSceneManager sceneManager)
+    {
+        base.StartLevelTransitionComplete(sceneManager);
+        sceneManager._LevelSceneManagerSettings.UniverseToPlay = _MenuSceneManagerSettings.UniverseToPlay;
+
+    }
+
 
     public override void StartEditorTransitionComplete(EditorSceneManager sceneManager)
     {
         base.StartEditorTransitionComplete(sceneManager);
-        UnityEngine.Debug.Log("HERE WE SETUP");
-
     }
 }

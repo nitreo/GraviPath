@@ -72,6 +72,8 @@ public class LevelSceneManagerBase : SceneManager {
     
     private UniverseRepositoryController _UniverseRepositoryController;
     
+    private StartZoneController _StartZoneController;
+    
     public LevelSceneManagerSettings _LevelSceneManagerSettings = new LevelSceneManagerSettings();
     
     [Inject("LevelRoot")]
@@ -360,6 +362,19 @@ public class LevelSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual StartZoneController StartZoneController {
+        get {
+            if ((this._StartZoneController == null)) {
+                this._StartZoneController = new StartZoneController() { Container = Container };
+            }
+            return this._StartZoneController;
+        }
+        set {
+            _StartZoneController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -389,6 +404,7 @@ public class LevelSceneManagerBase : SceneManager {
         Container.RegisterController<SimpleBlackhole1Controller>(SimpleBlackhole1Controller);
         Container.RegisterController<SpaceGarbageAreaController>(SpaceGarbageAreaController);
         Container.RegisterController<UniverseRepositoryController>(UniverseRepositoryController);
+        Container.RegisterController<StartZoneController>(StartZoneController);
         this.Container.InjectAll();
         LevelRootController.Initialize(LevelRoot);
         UniverseRepositoryController.Initialize(UniverseRepository);
@@ -465,6 +481,8 @@ public class MenuSceneManagerBase : SceneManager {
     private SpaceGarbageAreaController _SpaceGarbageAreaController;
     
     private UniverseRepositoryController _UniverseRepositoryController;
+    
+    private StartZoneController _StartZoneController;
     
     public MenuSceneManagerSettings _MenuSceneManagerSettings = new MenuSceneManagerSettings();
     
@@ -728,6 +746,19 @@ public class MenuSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual StartZoneController StartZoneController {
+        get {
+            if ((this._StartZoneController == null)) {
+                this._StartZoneController = new StartZoneController() { Container = Container };
+            }
+            return this._StartZoneController;
+        }
+        set {
+            _StartZoneController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -755,6 +786,7 @@ public class MenuSceneManagerBase : SceneManager {
         Container.RegisterController<SimpleBlackhole1Controller>(SimpleBlackhole1Controller);
         Container.RegisterController<SpaceGarbageAreaController>(SpaceGarbageAreaController);
         Container.RegisterController<UniverseRepositoryController>(UniverseRepositoryController);
+        Container.RegisterController<StartZoneController>(StartZoneController);
         this.Container.InjectAll();
         MenuRootController.Initialize(MenuRoot);
         UniverseRepositoryController.Initialize(UniverseRepository);
@@ -763,11 +795,11 @@ public class MenuSceneManagerBase : SceneManager {
     public virtual void StartLevelTransitionComplete(LevelSceneManager sceneManager) {
     }
     
-    public virtual System.Collections.Generic.IEnumerable<string> GetStartLevelScenes(String arg) {
+    public virtual System.Collections.Generic.IEnumerable<string> GetStartLevelScenes(StartLevelDescriptor arg) {
         return this._StartLevelTransition._Scenes;
     }
     
-    public virtual void StartLevel(String arg) {
+    public virtual void StartLevel(StartLevelDescriptor arg) {
         GameManager.TransitionLevel<LevelSceneManager>((container) =>{container._LevelSceneManagerSettings = _StartLevelTransition; StartLevelTransitionComplete(container); }, this.GetStartLevelScenes(arg).ToArray());
     }
     
@@ -784,7 +816,7 @@ public class MenuSceneManagerBase : SceneManager {
     
     public override void Initialize() {
         base.Initialize();
-        MenuRoot.StartLevel.Subscribe(_=> StartLevel((String)MenuRoot.StartLevel.Parameter)).DisposeWith(this.gameObject);
+        MenuRoot.StartLevel.Subscribe(_=> StartLevel((StartLevelDescriptor)MenuRoot.StartLevel.Parameter)).DisposeWith(this.gameObject);
         MenuRoot.StartEditor.Subscribe(_=> StartEditor()).DisposeWith(this.gameObject);
     }
 }
@@ -811,6 +843,8 @@ public class EditorSceneManagerBase : SceneManager {
     private UniverseController _UniverseController;
     
     private NewUniverseSubEditorController _NewUniverseSubEditorController;
+    
+    private AddUniverseObjectSubEditorController _AddUniverseObjectSubEditorController;
     
     private UniverseObjectController _UniverseObjectController;
     
@@ -843,6 +877,8 @@ public class EditorSceneManagerBase : SceneManager {
     private SpaceGarbageAreaController _SpaceGarbageAreaController;
     
     private UniverseRepositoryController _UniverseRepositoryController;
+    
+    private StartZoneController _StartZoneController;
     
     public EditorSceneManagerSettings _EditorSceneManagerSettings = new EditorSceneManagerSettings();
     
@@ -908,6 +944,19 @@ public class EditorSceneManagerBase : SceneManager {
         }
         set {
             _NewUniverseSubEditorController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual AddUniverseObjectSubEditorController AddUniverseObjectSubEditorController {
+        get {
+            if ((this._AddUniverseObjectSubEditorController == null)) {
+                this._AddUniverseObjectSubEditorController = new AddUniverseObjectSubEditorController() { Container = Container };
+            }
+            return this._AddUniverseObjectSubEditorController;
+        }
+        set {
+            _AddUniverseObjectSubEditorController = value;
         }
     }
     
@@ -1119,6 +1168,19 @@ public class EditorSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual StartZoneController StartZoneController {
+        get {
+            if ((this._StartZoneController == null)) {
+                this._StartZoneController = new StartZoneController() { Container = Container };
+            }
+            return this._StartZoneController;
+        }
+        set {
+            _StartZoneController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -1131,6 +1193,7 @@ public class EditorSceneManagerBase : SceneManager {
         Container.RegisterController<EditorRootController>(EditorRootController);
         Container.RegisterController<UniverseController>(UniverseController);
         Container.RegisterController<NewUniverseSubEditorController>(NewUniverseSubEditorController);
+        Container.RegisterController<AddUniverseObjectSubEditorController>(AddUniverseObjectSubEditorController);
         Container.RegisterController<UniverseObjectController>(UniverseObjectController);
         Container.RegisterController<ZoneController>(ZoneController);
         Container.RegisterController<GravityObjectController>(GravityObjectController);
@@ -1147,6 +1210,7 @@ public class EditorSceneManagerBase : SceneManager {
         Container.RegisterController<SimpleBlackhole1Controller>(SimpleBlackhole1Controller);
         Container.RegisterController<SpaceGarbageAreaController>(SpaceGarbageAreaController);
         Container.RegisterController<UniverseRepositoryController>(UniverseRepositoryController);
+        Container.RegisterController<StartZoneController>(StartZoneController);
         this.Container.InjectAll();
         EditorRootController.Initialize(EditorRoot);
         UniverseRepositoryController.Initialize(UniverseRepository);

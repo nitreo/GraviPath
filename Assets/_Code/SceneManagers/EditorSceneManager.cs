@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Thinksquirrel.Phys2D;
 using UniRx;
 
 
@@ -51,5 +52,10 @@ public class EditorSceneManager : EditorSceneManagerBase {
     // </summary>
     public override void Setup() {
         base.Setup();
+    }
+
+    public override IEnumerable<string> GetToMenuScenes()
+    {
+        return new[] {"MainMenu"};
     }
 }

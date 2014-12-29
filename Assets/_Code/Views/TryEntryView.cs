@@ -23,7 +23,9 @@ public partial class TryEntryView
         if (TryEntry.TargetProperty.LastValue != null && value == null)
         {
             var go = Instantiate(Cross) as GameObject;
+            go.transform.SetParent(transform);
             go.transform.position = transform.position;
+
         }
 
 

@@ -23,18 +23,24 @@ public partial class UniverseEditorNewUniverseWindow
     public Text NewUniverseDescriptionInputMessage;
 
     public Button CreateNewUniverseButton;
+    public Button NopeButton;
 
     public override void Bind()
     {
         base.Bind();
         CreateNewUniverseButton
             .AsClickObservable()
-            .Subscribe(_ => { ExecuteCreate(); })
+            .Subscribe(_ => { ExecuteCreateUniverse(); })
             .DisposeWith(this);
 
         NewUniverseNameInputField.AsValueChangedObservable().Subscribe(val =>
         {
             NewUniverseSubEditor.Name = val;
+        });
+
+        NopeButton.AsClickObservable().Subscribe(_ =>
+        {
+            NewUniverseSubEditor.IsActive = false;
         });
 
     }
@@ -60,8 +66,5 @@ public partial class UniverseEditorNewUniverseWindow
         base.IsValidChanged(value);
     }
     
-    /// Invokes CreateExecuted when the Create command is executed.
-    public override void CreateExecuted() {
-        base.CreateExecuted();
-    }
+  
 }

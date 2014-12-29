@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using UniRx;
@@ -33,6 +34,8 @@ public class LevelSceneManager : LevelSceneManagerBase {
     // be a good place to use the generated Controller properties on this class to invoke some gameplay logic initialization
     // </summary>
     public override void OnLoaded() {
+        
+        LevelRootController.ExecuteCommand(LevelRoot.LoadUniverse, _LevelSceneManagerSettings.UniverseToPlay);
         base.OnLoaded();
     }
     

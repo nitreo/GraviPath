@@ -37,6 +37,18 @@ public class LevelRootController : LevelRootControllerBase {
         }
     }
 
-   
 
+    public override void LoadUniverse(LevelRootViewModel levelRoot, UniverseViewModel arg)
+    {
+        if (arg == null)
+        {
+            arg = UniverseController.CreateInitialUniverse();
+        }
+
+        base.LoadUniverse(levelRoot, arg);
+        
+        arg.IsEditable = false;
+        levelRoot.Universe = arg;
+        ExecuteCommand(levelRoot.Restart,false);
+    }
 }

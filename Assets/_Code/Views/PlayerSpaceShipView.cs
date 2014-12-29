@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Thinksquirrel.Phys2D;
 using UnityEngine;
 using UniRx;
 
@@ -41,12 +42,11 @@ public partial class PlayerSpaceShipView
         Observable.Timer(TimeSpan.FromMilliseconds(300))
             .Subscribe(_ =>
             {
-
                 Crashed.transform.up = -(transform.position - LastCollidedGravityObject.transform.position);
                 Fire.SetActive(true);
                 Swearing.SetActive(true);
                 Boom.SetActive(false);
-            });
+            }).DisposeWith(this);
 
 
 
@@ -64,6 +64,7 @@ public partial class PlayerSpaceShipView
     public GameObject Swearing;
     public GameObject Boom;
     public GameObject Crashed;
+    private ControllerFilter2DExt ignoreControllers;
 
     [HideInInspector]
     public GravityObject LastCollidedGravityObject { get; set; }
@@ -98,6 +99,9 @@ public partial class PlayerSpaceShipView
 
     public override void Bind()
     {
+        ignoreControllers = gameObject.AddComponent<ControllerFilter2DExt>();
+        ignoreControllers.IgnoreControllerType(ControllerType.GravityController);
+
         base.Bind();
         ShipController.Commited += ExecuteAccelerate;
 
@@ -108,7 +112,7 @@ public partial class PlayerSpaceShipView
                 //TODO: Fix the lagging on low velocity
                 transform.up = rigidbody2D.velocity;
             }
-        });
+        }).DisposeWith(this);
 
     }
 
@@ -121,19 +125,24 @@ public partial class PlayerSpaceShipView
                 .Direction
                 .Subscribe(InputDirectionChanged)
                 .DisposeWhenChanged(Player.IsControllableProperty);
-            
+
             this.ShipController
                 .Acceleration
                 .Subscribe(InputAccelrationChanged)
                 .DisposeWhenChanged(Player.IsControllableProperty);
-
-            this.BindComponentCollision2DWith<GravityObject>(CollisionEventType.Enter, (obj,col) =>
+         
+            ignoreControllers.IgnoreControllerType(ControllerType.GravityController);
+        }
+        else
+        {
+            this.BindComponentCollision2DWith<GravityObject>(CollisionEventType.Enter, (obj, col) =>
             {
                 LastCollidedGravityObject = obj;
                 LastCollisionPoint = col.contacts.First().point;
                 ExecuteCrash();
             });
 
+            ignoreControllers.RestoreControllerType(ControllerType.GravityController);
         }
     }
 

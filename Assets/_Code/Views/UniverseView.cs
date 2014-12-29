@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Thinksquirrel.Phys2D;
 using UnityEngine;
 using UniRx;
 
@@ -21,6 +22,12 @@ public partial class UniverseView {
 
         objectsView.transform.position = item.Position;
         objectsView.transform.eulerAngles = item.Rotation;
+
+        if (item is GravityObjectViewModel)
+        {
+            var gravController = objectsView.GetComponent<GravityController2DExt>();
+            if (gravController != null) GravityObjects.Add(gravController);
+        }
 
         return objectsView;
     }
@@ -58,6 +65,11 @@ public partial class UniverseView {
         }
     }
 
-    public HashSet<Action<ViewBase>> Hooks = new HashSet<Action<ViewBase>>();
+    public void AddGravityAffectedObject(Rigidbody2D body)
+    {
+        GravityObjects.ForEach(o=>o.AddRigidbody(body));
+    }
 
+    public HashSet<Action<ViewBase>> Hooks = new HashSet<Action<ViewBase>>();
+    private readonly HashSet<GravityController2DExt> GravityObjects = new HashSet<GravityController2DExt>();
 }

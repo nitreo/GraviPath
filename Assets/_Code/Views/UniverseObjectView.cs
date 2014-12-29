@@ -16,7 +16,7 @@ public partial class UniverseObjectView
     private GameObject handles;
     public override void Awake()
     {
-        editor = Resources.Load<GameObject>("UniverseObjectEditorUI");
+        editor = GetEditorPrototype();
         base.Awake();
     }
 
@@ -36,22 +36,19 @@ public partial class UniverseObjectView
             {
                 handles.SetActive(true);
             }
-
-            GetComponent<GravityController2DExt>().enabled = false;
-            GetComponent<PolygonCollider2D>().enabled = false;
-
         }
         else
         {
             if(handles!=null)
             handles.SetActive(false);
-
-            GetComponent<GravityController2DExt>().enabled = true;
-            GetComponent<PolygonCollider2D>().enabled = true;
-
         }
     }
- 
+
+
+    public virtual GameObject GetEditorPrototype()
+    {
+        return Resources.Load<GameObject>("UniverseObjectEditorUI");
+    }
 
     /// Invokes ResetExecuted when the Reset command is executed.
     public override void ResetExecuted() {

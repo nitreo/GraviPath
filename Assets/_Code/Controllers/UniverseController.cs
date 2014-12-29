@@ -7,8 +7,11 @@ using UniRx;
 using UnityEngine;
 
 
-public class UniverseController : UniverseControllerBase {
-    
+public class UniverseController : UniverseControllerBase
+{
+
+    [Inject] public StartZoneController StartZoneController;
+
     public override void InitializeUniverse(UniverseViewModel universe)
     {
 
@@ -23,6 +26,19 @@ public class UniverseController : UniverseControllerBase {
                 });
                 item.IsEditable = universe.IsEditable;
             });
+
+    }
+
+    public UniverseViewModel CreateInitialUniverse()
+    {
+        var startZone = StartZoneController.CreateStartZone();
+        startZone.Position = Vector3.zero;
+        startZone.Rotation = Vector3.zero;
+
+        var universe = CreateUniverse();
+
+        universe.Objects.Add(startZone);
+        return universe;
 
     }
 

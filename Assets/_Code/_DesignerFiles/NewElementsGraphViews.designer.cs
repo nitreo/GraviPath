@@ -47,12 +47,16 @@ public abstract class MenuRootViewBase : ViewBase {
     protected override void InitializeViewModel(ViewModel viewModel) {
     }
     
-    public virtual void ExecuteStartLevel(String arg) {
+    public virtual void ExecuteStartLevel(StartLevelDescriptor arg) {
         this.ExecuteCommand(MenuRoot.StartLevel, arg);
     }
     
     public virtual void ExecuteStartEditor() {
         this.ExecuteCommand(MenuRoot.StartEditor);
+    }
+    
+    public virtual void ExecuteUpdateUniversesList(UniverseListUpdateDescriptor arg) {
+        this.ExecuteCommand(MenuRoot.UpdateUniversesList, arg);
     }
 }
 
@@ -70,6 +74,14 @@ public abstract class LevelRootViewBase : ViewBase {
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
     public Int32 _BonusScore;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public ViewBase _Universe;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Boolean _RecordAttempts;
     
     public override string DefaultIdentifier {
         get {
@@ -101,6 +113,8 @@ public abstract class LevelRootViewBase : ViewBase {
         levelRoot.Player = this._Player == null ? null : this._Player.ViewModelObject as PlayerViewModel;
         levelRoot.CurrentTryEntry = this._CurrentTryEntry == null ? null : this._CurrentTryEntry.ViewModelObject as TryEntryViewModel;
         levelRoot.BonusScore = this._BonusScore;
+        levelRoot.Universe = this._Universe == null ? null : this._Universe.ViewModelObject as UniverseViewModel;
+        levelRoot.RecordAttempts = this._RecordAttempts;
     }
     
     public virtual void ExecuteToMenu() {
@@ -109,6 +123,10 @@ public abstract class LevelRootViewBase : ViewBase {
     
     public virtual void ExecuteRestart(Boolean arg) {
         this.ExecuteCommand(LevelRoot.Restart, arg);
+    }
+    
+    public virtual void ExecuteLoadUniverse(UniverseViewModel universe) {
+        this.ExecuteCommand(LevelRoot.LoadUniverse, universe);
     }
 }
 
@@ -226,6 +244,10 @@ public abstract class EditorRootViewBase : ViewBase {
     [UnityEngine.HideInInspector()]
     public Boolean _IsUniverseDirty;
     
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public ViewBase _AddUniverseObjectSubEditor;
+    
     public override string DefaultIdentifier {
         get {
             return "EditorRoot";
@@ -256,6 +278,7 @@ public abstract class EditorRootViewBase : ViewBase {
         editorRoot.CurrentUniverse = this._CurrentUniverse == null ? null : this._CurrentUniverse.ViewModelObject as UniverseViewModel;
         editorRoot.NewUniverseData = this._NewUniverseData == null ? null : this._NewUniverseData.ViewModelObject as NewUniverseSubEditorViewModel;
         editorRoot.IsUniverseDirty = this._IsUniverseDirty;
+        editorRoot.AddUniverseObjectSubEditor = this._AddUniverseObjectSubEditor == null ? null : this._AddUniverseObjectSubEditor.ViewModelObject as AddUniverseObjectSubEditorViewModel;
     }
     
     public virtual void ExecuteToMenu() {
@@ -280,6 +303,10 @@ public abstract class EditorRootViewBase : ViewBase {
     
     public virtual void ExecuteAddUniverseObject(UniverseObjectDescriptor arg) {
         this.ExecuteCommand(EditorRoot.AddUniverseObject, arg);
+    }
+    
+    public virtual void ExecuteSwitchUniverseObjectSubEditor(Boolean arg) {
+        this.ExecuteCommand(EditorRoot.SwitchUniverseObjectSubEditor, arg);
     }
 }
 
@@ -820,8 +847,71 @@ public abstract class NewUniverseSubEditorViewBase : ViewBase {
         newUniverseSubEditor.IsActive = this._IsActive;
     }
     
-    public virtual void ExecuteCreate() {
-        this.ExecuteCommand(NewUniverseSubEditor.Create);
+    public virtual void ExecuteCreateUniverse() {
+        this.ExecuteCommand(NewUniverseSubEditor.CreateUniverse);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class AddUniverseObjectSubEditorViewBase : ViewBase {
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Boolean _IsActive;
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(AddUniverseObjectSubEditorViewModel);
+        }
+    }
+    
+    public AddUniverseObjectSubEditorViewModel AddUniverseObjectSubEditor {
+        get {
+            return ((AddUniverseObjectSubEditorViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<AddUniverseObjectSubEditorController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        AddUniverseObjectSubEditorViewModel addUniverseObjectSubEditor = ((AddUniverseObjectSubEditorViewModel)(viewModel));
+        addUniverseObjectSubEditor.IsActive = this._IsActive;
+    }
+    
+    public virtual void ExecuteAdd(UniverseObjectDescriptor arg) {
+        this.ExecuteCommand(AddUniverseObjectSubEditor.Add, arg);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class StartZoneViewBase : ZoneViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(StartZoneViewModel);
+        }
+    }
+    
+    public StartZoneViewModel StartZone {
+        get {
+            return ((StartZoneViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<StartZoneController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
     }
 }
 
@@ -982,6 +1072,10 @@ public class LevelRootViewViewBase : LevelRootViewBase {
     [UnityEngine.HideInInspector()]
     public bool _BindScore = true;
     
+    [UFToggleGroup("Universe")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindUniverse = true;
+    
     public override ViewModel CreateModel() {
         return this.RequestViewModel(GameManager.Container.Resolve<LevelRootController>());
     }
@@ -1015,6 +1109,10 @@ public class LevelRootViewViewBase : LevelRootViewBase {
     public virtual void ScoreChanged(Int32 value) {
     }
     
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void UniverseChanged(UniverseViewModel value) {
+    }
+    
     public override void Bind() {
         base.Bind();
         if (this._BindRestart) {
@@ -1031,6 +1129,9 @@ public class LevelRootViewViewBase : LevelRootViewBase {
         }
         if (this._BindScore) {
             this.BindProperty(LevelRoot._ScoreProperty, this.ScoreChanged);
+        }
+        if (this._BindUniverse) {
+            this.BindProperty(LevelRoot._UniverseProperty, this.UniverseChanged);
         }
     }
 }
@@ -1081,12 +1182,27 @@ public partial class TryEntryView : TryEntryViewViewBase {
 
 public class MenuRootViewViewBase : MenuRootViewBase {
     
+    [UFToggleGroup("UniversesList")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindUniversesList = true;
+    
     public override ViewModel CreateModel() {
         return this.RequestViewModel(GameManager.Container.Resolve<MenuRootController>());
     }
     
+    /// Subscribes to collection modifications.  Add & Remove methods are invoked for each modification.
+    public virtual void UniversesListAdded(UniverseViewModel item) {
+    }
+    
+    /// Subscribes to collection modifications.  Add & Remove methods are invoked for each modification.
+    public virtual void UniversesListRemoved(UniverseViewModel item) {
+    }
+    
     public override void Bind() {
         base.Bind();
+        if (this._BindUniversesList) {
+            this.BindCollection(MenuRoot._UniversesListProperty, UniversesListAdded, UniversesListRemoved);
+        }
     }
 }
 
@@ -1701,9 +1817,9 @@ public class UniverseEditorNewUniverseWindowViewBase : NewUniverseSubEditorViewB
     [UnityEngine.HideInInspector()]
     public bool _BindIsValid = true;
     
-    [UFToggleGroup("Create")]
+    [UFToggleGroup("CreateUniverse")]
     [UnityEngine.HideInInspector()]
-    public bool _BindCreate = true;
+    public bool _BindCreateUniverse = true;
     
     [UFToggleGroup("IsActive")]
     [UnityEngine.HideInInspector()]
@@ -1726,8 +1842,8 @@ public class UniverseEditorNewUniverseWindowViewBase : NewUniverseSubEditorViewB
     public virtual void IsValidChanged(Boolean value) {
     }
     
-    /// Invokes CreateExecuted when the Create command is executed.
-    public virtual void CreateExecuted() {
+    /// Invokes CreateUniverseExecuted when the CreateUniverse command is executed.
+    public virtual void CreateUniverseExecuted() {
     }
     
     /// Subscribes to the property and is notified anytime the value changes.
@@ -1745,8 +1861,8 @@ public class UniverseEditorNewUniverseWindowViewBase : NewUniverseSubEditorViewB
         if (this._BindIsValid) {
             this.BindProperty(NewUniverseSubEditor._IsValidProperty, this.IsValidChanged);
         }
-        if (this._BindCreate) {
-            this.BindCommandExecuted(NewUniverseSubEditor.Create, CreateExecuted);
+        if (this._BindCreateUniverse) {
+            this.BindCommandExecuted(NewUniverseSubEditor.CreateUniverse, CreateUniverseExecuted);
         }
         if (this._BindIsActive) {
             this.BindProperty(NewUniverseSubEditor._IsActiveProperty, this.IsActiveChanged);
@@ -1755,6 +1871,65 @@ public class UniverseEditorNewUniverseWindowViewBase : NewUniverseSubEditorViewB
 }
 
 public partial class UniverseEditorNewUniverseWindow : UniverseEditorNewUniverseWindowViewBase {
+}
+
+public class AddUniverseObjectSubEditorViewViewBase : AddUniverseObjectSubEditorViewBase {
+    
+    [UFToggleGroup("IsActive")]
+    [UnityEngine.HideInInspector()]
+    [UFRequireInstanceMethod("IsActiveChanged")]
+    public bool _BindIsActive = true;
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<AddUniverseObjectSubEditorController>());
+    }
+    
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void IsActiveChanged(Boolean value) {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        if (this._BindIsActive) {
+            this.BindProperty(AddUniverseObjectSubEditor._IsActiveProperty, this.IsActiveChanged);
+        }
+    }
+}
+
+public partial class AddUniverseObjectSubEditorView : AddUniverseObjectSubEditorViewViewBase {
+}
+
+public class StartZoneViewViewBase : UniverseObjectView {
+    
+    public StartZoneViewModel StartZone {
+        get {
+            return ((StartZoneViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(StartZoneViewModel);
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<StartZoneController>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+public partial class StartZoneView : StartZoneViewViewBase {
 }
 
 public partial class ShipController : ViewComponent {

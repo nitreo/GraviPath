@@ -9,10 +9,7 @@ public class SineMover : MonoBehaviour
 
     public float Amp;
     public float Freq;
-
     private float _t = 0;
-
-
 
     void Start()
     {
@@ -23,7 +20,6 @@ public class SineMover : MonoBehaviour
         {
             var x = Amp * Mathf.Sin(Time.time * 2 * Mathf.PI * Freq);
             transform.localPosition = new Vector3(pivotPos.x+x,pivotPos.y,0);
-        
         }).DisposeWith(gameObject);
     }
 

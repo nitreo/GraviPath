@@ -4,5 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-public sealed partial class MenuSceneManagerSettings {
+public sealed partial class MenuSceneManagerSettings
+{
+
+    public UniverseViewModel UniverseToPlay { get; set; }
+
 }

@@ -152,9 +152,9 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 0}
   m_Dimensions: {x: 15, y: 15}
   m_GravityType: 0
-  m_Strength: 700
+  m_Strength: 20
   m_MinRadius: 0
-  m_MaxRadius: 100
+  m_MaxRadius: 20
   m_Points:
   - {x: 0, y: 0}
 --- !u!114 &11456410

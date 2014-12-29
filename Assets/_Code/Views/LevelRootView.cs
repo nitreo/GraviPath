@@ -9,7 +9,22 @@ using UnityEngine.UI;
 
 
 public partial class LevelRootView
-{
+{ 
+
+    /// Subscribes to the property and is notified anytime the value changes.
+    public override void UniverseChanged(UniverseViewModel value) {
+        base.UniverseChanged(value);
+
+        if (_currentUniverseView != null)
+            GameObject.Destroy(_currentUniverseView.gameObject);
+
+        if (value != null)
+        {
+            _currentUniverseView = InstantiateView(value) as UniverseView;
+            _currentUniverseView.AddGravityAffectedObject(_Player.rigidbody2D);
+        }
+    }
+
 
     public Text ScoreText;
 
@@ -19,8 +34,12 @@ public partial class LevelRootView
     /// Subscribes to the property and is notified anytime the value changes.
     public override void ScoreChanged(Int32 value) {
         base.ScoreChanged(value);
-        ScoreText.text = "Score: "+value;
 
+    /*    if(value <= 4)
+        ScoreText.text = "Score: "+0;
+        else
+        ScoreText.text = "Score: " + value;
+*/
     }
  
 
@@ -62,7 +81,6 @@ public partial class LevelRootView
     }
 
 
-    public Transform StartZone;
 
     public Button RestartButton;
     public Button QuitButton;
@@ -71,9 +89,10 @@ public partial class LevelRootView
     public override void RestartExecuted() {
         base.RestartExecuted();
 
-        if (_Player != null)
+        if (_Player != null && LevelRoot.Universe !=null)
         {
-            _Player.transform.position = StartZone.position;
+            var zonePos = LevelRoot.Universe.Objects.OfType<StartZoneViewModel>().First().Position;
+            _Player.transform.position = zonePos;
         }
 
         _smallAsteroidsPositions.Keys.ToList().ForEach(t =>
@@ -96,17 +115,17 @@ public partial class LevelRootView
         QuitButton.AsClickObservable()
             .Subscribe(_ =>{ExecuteToMenu();})
             .DisposeWith(this);
-
+/*
         GameObject.FindGameObjectsWithTag("SmallAsteroid")
             .Select(o=>o.transform).ToList().ForEach(t =>
             {
                 _smallAsteroidsPositions.Add(t,t.position);
                 _smallAsteroidsRotations.Add(t,t.eulerAngles);
-            });
+            });*/
 
     }
 
-    private Dictionary<Transform, Vector3> _smallAsteroidsPositions = new Dictionary<Transform, Vector3>();
-    private Dictionary<Transform, Vector3> _smallAsteroidsRotations = new Dictionary<Transform, Vector3>();
-
+    private readonly Dictionary<Transform, Vector3> _smallAsteroidsPositions = new Dictionary<Transform, Vector3>();
+    private readonly Dictionary<Transform, Vector3> _smallAsteroidsRotations = new Dictionary<Transform, Vector3>();
+    private UniverseView _currentUniverseView;
 }

@@ -1,30 +1,41 @@
 using System;
+using System.Diagnostics;
+using System.Linq;
 using UniRx;
 
 public class EditorRootController : EditorRootControllerBase
 {
     [Inject] public SimplePlanet1Controller SimplePlanet1Controller;
     [Inject] public SimplePlanet2Controller SimplePlanet2Controller;
-    [Inject]
-    public SimpleAsteroid1Controller SimpleAsteroid1Controller;
-    [Inject]
-    public SimpleAsteroid2Controller SimpleAsteroid2Controller;
-    [Inject]
-    public SimpleAsteroid3Controller SimpleAsteroid3Controller;
+    [Inject] public SimpleAsteroid1Controller SimpleAsteroid1Controller;
+    [Inject] public SimpleAsteroid2Controller SimpleAsteroid2Controller;
+    [Inject] public SimpleAsteroid3Controller SimpleAsteroid3Controller;
+    [Inject] public SimpleAsteroid4Controller SimpleAsteroid4Controller;
+    [Inject] public StartZoneController StartZoneController;
 
     public override void InitializeEditorRoot(EditorRootViewModel editorRoot)
     {
         editorRoot.NewUniverseDataProperty.Where(editor => editor != null)
-            .Subscribe(editor => { EditorChanged(editorRoot, editor); });
-
-
+            .Subscribe(editor => { NewUniverseEditorChanged(editorRoot, editor); });
+        editorRoot.AddUniverseObjectSubEditorProperty.Where(editor => editor != null)
+            .Subscribe(editor => { AddUniverseObjectEditorChanged(editorRoot, editor); });
         editorRoot.AvailableUniverses.Clear();
+        editorRoot.CurrentUniverseProperty.Subscribe(uni => { if(editorRoot.AddUniverseObjectSubEditor!=null) editorRoot.AddUniverseObjectSubEditor.IsActive = uni != null; });
         UniverseRepository.GetLatestPaged(10, 0).Subscribe(uni => { editorRoot.AvailableUniverses.Add(uni); });
     }
 
-    private void EditorChanged(EditorRootViewModel editorRoot, NewUniverseSubEditorViewModel editor)
+    private void AddUniverseObjectEditorChanged(EditorRootViewModel editorRoot, AddUniverseObjectSubEditorViewModel editor)
     {
-        editorRoot.NewUniverseData.Create.Subscribe(_ =>
+        editorRoot.AddUniverseObjectSubEditor.Add.Subscribe(desc =>
+        {
+            //WHY DO I HAVE TO USE PARAMETER HERE insdeat of desc ????? HUH
+            ExecuteCommand(editorRoot.AddUniverseObject,editorRoot.AddUniverseObjectSubEditor.Add.Parameter);
+        }).DisposeWhenChanged(editorRoot.AddUniverseObjectSubEditorProperty);
+    }
+
+    private void NewUniverseEditorChanged(EditorRootViewModel editorRoot, NewUniverseSubEditorViewModel editor)
+    {
+        editorRoot.NewUniverseData.CreateUniverse.Subscribe(_ =>
         {
             ExecuteCommand(editorRoot.CreateNewUniverse);
             ExecuteCommand(editorRoot.ToggleNewUniverseSubEditor);
@@ -51,9 +62,12 @@ public class EditorRootController : EditorRootControllerBase
         base.SaveCurrentUniverse(editorRoot);
 
         //TODO: Setup some sort of loading screen using ContinueWith
-        UniverseRepository.SaveUniverse(editorRoot.CurrentUniverse).Delay(TimeSpan.FromSeconds(2)).Subscribe(_ =>
+        UniverseRepository.SaveUniverse(editorRoot.CurrentUniverse).Delay(TimeSpan.FromSeconds(1)).Subscribe(_ =>
         {
-            editorRoot.AvailableUniverses.Clear();
+            foreach (var uni in editorRoot.AvailableUniverses.ToList())
+            {
+                editorRoot.AvailableUniverses.Remove(uni);
+            }
             UniverseRepository.GetLatestPaged(10, 0).Subscribe(uni => { editorRoot.AvailableUniverses.Add(uni); });
         });
     }
@@ -88,11 +102,16 @@ public class EditorRootController : EditorRootControllerBase
                 break;
             case UniverseObjectType.Asteroid3:
                 uObject = SimpleAsteroid3Controller.CreateSimpleAsteroid3();
+                break; 
+            case UniverseObjectType.Asteroid4:
+                uObject = SimpleAsteroid4Controller.CreateSimpleAsteroid4();
+                break;
+            case UniverseObjectType.StartZone:
+                uObject = StartZoneController.CreateStartZone();
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
-
         uObject.Position = arg.Position;
         editorRoot.CurrentUniverse.Objects.Add(uObject);
     }

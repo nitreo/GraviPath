@@ -10,4 +10,24 @@ public class MenuRootController : MenuRootControllerBase {
     
     public override void InitializeMenuRoot(MenuRootViewModel menuRoot) {
     }
+
+
+    public override void UpdateUniversesList(MenuRootViewModel menuRoot, UniverseListUpdateDescriptor arg)
+    {
+        base.UpdateUniversesList(menuRoot, arg);
+        if (arg.Type == UniverseListUpdateType.Latest)
+        {
+
+
+
+            foreach (var item in menuRoot.UniversesList.ToList())
+            {
+                menuRoot.UniversesList.Remove(item);                                
+            }
+            UniverseRepository.GetLatestPaged(10, 0).Subscribe(universe =>
+            {
+                MenuRoot.UniversesList.Add(universe);
+            });
+        }
+    }
 }

@@ -14,20 +14,37 @@ public partial class EditorRootView
 {
 
     private UniverseView _currentUniverseView = null;
-    public Image CreateDragHandle;
+
     public Canvas MainCanvas;
-    public GameObject Toolbar;
     public Button SaveButton;
-    public CreateObjectButtonDescriptor[] CreateObjectToolbarButtons;
+    public Button ExitButton;
+    public RectTransform UniversesList;    
+    public GameObject UniverseListItem;
+    private readonly Dictionary<UniverseViewModel, GameObject> AvailableUniverse2ButtonMap = new Dictionary<UniverseViewModel, GameObject>();
 
     /// Subscribes to collection modifications.  Add & Remove methods are invoked for each modification.
     public override void AvailableUniversesAdded(UniverseViewModel item) {
         base.AvailableUniversesAdded(item);
+        var uiItem = Instantiate(UniverseListItem) as GameObject;
+
+        var textBox = uiItem.GetComponentInChildren<Text>();
+        textBox.text = item.Name;
+
+        uiItem.transform.SetParent(UniversesList, false);
+
+        AvailableUniverse2ButtonMap.Add(item, uiItem);
+        uiItem.GetComponent<Button>().AsClickObservable().Subscribe(_ =>
+        {
+            ExecuteLoadUniverse(item);
+        }).DisposeWith(this);
     }
     
     /// Subscribes to collection modifications.  Add & Remove methods are invoked for each modification.
     public override void AvailableUniversesRemoved(UniverseViewModel item) {
         base.AvailableUniversesRemoved(item);
+        var uiItem = AvailableUniverse2ButtonMap[item];
+        AvailableUniverse2ButtonMap.Remove(item);
+        Destroy(uiItem.gameObject);
     }
     
     /// Subscribes to the property and is notified anytime the value changes.
@@ -40,12 +57,10 @@ public partial class EditorRootView
         if (value != null)
         {
             _currentUniverseView = InstantiateView(value) as UniverseView;
-            Toolbar.SetActive(true);
             SaveButton.gameObject.SetActive(true);
         }
         else
         {
-            Toolbar.SetActive(false);
             SaveButton.gameObject.SetActive(false);
         }
     }
@@ -53,13 +68,13 @@ public partial class EditorRootView
 
     public void OnGUI()
     {
-        foreach (var availableUniverse in EditorRoot.AvailableUniverses)
+/*        foreach (var availableUniverse in EditorRoot.AvailableUniverses)
         {
             if (GUILayout.Button(availableUniverse.Name))
             {
                 ExecuteLoadUniverse(availableUniverse);
             }
-        }
+        }*/
     }
 
     public Button CreateNewUniverseButton;
@@ -67,71 +82,18 @@ public partial class EditorRootView
     public override void Bind()
     {
         base.Bind();
-        CreateNewUniverseButton.AsClickObservable().Subscribe(_ =>
+        
+        CreateNewUniverseButton.AsClickObservable().Subscribe(_ => { ExecuteToggleNewUniverseSubEditor(); });
+        SaveButton.AsClickObservable().Subscribe(_ => { ExecuteSaveCurrentUniverse(); });
+
+        ExitButton.AsClickObservable().Subscribe(_ =>
         {
-            ExecuteToggleNewUniverseSubEditor();
+            ExecuteToMenu();
         });
 
-        SaveButton.AsClickObservable().Subscribe(_ =>
-        {
-            ExecuteSaveCurrentUniverse();
-        });
-
-        foreach (var button in CreateObjectToolbarButtons)
-        {
-            RegisterToolbarDragButton(button);
-        }
-
     }
 
-    public void RegisterToolbarDragButton(CreateObjectButtonDescriptor button)
-    {
-        var trigger = button.GetComponent<EventTrigger>();
-        trigger.AsObservableOfBeginDrag().Subscribe(_ =>
-        {
-            CreateObjectHandlePicked(CreateDragHandle,button);
-        });
-
-        trigger.AsObservableOfDrag().Subscribe(_ =>
-        {
-            var dragArgs = _ as PointerEventData;
-            var point = Camera.main.ScreenToWorldPoint(dragArgs.position);
-            CreateObjectHandleDragged(CreateDragHandle,point,button);                
-        });
-        trigger.AsObservableOfEndDrag().Subscribe(_ =>
-        {
-            CreateObjectHandleDropped(CreateDragHandle,button);                
-        });
-    }
-
-    public void CreateObjectHandlePicked(Image handle, CreateObjectButtonDescriptor source)
-    {
-        handle.rectTransform.position = source.transform.position;
-        handle.overrideSprite = source.DragSprite;
-
-        handle.gameObject.SetActive(true);
-    }
-
-    public void CreateObjectHandleDragged(Image handle, Vector3 newPosition,CreateObjectButtonDescriptor source)
-    {
-        handle.rectTransform.position = new Vector3(newPosition.x, newPosition.y, 0);
-    }
-
-    public void CreateObjectHandleDropped(Image handle, CreateObjectButtonDescriptor source)
-    {
-        handle.gameObject.SetActive(false);
-        CreateObject(source.ObjectType,handle.transform.position);
-    }
-
-    public void CreateObject(UniverseObjectType type, Vector3 position)
-    {
-        var descriptor = new UniverseObjectDescriptor()
-        {
-            Type = type,
-            Position = position
-        };
-        ExecuteAddUniverseObject(descriptor);
-    }
+   
 
 
 }

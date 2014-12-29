@@ -69,8 +69,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.36999989, y: 3.83999991, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0}
+  m_LocalPosition: {x: 9.66425323, y: 13.576705, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400004}
   m_Father: {fileID: 0}
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 0}
   m_Dimensions: {x: 8, y: 8}
   m_GravityType: 1
-  m_Strength: 90
+  m_Strength: 20
   m_MinRadius: 0
   m_MaxRadius: 9
   m_Points:
@@ -167,7 +167,9 @@ MonoBehaviour:
   _overrideViewModel: 0
   _resolveName: 
   _Save: 0
+  _IsEditable: 0
   _BindReset: 1
+  _BindIsEditable: 1
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

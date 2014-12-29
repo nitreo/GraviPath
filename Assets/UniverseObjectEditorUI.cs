@@ -13,14 +13,15 @@ public class UniverseObjectEditorUI : MonoBehaviour {
     private Transform _object;
     
 
-    public void Init()
+    public virtual void Init()
     {
 
         _object = transform.GetComponentInParent<UniverseObjectView>().transform;
         _thisCanvas = GetComponent<RectTransform>();
         transform.localPosition = Vector3.zero;
         _thisCanvas.eulerAngles = Vector3.zero;
-        //_thisCanvas.localScale = _object.localScale;
+        _thisCanvas.rect.Set(_thisCanvas.rect.x,_thisCanvas.rect.y,_thisCanvas.rect.width,_thisCanvas.rect.height);
+
         DragHandle.AsObservableOfDrag().Subscribe(_ =>
         {
             var args = _ as PointerEventData;
@@ -31,7 +32,6 @@ public class UniverseObjectEditorUI : MonoBehaviour {
         RotateHandle.AsObservableOfDrag().Subscribe(_ =>
         {
             var args = _ as PointerEventData;
-            var pos = Camera.main.ScreenToWorldPoint(args.position);
             _object.localEulerAngles += new Vector3(0, 0, args.delta.x / 10);
             _thisCanvas.eulerAngles = Vector3.zero;
         });

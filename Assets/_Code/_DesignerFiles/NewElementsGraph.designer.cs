@@ -689,6 +689,8 @@ public class EditorRootViewModelBase : ViewModel {
     
     protected CommandWithSender<EditorRootViewModel> _SaveCurrentUniverse;
     
+    protected CommandWithSenderAndArgument<EditorRootViewModel, UniverseObjectDescriptor> _AddUniverseObject;
+    
     public EditorRootViewModelBase(EditorRootControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
     }
@@ -818,6 +820,15 @@ public partial class EditorRootViewModel : EditorRootViewModelBase {
         }
     }
     
+    public virtual CommandWithSenderAndArgument<EditorRootViewModel, UniverseObjectDescriptor> AddUniverseObject {
+        get {
+            return _AddUniverseObject;
+        }
+        set {
+            _AddUniverseObject = value;
+        }
+    }
+    
     protected override void WireCommands(Controller controller) {
         var editorRoot = controller as EditorRootControllerBase;
         this.ToMenu = new CommandWithSender<EditorRootViewModel>(this, editorRoot.ToMenu);
@@ -825,6 +836,7 @@ public partial class EditorRootViewModel : EditorRootViewModelBase {
         this.CreateNewUniverse = new CommandWithSender<EditorRootViewModel>(this, editorRoot.CreateNewUniverse);
         this.ToggleNewUniverseSubEditor = new CommandWithSender<EditorRootViewModel>(this, editorRoot.ToggleNewUniverseSubEditor);
         this.SaveCurrentUniverse = new CommandWithSender<EditorRootViewModel>(this, editorRoot.SaveCurrentUniverse);
+        this.AddUniverseObject = new CommandWithSenderAndArgument<EditorRootViewModel, UniverseObjectDescriptor>(this, editorRoot.AddUniverseObject);
     }
     
     public override void Write(ISerializerStream stream) {
@@ -866,6 +878,7 @@ if (stream.DeepSerialize) {
         list.Add(new ViewModelCommandInfo("CreateNewUniverse", CreateNewUniverse) { ParameterType = typeof(void) });
         list.Add(new ViewModelCommandInfo("ToggleNewUniverseSubEditor", ToggleNewUniverseSubEditor) { ParameterType = typeof(void) });
         list.Add(new ViewModelCommandInfo("SaveCurrentUniverse", SaveCurrentUniverse) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("AddUniverseObject", AddUniverseObject) { ParameterType = typeof(UniverseObjectDescriptor) });
     }
     
     protected override void AvailableUniversesCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) {
@@ -879,6 +892,8 @@ public class UniverseViewModelBase : ViewModel {
     public P<String> _NameProperty;
     
     public P<String> _AuthorProperty;
+    
+    public P<Boolean> _IsEditableProperty;
     
     public ModelCollection<UniverseObjectViewModel> _ObjectsProperty;
     
@@ -898,6 +913,7 @@ public class UniverseViewModelBase : ViewModel {
         base.Bind();
         _NameProperty = new P<String>(this, "Name");
         _AuthorProperty = new P<String>(this, "Author");
+        _IsEditableProperty = new P<Boolean>(this, "IsEditable");
         _ObjectsProperty = new ModelCollection<UniverseObjectViewModel>(this, "Objects");
         _ObjectsProperty.CollectionChanged += ObjectsCollectionChanged;
     }
@@ -948,6 +964,21 @@ public partial class UniverseViewModel : UniverseViewModelBase {
         }
     }
     
+    public virtual P<Boolean> IsEditableProperty {
+        get {
+            return this._IsEditableProperty;
+        }
+    }
+    
+    public virtual Boolean IsEditable {
+        get {
+            return _IsEditableProperty.Value;
+        }
+        set {
+            _IsEditableProperty.Value = value;
+        }
+    }
+    
     public virtual ModelCollection<UniverseObjectViewModel> Objects {
         get {
             return this._ObjectsProperty;
@@ -991,6 +1022,7 @@ public partial class UniverseViewModel : UniverseViewModelBase {
 		base.Write(stream);
         stream.SerializeString("Name", this.Name);
         stream.SerializeString("Author", this.Author);
+        stream.SerializeBool("IsEditable", this.IsEditable);
         if (stream.DeepSerialize) stream.SerializeArray("Objects", this.Objects);
     }
     
@@ -998,6 +1030,7 @@ public partial class UniverseViewModel : UniverseViewModelBase {
 		base.Read(stream);
         		this.Name = stream.DeserializeString("Name");;
         		this.Author = stream.DeserializeString("Author");;
+        		this.IsEditable = stream.DeserializeBool("IsEditable");;
 if (stream.DeepSerialize) {
         this.Objects.Clear();
         this.Objects.AddRange(stream.DeserializeObjectArray<UniverseObjectViewModel>("Objects"));
@@ -1013,6 +1046,7 @@ if (stream.DeepSerialize) {
         base.FillProperties(list);;
         list.Add(new ViewModelPropertyInfo(_NameProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_AuthorProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_IsEditableProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_ObjectsProperty, true, true, false));
     }
     
@@ -1034,6 +1068,8 @@ public class UniverseObjectViewModelBase : ViewModel {
     
     public P<Vector3> _RotationProperty;
     
+    public P<Boolean> _IsEditableProperty;
+    
     protected CommandWithSender<UniverseObjectViewModel> _Reset;
     
     public UniverseObjectViewModelBase(UniverseObjectControllerBase controller, bool initialize = true) : 
@@ -1048,6 +1084,7 @@ public class UniverseObjectViewModelBase : ViewModel {
         base.Bind();
         _PositionProperty = new P<Vector3>(this, "Position");
         _RotationProperty = new P<Vector3>(this, "Rotation");
+        _IsEditableProperty = new P<Boolean>(this, "IsEditable");
     }
 }
 
@@ -1093,6 +1130,21 @@ public partial class UniverseObjectViewModel : UniverseObjectViewModelBase {
         }
     }
     
+    public virtual P<Boolean> IsEditableProperty {
+        get {
+            return this._IsEditableProperty;
+        }
+    }
+    
+    public virtual Boolean IsEditable {
+        get {
+            return _IsEditableProperty.Value;
+        }
+        set {
+            _IsEditableProperty.Value = value;
+        }
+    }
+    
     public virtual CommandWithSender<UniverseObjectViewModel> Reset {
         get {
             return _Reset;
@@ -1120,12 +1172,14 @@ public partial class UniverseObjectViewModel : UniverseObjectViewModelBase {
 		base.Write(stream);
         stream.SerializeVector3("Position", this.Position);
         stream.SerializeVector3("Rotation", this.Rotation);
+        stream.SerializeBool("IsEditable", this.IsEditable);
     }
     
     public override void Read(ISerializerStream stream) {
 		base.Read(stream);
         		this.Position = stream.DeserializeVector3("Position");;
         		this.Rotation = stream.DeserializeVector3("Rotation");;
+        		this.IsEditable = stream.DeserializeBool("IsEditable");;
     }
     
     public override void Unbind() {
@@ -1136,6 +1190,7 @@ public partial class UniverseObjectViewModel : UniverseObjectViewModelBase {
         base.FillProperties(list);;
         list.Add(new ViewModelPropertyInfo(_PositionProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_RotationProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_IsEditableProperty, false, false, false));
     }
     
     protected override void FillCommands(List<ViewModelCommandInfo> list) {

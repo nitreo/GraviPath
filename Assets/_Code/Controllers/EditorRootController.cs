@@ -8,8 +8,8 @@ using UnityEngine;
 
 public class EditorRootController : EditorRootControllerBase
 {
-    
 
+    [Inject] public SimplePlanet1Controller SimplePlanet1Controller;
 
     public override void InitializeEditorRoot(EditorRootViewModel editorRoot)
     {
@@ -41,6 +41,7 @@ public class EditorRootController : EditorRootControllerBase
     {
         base.CreateNewUniverse(editorRoot);
         var newUniverseSubEditor = UniverseController.CreateUniverse();
+        newUniverseSubEditor.IsEditable = true;
         newUniverseSubEditor.Name = editorRoot.NewUniverseData.Name;
         editorRoot.CurrentUniverse = newUniverseSubEditor;
     }
@@ -56,14 +57,34 @@ public class EditorRootController : EditorRootControllerBase
         base.SaveCurrentUniverse(editorRoot);
 
         //TODO: Setup some sort of loading screen using ContinueWith
-        UniverseRepository.SaveUniverse(editorRoot.CurrentUniverse);
-
-
-        editorRoot.AvailableUniverses.Clear();
-        UniverseRepository.GetLatestPaged(10, 0).Subscribe(uni =>
+        UniverseRepository.SaveUniverse(editorRoot.CurrentUniverse).Delay(TimeSpan.FromSeconds(2)).Subscribe(_ =>
         {
-            editorRoot.AvailableUniverses.Add(uni);
+            editorRoot.AvailableUniverses.Clear();
+            UniverseRepository.GetLatestPaged(10, 0).Subscribe(uni =>
+            {
+                editorRoot.AvailableUniverses.Add(uni);
+            });    
         });
+
+
     }
 
+    public override void LoadUniverse(EditorRootViewModel editorRoot, UniverseViewModel arg)
+    {
+        base.LoadUniverse(editorRoot, arg);
+        arg.IsEditable = true;
+        editorRoot.CurrentUniverse = arg;
+    }
+
+    public override void AddUniverseObject(EditorRootViewModel editorRoot, UniverseObjectDescriptor arg)
+    {
+        base.AddUniverseObject(editorRoot, arg);
+        if (arg.Name == "Planet1")
+        {
+            var planet = SimplePlanet1Controller.CreateSimplePlanet1();
+            planet.Position= arg.Position;
+            editorRoot.CurrentUniverse.Objects.Add(planet);
+        }
+
+    }
 }

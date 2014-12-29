@@ -169,6 +169,9 @@ public abstract class EditorRootControllerBase : Controller {
     
     public virtual void SaveCurrentUniverse(EditorRootViewModel editorRoot) {
     }
+    
+    public virtual void AddUniverseObject(EditorRootViewModel editorRoot, UniverseObjectDescriptor arg) {
+    }
 }
 
 public abstract class UniverseControllerBase : Controller {

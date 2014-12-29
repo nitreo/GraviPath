@@ -79,6 +79,14 @@ public static class UGUIExtensions
     public static IObservable<BaseEventData> AsObservableOfDrag(this EventTrigger trigger)
     {
         return trigger.AsObservableOf(EventTriggerType.Drag);
+    }    
+    public static IObservable<BaseEventData> AsObservableOfBeginDrag(this EventTrigger trigger)
+    {
+        return trigger.AsObservableOf(EventTriggerType.BeginDrag);
+    }    
+    public static IObservable<BaseEventData> AsObservableOfEndDrag(this EventTrigger trigger)
+    {
+        return trigger.AsObservableOf(EventTriggerType.EndDrag);
     }
     public static IObservable<BaseEventData> AsObservableOfMove(this EventTrigger trigger)
     {

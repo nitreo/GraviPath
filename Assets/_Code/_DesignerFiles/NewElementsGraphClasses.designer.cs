@@ -17,7 +17,43 @@ using System.Collections.ObjectModel;
 using UnityEngine;
 
 
-public partial class UniverseMetaWrapper : System.ComponentModel.INotifyPropertyChanged {
+public partial class UniverseObjectDescriptor : System.ComponentModel.INotifyPropertyChanged {
+    
+    private String _Name;
+    
+    private Vector3 _Position;
+    
+    private Vector3 _Rotation;
     
     public event PropertyChangedEventHandler PropertyChanged;
-    protected virtual void OnPropertyChanged(string propertyName){ PropertyChangedEventHandler handler = PropertyChanged; if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName)); }}
+    protected virtual void OnPropertyChanged(string propertyName){ PropertyChangedEventHandler handler = PropertyChanged; if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName)); }
+    public virtual String Name {
+        get {
+            return this._Name;
+        }
+        set {
+            _Name = value;
+            OnPropertyChanged("Name");
+        }
+    }
+    
+    public virtual Vector3 Position {
+        get {
+            return this._Position;
+        }
+        set {
+            _Position = value;
+            OnPropertyChanged("Position");
+        }
+    }
+    
+    public virtual Vector3 Rotation {
+        get {
+            return this._Rotation;
+        }
+        set {
+            _Rotation = value;
+            OnPropertyChanged("Rotation");
+        }
+    }
+}

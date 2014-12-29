@@ -277,6 +277,10 @@ public abstract class EditorRootViewBase : ViewBase {
     public virtual void ExecuteSaveCurrentUniverse() {
         this.ExecuteCommand(EditorRoot.SaveCurrentUniverse);
     }
+    
+    public virtual void ExecuteAddUniverseObject(UniverseObjectDescriptor arg) {
+        this.ExecuteCommand(EditorRoot.AddUniverseObject, arg);
+    }
 }
 
 [DiagramInfoAttribute("GraviPath")]
@@ -289,6 +293,10 @@ public abstract class UniverseViewBase : ViewBase {
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
     public String _Author;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Boolean _IsEditable;
     
     public override System.Type ViewModelType {
         get {
@@ -313,6 +321,7 @@ public abstract class UniverseViewBase : ViewBase {
         UniverseViewModel universe = ((UniverseViewModel)(viewModel));
         universe.Name = this._Name;
         universe.Author = this._Author;
+        universe.IsEditable = this._IsEditable;
     }
     
     public virtual void ExecuteLoad(String arg) {
@@ -326,6 +335,10 @@ public abstract class UniverseViewBase : ViewBase {
 
 [DiagramInfoAttribute("GraviPath")]
 public abstract class UniverseObjectViewBase : ViewBase {
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Boolean _IsEditable;
     
     public override System.Type ViewModelType {
         get {
@@ -348,6 +361,7 @@ public abstract class UniverseObjectViewBase : ViewBase {
     
     protected override void InitializeViewModel(ViewModel viewModel) {
         UniverseObjectViewModel universeObject = ((UniverseObjectViewModel)(viewModel));
+        universeObject.IsEditable = this._IsEditable;
     }
     
     public virtual void ExecuteReset() {
@@ -1129,12 +1143,21 @@ public class UniverseObjectViewViewBase : UniverseObjectViewBase {
     [UnityEngine.HideInInspector()]
     public bool _BindReset = true;
     
+    [UFToggleGroup("IsEditable")]
+    [UnityEngine.HideInInspector()]
+    [UFRequireInstanceMethod("IsEditableChanged")]
+    public bool _BindIsEditable = true;
+    
     public override ViewModel CreateModel() {
         return this.RequestViewModel(GameManager.Container.Resolve<UniverseObjectController>());
     }
     
     /// Invokes ResetExecuted when the Reset command is executed.
     public virtual void ResetExecuted() {
+    }
+    
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void IsEditableChanged(Boolean value) {
     }
     
     public virtual void ResetPosition() {
@@ -1169,6 +1192,9 @@ public class UniverseObjectViewViewBase : UniverseObjectViewBase {
         ResetRotation();
         if (this._BindReset) {
             this.BindCommandExecuted(UniverseObject.Reset, ResetExecuted);
+        }
+        if (this._BindIsEditable) {
+            this.BindProperty(UniverseObject._IsEditableProperty, this.IsEditableChanged);
         }
     }
 }
@@ -1256,6 +1282,11 @@ public class UniverseViewViewBase : UniverseViewBase {
     [UnityEngine.HideInInspector()]
     public UnityEngine.Transform _ObjectsContainer;
     
+    [UFToggleGroup("IsEditable")]
+    [UnityEngine.HideInInspector()]
+    [UFRequireInstanceMethod("IsEditableChanged")]
+    public bool _BindIsEditable = true;
+    
     public override ViewModel CreateModel() {
         return this.RequestViewModel(GameManager.Container.Resolve<UniverseController>());
     }
@@ -1273,10 +1304,17 @@ public class UniverseViewViewBase : UniverseViewBase {
     public virtual void ObjectsRemoved(ViewBase item) {
     }
     
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void IsEditableChanged(Boolean value) {
+    }
+    
     public override void Bind() {
         base.Bind();
         if (this._BindObjects) {
             this.BindToViewCollection( Universe._ObjectsProperty, viewModel=>{ return CreateObjectsView(viewModel as UniverseObjectViewModel); }, ObjectsAdded, ObjectsRemoved, _ObjectsContainer, _ObjectsSceneFirst);
+        }
+        if (this._BindIsEditable) {
+            this.BindProperty(Universe._IsEditableProperty, this.IsEditableChanged);
         }
     }
 }

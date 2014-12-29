@@ -19,24 +19,12 @@ using UnityEngine;
 
 public partial class UniverseObjectDescriptor : System.ComponentModel.INotifyPropertyChanged {
     
-    private String _Name;
-    
     private Vector3 _Position;
     
-    private Vector3 _Rotation;
+    private UniverseObjectType _Type;
     
     public event PropertyChangedEventHandler PropertyChanged;
     protected virtual void OnPropertyChanged(string propertyName){ PropertyChangedEventHandler handler = PropertyChanged; if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName)); }
-    public virtual String Name {
-        get {
-            return this._Name;
-        }
-        set {
-            _Name = value;
-            OnPropertyChanged("Name");
-        }
-    }
-    
     public virtual Vector3 Position {
         get {
             return this._Position;
@@ -47,13 +35,13 @@ public partial class UniverseObjectDescriptor : System.ComponentModel.INotifyPro
         }
     }
     
-    public virtual Vector3 Rotation {
+    public virtual UniverseObjectType Type {
         get {
-            return this._Rotation;
+            return this._Type;
         }
         set {
-            _Rotation = value;
-            OnPropertyChanged("Rotation");
+            _Type = value;
+            OnPropertyChanged("Type");
         }
     }
 }

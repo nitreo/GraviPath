@@ -1,39 +1,33 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UniRx;
-using UnityEngine;
-
 
 public class EditorRootController : EditorRootControllerBase
 {
-
     [Inject] public SimplePlanet1Controller SimplePlanet1Controller;
+    [Inject] public SimplePlanet2Controller SimplePlanet2Controller;
+    [Inject]
+    public SimpleAsteroid1Controller SimpleAsteroid1Controller;
+    [Inject]
+    public SimpleAsteroid2Controller SimpleAsteroid2Controller;
+    [Inject]
+    public SimpleAsteroid3Controller SimpleAsteroid3Controller;
 
     public override void InitializeEditorRoot(EditorRootViewModel editorRoot)
     {
-        editorRoot.NewUniverseDataProperty.Where(editor => editor != null).Subscribe(editor =>
-        {
-            EditorChanged(editorRoot, editor);
-        });
+        editorRoot.NewUniverseDataProperty.Where(editor => editor != null)
+            .Subscribe(editor => { EditorChanged(editorRoot, editor); });
 
 
         editorRoot.AvailableUniverses.Clear();
-        UniverseRepository.GetLatestPaged(10, 0).Subscribe(uni =>
-        {
-            editorRoot.AvailableUniverses.Add(uni);
-        });
-
+        UniverseRepository.GetLatestPaged(10, 0).Subscribe(uni => { editorRoot.AvailableUniverses.Add(uni); });
     }
 
     private void EditorChanged(EditorRootViewModel editorRoot, NewUniverseSubEditorViewModel editor)
     {
-
         editorRoot.NewUniverseData.Create.Subscribe(_ =>
         {
-            this.ExecuteCommand(editorRoot.CreateNewUniverse);
-            this.ExecuteCommand(editorRoot.ToggleNewUniverseSubEditor);
+            ExecuteCommand(editorRoot.CreateNewUniverse);
+            ExecuteCommand(editorRoot.ToggleNewUniverseSubEditor);
         }).DisposeWhenChanged(editorRoot.NewUniverseDataProperty);
     }
 
@@ -60,13 +54,8 @@ public class EditorRootController : EditorRootControllerBase
         UniverseRepository.SaveUniverse(editorRoot.CurrentUniverse).Delay(TimeSpan.FromSeconds(2)).Subscribe(_ =>
         {
             editorRoot.AvailableUniverses.Clear();
-            UniverseRepository.GetLatestPaged(10, 0).Subscribe(uni =>
-            {
-                editorRoot.AvailableUniverses.Add(uni);
-            });    
+            UniverseRepository.GetLatestPaged(10, 0).Subscribe(uni => { editorRoot.AvailableUniverses.Add(uni); });
         });
-
-
     }
 
     public override void LoadUniverse(EditorRootViewModel editorRoot, UniverseViewModel arg)
@@ -79,12 +68,32 @@ public class EditorRootController : EditorRootControllerBase
     public override void AddUniverseObject(EditorRootViewModel editorRoot, UniverseObjectDescriptor arg)
     {
         base.AddUniverseObject(editorRoot, arg);
-        if (arg.Name == "Planet1")
+
+
+        UniverseObjectViewModel uObject = null;
+
+        switch (arg.Type)
         {
-            var planet = SimplePlanet1Controller.CreateSimplePlanet1();
-            planet.Position= arg.Position;
-            editorRoot.CurrentUniverse.Objects.Add(planet);
+            case UniverseObjectType.Planet1:
+                uObject = SimplePlanet1Controller.CreateSimplePlanet1();
+                break;
+            case UniverseObjectType.Planet2:
+                uObject = SimplePlanet2Controller.CreateSimplePlanet2();
+                break;
+            case UniverseObjectType.Asteroid1:
+                uObject = SimpleAsteroid1Controller.CreateSimpleAsteroid1();
+                break;
+            case UniverseObjectType.Asteroid2:
+                uObject = SimpleAsteroid2Controller.CreateSimpleAsteroid2();
+                break;
+            case UniverseObjectType.Asteroid3:
+                uObject = SimpleAsteroid3Controller.CreateSimpleAsteroid3();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
 
+        uObject.Position = arg.Position;
+        editorRoot.CurrentUniverse.Objects.Add(uObject);
     }
 }

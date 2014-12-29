@@ -3,7 +3,7 @@ using System.Collections;
 using System.Threading;
 using UnityEngine.UI;
 
-public class UniverseObjectsToolbarDragThumbnail : MonoBehaviour {
+public class CreateDragHandle : MonoBehaviour {
 
     private Image thisImage;
     public Sprite Planet1;

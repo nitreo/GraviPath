@@ -22,6 +22,27 @@ public partial class UniverseView {
 
         objectsView.transform.position = item.Position;
         objectsView.transform.eulerAngles = item.Rotation;
+        var cache = objectsView.transform.localScale;
+        objectsView.transform.localScale = Vector3.zero;
+
+
+        
+        var t = LeanTween.scale(objectsView.gameObject, cache, 0.8f)
+            .setEase(LeanTweenType.easeOutElastic);
+
+        if (!Universe.IsEditable)
+        {
+
+            var range = UnityEngine.Random.Range(0.1f, 0.5f);
+
+            Observable.Timer(TimeSpan.FromMilliseconds((range) * 1000)).Subscribe(_ =>
+            {
+                GenericAudioSource.instance.PlayPop();
+            });
+
+            t.setDelay(range);
+        }
+
 
         if (item is GravityObjectViewModel)
         {

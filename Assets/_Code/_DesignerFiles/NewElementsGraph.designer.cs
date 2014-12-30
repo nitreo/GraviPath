@@ -404,6 +404,10 @@ public class PlayerViewModelBase : ViewModel {
     
     protected CommandWithSender<PlayerViewModel> _Crash;
     
+    protected CommandWithSenderAndArgument<PlayerViewModel, ZoneViewModel> _ZoneReached;
+    
+    protected CommandWithSenderAndArgument<PlayerViewModel, DockDescriptor> _Dock;
+    
     public PlayerViewModelBase(PlayerControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
     }
@@ -558,6 +562,24 @@ public partial class PlayerViewModel : PlayerViewModelBase {
         }
     }
     
+    public virtual CommandWithSenderAndArgument<PlayerViewModel, ZoneViewModel> ZoneReached {
+        get {
+            return _ZoneReached;
+        }
+        set {
+            _ZoneReached = value;
+        }
+    }
+    
+    public virtual CommandWithSenderAndArgument<PlayerViewModel, DockDescriptor> Dock {
+        get {
+            return _Dock;
+        }
+        set {
+            _Dock = value;
+        }
+    }
+    
     public virtual LevelRootViewModel ParentLevelRoot {
         get {
             return this._ParentLevelRoot;
@@ -583,6 +605,8 @@ public partial class PlayerViewModel : PlayerViewModelBase {
         this.SetDirection = new CommandWithSenderAndArgument<PlayerViewModel, Vector3>(this, player.SetDirection);
         this.Reset = new CommandWithSender<PlayerViewModel>(this, player.Reset);
         this.Crash = new CommandWithSender<PlayerViewModel>(this, player.Crash);
+        this.ZoneReached = new CommandWithSenderAndArgument<PlayerViewModel, ZoneViewModel>(this, player.ZoneReached);
+        this.Dock = new CommandWithSenderAndArgument<PlayerViewModel, DockDescriptor>(this, player.Dock);
     }
     
     public override void Write(ISerializerStream stream) {
@@ -623,6 +647,8 @@ public partial class PlayerViewModel : PlayerViewModelBase {
         list.Add(new ViewModelCommandInfo("SetDirection", SetDirection) { ParameterType = typeof(Vector3) });
         list.Add(new ViewModelCommandInfo("Reset", Reset) { ParameterType = typeof(void) });
         list.Add(new ViewModelCommandInfo("Crash", Crash) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("ZoneReached", ZoneReached) { ParameterType = typeof(ZoneViewModel) });
+        list.Add(new ViewModelCommandInfo("Dock", Dock) { ParameterType = typeof(DockDescriptor) });
     }
 }
 
@@ -1357,12 +1383,23 @@ public class ZoneViewModelBase : UniverseObjectViewModel {
 
 public partial class ZoneViewModel : ZoneViewModelBase {
     
+    private PlayerViewModel _ParentPlayer;
+    
     public ZoneViewModel(ZoneControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
     }
     
     public ZoneViewModel() : 
             base() {
+    }
+    
+    public virtual PlayerViewModel ParentPlayer {
+        get {
+            return this._ParentPlayer;
+        }
+        set {
+            _ParentPlayer = value;
+        }
     }
     
     protected override void WireCommands(Controller controller) {
@@ -2435,6 +2472,57 @@ public partial class StartZoneViewModel : StartZoneViewModelBase {
     }
 }
 
+[DiagramInfoAttribute("GraviPath")]
+public class WinZoneViewModelBase : ZoneViewModel {
+    
+    public WinZoneViewModelBase(WinZoneControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public WinZoneViewModelBase() : 
+            base() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+}
+
+public partial class WinZoneViewModel : WinZoneViewModelBase {
+    
+    public WinZoneViewModel(WinZoneControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public WinZoneViewModel() : 
+            base() {
+    }
+    
+    protected override void WireCommands(Controller controller) {
+        base.WireCommands(controller);
+    }
+    
+    public override void Write(ISerializerStream stream) {
+		base.Write(stream);
+    }
+    
+    public override void Read(ISerializerStream stream) {
+		base.Read(stream);
+    }
+    
+    public override void Unbind() {
+        base.Unbind();
+    }
+    
+    protected override void FillProperties(List<ViewModelPropertyInfo> list) {
+        base.FillProperties(list);;
+    }
+    
+    protected override void FillCommands(List<ViewModelCommandInfo> list) {
+        base.FillCommands(list);;
+    }
+}
+
 public enum UniverseObjectType {
     
     Planet1,
@@ -2450,6 +2538,8 @@ public enum UniverseObjectType {
     Asteroid4,
     
     StartZone,
+    
+    WinZone,
 }
 
 public enum UniverseListUpdateType {

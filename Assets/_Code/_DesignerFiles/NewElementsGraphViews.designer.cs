@@ -190,6 +190,14 @@ public abstract class PlayerViewBase : ViewBase {
     public virtual void ExecuteCrash() {
         this.ExecuteCommand(Player.Crash);
     }
+    
+    public virtual void ExecuteZoneReached(ZoneViewModel zone) {
+        this.ExecuteCommand(Player.ZoneReached, zone);
+    }
+    
+    public virtual void ExecuteDock(DockDescriptor arg) {
+        this.ExecuteCommand(Player.Dock, arg);
+    }
 }
 
 [DiagramInfoAttribute("GraviPath")]
@@ -915,6 +923,33 @@ public abstract class StartZoneViewBase : ZoneViewBase {
     }
 }
 
+[DiagramInfoAttribute("GraviPath")]
+public abstract class WinZoneViewBase : ZoneViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(WinZoneViewModel);
+        }
+    }
+    
+    public WinZoneViewModel WinZone {
+        get {
+            return ((WinZoneViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<WinZoneController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
 public class PlayerSpaceShipViewViewBase : PlayerViewBase {
     
     [UnityEngine.SerializeField()]
@@ -945,6 +980,10 @@ public class PlayerSpaceShipViewViewBase : PlayerViewBase {
     [UnityEngine.HideInInspector()]
     [UFRequireInstanceMethod("ShipStateChanged")]
     public bool _BindShipState = true;
+    
+    [UFToggleGroup("Dock")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindDock = true;
     
     public virtual ShipController ShipController {
         get {
@@ -991,6 +1030,10 @@ public class PlayerSpaceShipViewViewBase : PlayerViewBase {
     public virtual void OnCrashed() {
     }
     
+    /// Invokes DockExecuted when the Dock command is executed.
+    public virtual void DockExecuted() {
+    }
+    
     public virtual void ResetPosition() {
         if (_PositionDisposable != null) _PositionDisposable.Dispose();
         _PositionDisposable = GetPositionObservable().Subscribe(Player._PositionProperty).DisposeWith(this);
@@ -1021,6 +1064,9 @@ public class PlayerSpaceShipViewViewBase : PlayerViewBase {
         }
         if (this._BindShipState) {
             this.BindProperty(Player._ShipStateProperty, this.ShipStateChanged);
+        }
+        if (this._BindDock) {
+            this.BindCommandExecuted(Player.Dock, DockExecuted);
         }
     }
 }
@@ -1932,6 +1978,39 @@ public class StartZoneViewViewBase : UniverseObjectView {
 public partial class StartZoneView : StartZoneViewViewBase {
 }
 
+public class WinZoneViewViewBase : ZoneView {
+    
+    public WinZoneViewModel WinZone {
+        get {
+            return ((WinZoneViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(WinZoneViewModel);
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<WinZoneController>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+public partial class WinZoneView : WinZoneViewViewBase {
+}
+
 public partial class ShipController : ViewComponent {
     
     public virtual PlayerViewModel Player {
@@ -1958,6 +2037,14 @@ public partial class ShipController : ViewComponent {
     
     public virtual void ExecuteCrash() {
         this.View.ExecuteCommand(Player.Crash);
+    }
+    
+    public virtual void ExecuteZoneReached(ZoneViewModel zone) {
+        this.View.ExecuteCommand(Player.ZoneReached, zone);
+    }
+    
+    public virtual void ExecuteDock(DockDescriptor arg) {
+        this.View.ExecuteCommand(Player.Dock, arg);
     }
 }
 

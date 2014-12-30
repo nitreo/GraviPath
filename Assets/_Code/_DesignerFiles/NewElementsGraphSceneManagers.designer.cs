@@ -74,6 +74,8 @@ public class LevelSceneManagerBase : SceneManager {
     
     private StartZoneController _StartZoneController;
     
+    private WinZoneController _WinZoneController;
+    
     public LevelSceneManagerSettings _LevelSceneManagerSettings = new LevelSceneManagerSettings();
     
     [Inject("LevelRoot")]
@@ -375,6 +377,19 @@ public class LevelSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual WinZoneController WinZoneController {
+        get {
+            if ((this._WinZoneController == null)) {
+                this._WinZoneController = new WinZoneController() { Container = Container };
+            }
+            return this._WinZoneController;
+        }
+        set {
+            _WinZoneController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -405,6 +420,7 @@ public class LevelSceneManagerBase : SceneManager {
         Container.RegisterController<SpaceGarbageAreaController>(SpaceGarbageAreaController);
         Container.RegisterController<UniverseRepositoryController>(UniverseRepositoryController);
         Container.RegisterController<StartZoneController>(StartZoneController);
+        Container.RegisterController<WinZoneController>(WinZoneController);
         this.Container.InjectAll();
         LevelRootController.Initialize(LevelRoot);
         UniverseRepositoryController.Initialize(UniverseRepository);
@@ -483,6 +499,8 @@ public class MenuSceneManagerBase : SceneManager {
     private UniverseRepositoryController _UniverseRepositoryController;
     
     private StartZoneController _StartZoneController;
+    
+    private WinZoneController _WinZoneController;
     
     public MenuSceneManagerSettings _MenuSceneManagerSettings = new MenuSceneManagerSettings();
     
@@ -759,6 +777,19 @@ public class MenuSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual WinZoneController WinZoneController {
+        get {
+            if ((this._WinZoneController == null)) {
+                this._WinZoneController = new WinZoneController() { Container = Container };
+            }
+            return this._WinZoneController;
+        }
+        set {
+            _WinZoneController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -787,6 +818,7 @@ public class MenuSceneManagerBase : SceneManager {
         Container.RegisterController<SpaceGarbageAreaController>(SpaceGarbageAreaController);
         Container.RegisterController<UniverseRepositoryController>(UniverseRepositoryController);
         Container.RegisterController<StartZoneController>(StartZoneController);
+        Container.RegisterController<WinZoneController>(WinZoneController);
         this.Container.InjectAll();
         MenuRootController.Initialize(MenuRoot);
         UniverseRepositoryController.Initialize(UniverseRepository);
@@ -879,6 +911,8 @@ public class EditorSceneManagerBase : SceneManager {
     private UniverseRepositoryController _UniverseRepositoryController;
     
     private StartZoneController _StartZoneController;
+    
+    private WinZoneController _WinZoneController;
     
     public EditorSceneManagerSettings _EditorSceneManagerSettings = new EditorSceneManagerSettings();
     
@@ -1181,6 +1215,19 @@ public class EditorSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual WinZoneController WinZoneController {
+        get {
+            if ((this._WinZoneController == null)) {
+                this._WinZoneController = new WinZoneController() { Container = Container };
+            }
+            return this._WinZoneController;
+        }
+        set {
+            _WinZoneController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -1211,6 +1258,7 @@ public class EditorSceneManagerBase : SceneManager {
         Container.RegisterController<SpaceGarbageAreaController>(SpaceGarbageAreaController);
         Container.RegisterController<UniverseRepositoryController>(UniverseRepositoryController);
         Container.RegisterController<StartZoneController>(StartZoneController);
+        Container.RegisterController<WinZoneController>(WinZoneController);
         this.Container.InjectAll();
         EditorRootController.Initialize(EditorRoot);
         UniverseRepositoryController.Initialize(UniverseRepository);

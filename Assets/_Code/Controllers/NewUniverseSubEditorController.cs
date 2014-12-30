@@ -10,4 +10,9 @@ public class NewUniverseSubEditorController : NewUniverseSubEditorControllerBase
     
     public override void InitializeNewUniverseSubEditor(NewUniverseSubEditorViewModel newUniverseSubEditor) {
     }
+
+
+
+    
+
 }

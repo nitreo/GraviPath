@@ -10,6 +10,8 @@ using UniRx;
 public partial class PlayerSpaceShipView
 { 
 
+
+
     /// Subscribes to the state machine property and executes a method for each state.
     public override void ShipStateChanged(Invert.StateMachine.State value) {
         base.ShipStateChanged(value);
@@ -74,27 +76,69 @@ public partial class PlayerSpaceShipView
     /// Invokes ResetExecuted when the Reset command is executed.
     public override void ResetExecuted() {
         base.ResetExecuted();
-        this.rigidbody2D.velocity = Vector2.zero;
-        this.rigidbody2D.Sleep();
+        rigidbody2D.velocity = Vector2.zero;
+        rigidbody2D.Sleep();
         transform.up = Vector3.up;
     }
  
-
-    /// Invokes AccelerateExecuted when the Accelerate command is executed.
     public override void AccelerateExecuted() {
         base.AccelerateExecuted();
         var force = Player.Direction;
         this.rigidbody2D.AddForce(new Vector2(force.x,force.y),ForceMode2D.Impulse);
     }
  
-
-    /// Subscribes to the property and is notified anytime the value changes.
     public override void DirectionChanged(Vector3 value) {
         base.DirectionChanged(value);
 
         //transform.LookAt(transform.position + value.normalized);
         if(!(Player.ShipState is Crashed)) 
             transform.up = value;
+    }
+
+    public override void DockExecuted()
+    {
+        base.DockExecuted();
+        var desc = Player.Dock.Parameter as DockDescriptor;
+        ignoreControllers.IgnoreControllerType(ControllerType.GravityController);
+
+        var dempedVelocity = new Vector3(rigidbody2D.velocity.x, rigidbody2D.velocity.y, 0);
+
+        Observable.EveryUpdate()
+            .TakeWhile(_ => Math.Abs(rigidbody2D.velocity.magnitude) > 0.05f)
+            .Subscribe(_ =>
+            {
+                rigidbody2D.velocity = Vector3.Lerp(rigidbody2D.velocity, Vector2.zero, Time.deltaTime*4);
+            }, _ =>
+            {
+                UnityEngine.Debug.Log("Stopped");
+                rigidbody2D.Sleep();
+            }).DisposeWhenChanged(Player.IsControllableProperty)
+            .DisposeWith(this);
+
+        
+        /*
+        var dempedVelocity = new Vector3(rigidbody2D.velocity.x, rigidbody2D.velocity.y,0);
+        
+
+        Observable.EveryUpdate()
+            .TakeWhile(_ => !(Vector3.Distance(transform.position, desc.Position) < 0.05) || !(transform.eulerAngles == Vector3.zero))
+            .Subscribe(_ =>
+            {
+                dempedVelocity = Vector3.Lerp(dempedVelocity, Vector2.zero, Time.deltaTime);
+                rigidbody2D.velocity = (dempedVelocity + desc.Position - transform.position);
+                if(transform.up != Vector3.up)
+                rigidbody2D.angularVelocity = -Vector3.Angle(Vector3.up, transform.up);
+            }, _ =>
+            {
+                UnityEngine.Debug.Log("Stopped");
+                rigidbody2D.Sleep();
+            }).DisposeWhenChanged(Player.IsControllableProperty)
+            .DisposeWith(this);
+*/
+
+
+        //Do something to dock
+
     }
 
     public override void Bind()
@@ -116,7 +160,6 @@ public partial class PlayerSpaceShipView
 
     }
 
-    /// Subscribes to the property and is notified anytime the value changes.
     public override void IsControllableChanged(Boolean value) {
         base.IsControllableChanged(value);
         if (value)
@@ -140,13 +183,15 @@ public partial class PlayerSpaceShipView
                 LastCollidedGravityObject = obj;
                 LastCollisionPoint = col.contacts.First().point;
                 ExecuteCrash();
-            });
+            }).DisposeWhenChanged(Player.IsControllableProperty);
 
+            this.BindViewTrigger2DWith<ZoneView>(CollisionEventType.Enter, (obj) =>
+            {
+                ExecuteZoneReached(obj.Zone);
+            }).DisposeWhenChanged(Player.IsControllableProperty); ;
             ignoreControllers.RestoreControllerType(ControllerType.GravityController);
         }
     }
-
-
 
     public void InputDirectionChanged(Vector3 dir)
     {

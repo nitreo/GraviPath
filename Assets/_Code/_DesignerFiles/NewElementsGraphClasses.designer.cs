@@ -79,3 +79,20 @@ public partial class StartLevelDescriptor : System.ComponentModel.INotifyPropert
         }
     }
 }
+
+public partial class DockDescriptor : System.ComponentModel.INotifyPropertyChanged {
+    
+    private Vector3 _Position;
+    
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected virtual void OnPropertyChanged(string propertyName){ PropertyChangedEventHandler handler = PropertyChanged; if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName)); }
+    public virtual Vector3 Position {
+        get {
+            return this._Position;
+        }
+        set {
+            _Position = value;
+            OnPropertyChanged("Position");
+        }
+    }
+}

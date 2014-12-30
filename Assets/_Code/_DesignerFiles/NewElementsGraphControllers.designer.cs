@@ -88,6 +88,7 @@ public abstract class PlayerControllerBase : Controller {
     [Inject("UniverseRepository")] public UniverseRepositoryViewModel UniverseRepository { get; set; }
     [Inject] public LevelRootController LevelRootController {get;set;}
     [Inject] public TryEntryController TryEntryController {get;set;}
+    [Inject] public ZoneController ZoneController {get;set;}
     public abstract void InitializePlayer(PlayerViewModel player);
     
     public override ViewModel CreateEmpty() {
@@ -115,6 +116,12 @@ public abstract class PlayerControllerBase : Controller {
     }
     
     public virtual void Crash(PlayerViewModel player) {
+    }
+    
+    public virtual void ZoneReached(PlayerViewModel player, ZoneViewModel arg) {
+    }
+    
+    public virtual void Dock(PlayerViewModel player, DockDescriptor arg) {
     }
 }
 
@@ -244,6 +251,7 @@ public abstract class UniverseObjectControllerBase : Controller {
 
 public abstract class ZoneControllerBase : UniverseObjectController {
     
+    [Inject] public PlayerController PlayerController {get;set;}
     public abstract void InitializeZone(ZoneViewModel zone);
     
     public override ViewModel CreateEmpty() {
@@ -564,5 +572,23 @@ public abstract class StartZoneControllerBase : ZoneController {
     public override void Initialize(ViewModel viewModel) {
         base.Initialize(viewModel);
         this.InitializeStartZone(((StartZoneViewModel)(viewModel)));
+    }
+}
+
+public abstract class WinZoneControllerBase : ZoneController {
+    
+    public abstract void InitializeWinZone(WinZoneViewModel winZone);
+    
+    public override ViewModel CreateEmpty() {
+        return new WinZoneViewModel(this);
+    }
+    
+    public virtual WinZoneViewModel CreateWinZone() {
+        return ((WinZoneViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializeWinZone(((WinZoneViewModel)(viewModel)));
     }
 }

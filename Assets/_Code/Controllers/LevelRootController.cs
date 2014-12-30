@@ -11,6 +11,27 @@ public class LevelRootController : LevelRootControllerBase {
     public override void InitializeLevelRoot(LevelRootViewModel levelRoot)
     {
 
+        levelRoot.PlayerProperty
+            .Where(p=>p!=null)
+            .Subscribe(p=>NewPlayerSet(levelRoot,p))
+            .DisposeWith(levelRoot);
+    }
+
+    private void NewPlayerSet(LevelRootViewModel levelRoot, PlayerViewModel playerViewModel)
+    {
+        playerViewModel
+            .ZoneReached
+            .Select(_ => playerViewModel.ZoneReached.Parameter as ZoneViewModel)
+            .Where(z => z is WinZoneViewModel)
+            .Subscribe(z =>
+            {
+                ExecuteCommand(playerViewModel.Dock,new DockDescriptor()
+                {
+                    Position = z.Position
+                });
+            })
+            .DisposeWhenChanged(levelRoot.PlayerProperty)
+            .DisposeWith(levelRoot);
     }
 
     public void AllocateTryEntry(LevelRootViewModel levelRoot)

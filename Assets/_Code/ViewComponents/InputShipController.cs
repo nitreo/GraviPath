@@ -40,6 +40,7 @@ public partial class InputShipController
     {
         PanGesture.PanStarted += (sender, args) =>
         {
+            if (!Player.IsControllable) return;
             _pivotPosition = PivotPoint.position;
             _pivotDelta = _pivotPosition - transform.position;
             Indicator.gameObject.SetActive(true);
@@ -47,6 +48,7 @@ public partial class InputShipController
 
         PanGesture.PanCompleted += (sender, args) =>
         {
+            if (!Player.IsControllable) return;
             AccelerationThresold = 0.5;
             if (_pivotDelta.magnitude > AccelerationThresold && Commited != null) Commited();
             else if (Canceled != null) Canceled();
@@ -55,6 +57,7 @@ public partial class InputShipController
 
         PanGesture.Panned += (sender, args) =>
         {
+            if (!Player.IsControllable) return;
             _pivotDelta -= PanGesture.LocalDeltaPosition;
             _directionObservable.OnNext(_pivotDelta);
             _accelarationObservable.OnNext(_pivotDelta.magnitude);

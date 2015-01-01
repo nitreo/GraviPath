@@ -46,14 +46,18 @@ public class LevelRootController : LevelRootControllerBase {
     public override void Restart(LevelRootViewModel levelRoot, bool saveAttempt)
     {
         base.Restart(levelRoot, saveAttempt);
+        
         if (levelRoot.Player != null)
         {
-            this.ExecuteCommand(levelRoot.Player.Reset);
+            Debug.Log("sdfsdf");
+            ExecuteCommand(levelRoot.Player.Reset);
+                       
             if (!saveAttempt && levelRoot.Attempts.Count > 0)
             {
                 var lastAttempt = levelRoot.Attempts.Last<TryEntryViewModel>();
                 levelRoot.Attempts.Remove(lastAttempt);
             }
+            
             AllocateTryEntry(levelRoot);
         }
     }

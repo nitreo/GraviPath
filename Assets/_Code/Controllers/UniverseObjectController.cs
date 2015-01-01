@@ -7,7 +7,9 @@ using UnityEngine;
 
 
 public class UniverseObjectController : UniverseObjectControllerBase {
-    
     public override void InitializeUniverseObject(UniverseObjectViewModel universeObject) {
+    
+    
+    
     }
 }

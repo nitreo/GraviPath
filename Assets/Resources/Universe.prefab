@@ -75,9 +75,11 @@ MonoBehaviour:
   _Save: 0
   _Name: 
   _Author: 
+  _IsEditable: 0
   _BindObjects: 1
-  _ObjectsSceneFirst: 1
+  _ObjectsSceneFirst: 0
   _ObjectsContainer: {fileID: 424336}
+  _BindIsEditable: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

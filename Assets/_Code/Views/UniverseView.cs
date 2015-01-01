@@ -13,23 +13,26 @@ public partial class UniverseView {
     public override void IsEditableChanged(Boolean value) {
         base.IsEditableChanged(value);
     }
- 
+
+    public HashSet<Action<ViewBase>> Hooks = new HashSet<Action<ViewBase>>();
+    private readonly HashSet<GravityController2DExt> GravityObjects = new HashSet<GravityController2DExt>();
 
     /// This binding will add or remove views based on an element/viewmodel collection.
     public override ViewBase CreateObjectsView(UniverseObjectViewModel item)
     {
         var objectsView = base.CreateObjectsView(item);
+        var scaleCache = objectsView.transform.localScale;
+
+        Debug.Log("werwerwer");
 
         objectsView.transform.position = item.Position;
         objectsView.transform.eulerAngles = item.Rotation;
-        var cache = objectsView.transform.localScale;
         objectsView.transform.localScale = Vector3.zero;
 
 
-        
-        var t = LeanTween.scale(objectsView.gameObject, cache, 0.8f)
+        //TODO: Move tweening and sound logic from here.
+        var t = LeanTween.scale(objectsView.gameObject, scaleCache, 0.8f)
             .setEase(LeanTweenType.easeOutElastic);
-
         if (!Universe.IsEditable)
         {
 
@@ -43,7 +46,7 @@ public partial class UniverseView {
             t.setDelay(range);
         }
 
-
+        //TODO: Move it somewhere else?
         if (item is GravityObjectViewModel)
         {
             var gravController = objectsView.GetComponent<GravityController2DExt>();
@@ -56,10 +59,6 @@ public partial class UniverseView {
     /// This binding will add or remove views based on an element/viewmodel collection.
     public override void ObjectsAdded(ViewBase item) {
         base.ObjectsAdded(item);
-        foreach (var hook in Hooks)
-        {
-            hook(item);
-        }
     }
     
     /// This binding will add or remove views based on an element/vienLwmodel collection.
@@ -68,22 +67,9 @@ public partial class UniverseView {
         Destroy(item.gameObject);
     }
 
-    public void AddUniverseObjectAddedHook(Action<ViewBase> hook)
-    {
-        Hooks.Add(hook);
-    }
-
     public override void Bind()
     {
         base.Bind();
-        if (Universe.Objects.Count > 0)
-        {
-            foreach (var uObject in Universe.Objects)
-            {
-                var view = CreateObjectsView(uObject);
-                ObjectsAdded(view);
-            }
-        }
     }
 
     public void AddGravityAffectedObject(Rigidbody2D body)
@@ -91,6 +77,4 @@ public partial class UniverseView {
         GravityObjects.ForEach(o=>o.AddRigidbody(body));
     }
 
-    public HashSet<Action<ViewBase>> Hooks = new HashSet<Action<ViewBase>>();
-    private readonly HashSet<GravityController2DExt> GravityObjects = new HashSet<GravityController2DExt>();
 }

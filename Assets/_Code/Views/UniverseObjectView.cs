@@ -12,36 +12,44 @@ using UnityEditor;
 public partial class UniverseObjectView
 {
 
-    private GameObject editor;
-    private GameObject handles;
+
+    private GameObject _handles;
+    private GameObject _editor;
+
+    #region Properties
+
+    private GameObject Editor
+    {
+        get { return _editor ?? (_editor = GetEditorPrototype()); }
+    }
+
+    private GameObject Handles
+    {
+        get
+        {
+            if (_handles == null)
+            {
+                _handles = Instantiate(Editor) as GameObject;
+                _handles.transform.SetParent(transform);
+                _handles.GetComponent<UniverseObjectEditorUI>().Init();
+            }
+            return _handles;
+        }
+        set { _handles = value; }
+    }
+
+    #endregion
+
     public override void Awake()
     {
-        editor = GetEditorPrototype();
         base.Awake();
     }
 
     /// Subscribes to the property and is notified anytime the value changes.
-    public override void IsEditableChanged(Boolean value) {
+    public override void IsEditableChanged(Boolean value)
+    {
         base.IsEditableChanged(value);
-
-        if (value)
-        {
-            if (handles == null)
-            {
-                handles = Instantiate(editor) as GameObject;
-                handles.transform.SetParent(this.transform);
-                handles.GetComponent<UniverseObjectEditorUI>().Init();
-            }
-            else
-            {
-                handles.SetActive(true);
-            }
-        }
-        else
-        {
-            if(handles!=null)
-            handles.SetActive(false);
-        }
+        Handles.SetActive(value);
     }
 
 

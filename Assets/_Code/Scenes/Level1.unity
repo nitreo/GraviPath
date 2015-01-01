@@ -205,6 +205,60 @@ Transform:
   - {fileID: 1775734979}
   m_Father: {fileID: 1504359951}
   m_RootOrder: 0
+--- !u!1 &445652500
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 445652502}
+  - 114: {fileID: 445652501}
+  m_Layer: 0
+  m_Name: _LevelRootGUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &445652501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 445652500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f202b436c4d0874c976cd84697444ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LogEvents: 0
+  _forceResolveViewModel: 1
+  _InjectView: 0
+  _overrideViewModel: 0
+  _resolveName: LevelRoot
+  _Save: 0
+  _Player: {fileID: 1057010250}
+  _CurrentTryEntry: {fileID: 0}
+  _BonusScore: 0
+  _Universe: {fileID: 0}
+  _RecordAttempts: 0
+  _BindScore: 1
+  ScoreText: {fileID: 1363384875}
+  RestartButton: {fileID: 297625516}
+  QuitButton: {fileID: 1231454410}
+--- !u!4 &445652502
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 445652500}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.58392859, y: 8.40843964, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
 --- !u!1 &466972148
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,7 +429,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: dbce9cea3e2e4f347ba20ac65966cdd9, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: dbce9cea3e2e4f347ba20ac65966cdd9, type: 2}
       propertyPath: m_IsActive
@@ -595,7 +649,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 9
 --- !u!1 &968259445
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,7 +835,7 @@ Transform:
   - {fileID: 2007331303}
   - {fileID: 695122718}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 7
 --- !u!114 &1057010254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1009,7 +1063,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 8
 --- !u!1 &1231454407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1319,10 +1373,7 @@ MonoBehaviour:
   _BindPlayer: 1
   _BindScore: 1
   _BindUniverse: 1
-  ScoreText: {fileID: 1363384875}
   TryEntryPrefab: {fileID: 100000, guid: cc40b4867ae8b6a4cbd8bbe444ca4a8c, type: 2}
-  RestartButton: {fileID: 297625516}
-  QuitButton: {fileID: 1231454410}
 --- !u!4 &1454034801
 Transform:
   m_ObjectHideFlags: 0
@@ -1334,7 +1385,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 2
 --- !u!1 &1504359946
 GameObject:
   m_ObjectHideFlags: 0
@@ -1423,7 +1474,7 @@ Transform:
   m_Children:
   - {fileID: 381710673}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
 --- !u!114 &1504359952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1679,7 +1730,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 430424, guid: 9081c83bbcd307144afa3c7a65bc3341, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9081c83bbcd307144afa3c7a65bc3341, type: 2}
@@ -1835,7 +1886,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 4
 --- !u!1 &2052521786
 GameObject:
   m_ObjectHideFlags: 0
@@ -1988,4 +2039,4 @@ Transform:
   m_Children:
   - {fileID: 946939655}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 5

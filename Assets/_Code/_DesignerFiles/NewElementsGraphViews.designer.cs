@@ -2011,6 +2011,31 @@ public class WinZoneViewViewBase : ZoneView {
 public partial class WinZoneView : WinZoneViewViewBase {
 }
 
+public class LevelRootGUIViewViewBase : LevelRootViewBase {
+    
+    [UFToggleGroup("Score")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindScore = true;
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<LevelRootController>());
+    }
+    
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void ScoreChanged(Int32 value) {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        if (this._BindScore) {
+            this.BindProperty(LevelRoot._ScoreProperty, this.ScoreChanged);
+        }
+    }
+}
+
+public partial class LevelRootGUIView : LevelRootGUIViewViewBase {
+}
+
 public partial class ShipController : ViewComponent {
     
     public virtual PlayerViewModel Player {

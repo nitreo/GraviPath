@@ -11,5 +11,4 @@ using UnityEngine;
 
 public partial class UniverseViewModel {
 
-
 }

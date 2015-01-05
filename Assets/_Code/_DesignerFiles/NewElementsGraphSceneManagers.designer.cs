@@ -76,6 +76,14 @@ public class LevelSceneManagerBase : SceneManager {
     
     private WinZoneController _WinZoneController;
     
+    private PickupableController _PickupableController;
+    
+    private ScorePointController _ScorePointController;
+    
+    private PowerUpPickupableController _PowerUpPickupableController;
+    
+    private AcceleratorPowerUpController _AcceleratorPowerUpController;
+    
     public LevelSceneManagerSettings _LevelSceneManagerSettings = new LevelSceneManagerSettings();
     
     [Inject("LevelRoot")]
@@ -390,6 +398,58 @@ public class LevelSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual PickupableController PickupableController {
+        get {
+            if ((this._PickupableController == null)) {
+                this._PickupableController = new PickupableController() { Container = Container };
+            }
+            return this._PickupableController;
+        }
+        set {
+            _PickupableController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual ScorePointController ScorePointController {
+        get {
+            if ((this._ScorePointController == null)) {
+                this._ScorePointController = new ScorePointController() { Container = Container };
+            }
+            return this._ScorePointController;
+        }
+        set {
+            _ScorePointController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual PowerUpPickupableController PowerUpPickupableController {
+        get {
+            if ((this._PowerUpPickupableController == null)) {
+                this._PowerUpPickupableController = new PowerUpPickupableController() { Container = Container };
+            }
+            return this._PowerUpPickupableController;
+        }
+        set {
+            _PowerUpPickupableController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual AcceleratorPowerUpController AcceleratorPowerUpController {
+        get {
+            if ((this._AcceleratorPowerUpController == null)) {
+                this._AcceleratorPowerUpController = new AcceleratorPowerUpController() { Container = Container };
+            }
+            return this._AcceleratorPowerUpController;
+        }
+        set {
+            _AcceleratorPowerUpController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -421,6 +481,10 @@ public class LevelSceneManagerBase : SceneManager {
         Container.RegisterController<UniverseRepositoryController>(UniverseRepositoryController);
         Container.RegisterController<StartZoneController>(StartZoneController);
         Container.RegisterController<WinZoneController>(WinZoneController);
+        Container.RegisterController<PickupableController>(PickupableController);
+        Container.RegisterController<ScorePointController>(ScorePointController);
+        Container.RegisterController<PowerUpPickupableController>(PowerUpPickupableController);
+        Container.RegisterController<AcceleratorPowerUpController>(AcceleratorPowerUpController);
         this.Container.InjectAll();
         LevelRootController.Initialize(LevelRoot);
         UniverseRepositoryController.Initialize(UniverseRepository);
@@ -501,6 +565,14 @@ public class MenuSceneManagerBase : SceneManager {
     private StartZoneController _StartZoneController;
     
     private WinZoneController _WinZoneController;
+    
+    private PickupableController _PickupableController;
+    
+    private ScorePointController _ScorePointController;
+    
+    private PowerUpPickupableController _PowerUpPickupableController;
+    
+    private AcceleratorPowerUpController _AcceleratorPowerUpController;
     
     public MenuSceneManagerSettings _MenuSceneManagerSettings = new MenuSceneManagerSettings();
     
@@ -790,6 +862,58 @@ public class MenuSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual PickupableController PickupableController {
+        get {
+            if ((this._PickupableController == null)) {
+                this._PickupableController = new PickupableController() { Container = Container };
+            }
+            return this._PickupableController;
+        }
+        set {
+            _PickupableController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual ScorePointController ScorePointController {
+        get {
+            if ((this._ScorePointController == null)) {
+                this._ScorePointController = new ScorePointController() { Container = Container };
+            }
+            return this._ScorePointController;
+        }
+        set {
+            _ScorePointController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual PowerUpPickupableController PowerUpPickupableController {
+        get {
+            if ((this._PowerUpPickupableController == null)) {
+                this._PowerUpPickupableController = new PowerUpPickupableController() { Container = Container };
+            }
+            return this._PowerUpPickupableController;
+        }
+        set {
+            _PowerUpPickupableController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual AcceleratorPowerUpController AcceleratorPowerUpController {
+        get {
+            if ((this._AcceleratorPowerUpController == null)) {
+                this._AcceleratorPowerUpController = new AcceleratorPowerUpController() { Container = Container };
+            }
+            return this._AcceleratorPowerUpController;
+        }
+        set {
+            _AcceleratorPowerUpController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -819,6 +943,10 @@ public class MenuSceneManagerBase : SceneManager {
         Container.RegisterController<UniverseRepositoryController>(UniverseRepositoryController);
         Container.RegisterController<StartZoneController>(StartZoneController);
         Container.RegisterController<WinZoneController>(WinZoneController);
+        Container.RegisterController<PickupableController>(PickupableController);
+        Container.RegisterController<ScorePointController>(ScorePointController);
+        Container.RegisterController<PowerUpPickupableController>(PowerUpPickupableController);
+        Container.RegisterController<AcceleratorPowerUpController>(AcceleratorPowerUpController);
         this.Container.InjectAll();
         MenuRootController.Initialize(MenuRoot);
         UniverseRepositoryController.Initialize(UniverseRepository);
@@ -913,6 +1041,14 @@ public class EditorSceneManagerBase : SceneManager {
     private StartZoneController _StartZoneController;
     
     private WinZoneController _WinZoneController;
+    
+    private PickupableController _PickupableController;
+    
+    private ScorePointController _ScorePointController;
+    
+    private PowerUpPickupableController _PowerUpPickupableController;
+    
+    private AcceleratorPowerUpController _AcceleratorPowerUpController;
     
     public EditorSceneManagerSettings _EditorSceneManagerSettings = new EditorSceneManagerSettings();
     
@@ -1228,6 +1364,58 @@ public class EditorSceneManagerBase : SceneManager {
         }
     }
     
+    [Inject()]
+    public virtual PickupableController PickupableController {
+        get {
+            if ((this._PickupableController == null)) {
+                this._PickupableController = new PickupableController() { Container = Container };
+            }
+            return this._PickupableController;
+        }
+        set {
+            _PickupableController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual ScorePointController ScorePointController {
+        get {
+            if ((this._ScorePointController == null)) {
+                this._ScorePointController = new ScorePointController() { Container = Container };
+            }
+            return this._ScorePointController;
+        }
+        set {
+            _ScorePointController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual PowerUpPickupableController PowerUpPickupableController {
+        get {
+            if ((this._PowerUpPickupableController == null)) {
+                this._PowerUpPickupableController = new PowerUpPickupableController() { Container = Container };
+            }
+            return this._PowerUpPickupableController;
+        }
+        set {
+            _PowerUpPickupableController = value;
+        }
+    }
+    
+    [Inject()]
+    public virtual AcceleratorPowerUpController AcceleratorPowerUpController {
+        get {
+            if ((this._AcceleratorPowerUpController == null)) {
+                this._AcceleratorPowerUpController = new AcceleratorPowerUpController() { Container = Container };
+            }
+            return this._AcceleratorPowerUpController;
+        }
+        set {
+            _AcceleratorPowerUpController = value;
+        }
+    }
+    
     // <summary>
     // This method is the first method to be invoked when the scene first loads. Anything registered here with 'Container' will effectively 
     // be injected on controllers, and instances defined on a subsystem.And example of this would be Container.RegisterInstance<IDataRepository>(new CodeRepository()). Then any property with 
@@ -1259,6 +1447,10 @@ public class EditorSceneManagerBase : SceneManager {
         Container.RegisterController<UniverseRepositoryController>(UniverseRepositoryController);
         Container.RegisterController<StartZoneController>(StartZoneController);
         Container.RegisterController<WinZoneController>(WinZoneController);
+        Container.RegisterController<PickupableController>(PickupableController);
+        Container.RegisterController<ScorePointController>(ScorePointController);
+        Container.RegisterController<PowerUpPickupableController>(PowerUpPickupableController);
+        Container.RegisterController<AcceleratorPowerUpController>(AcceleratorPowerUpController);
         this.Container.InjectAll();
         EditorRootController.Initialize(EditorRoot);
         UniverseRepositoryController.Initialize(UniverseRepository);

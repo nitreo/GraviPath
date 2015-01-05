@@ -23,8 +23,6 @@ public partial class UniverseView {
         var objectsView = base.CreateObjectsView(item);
         var scaleCache = objectsView.transform.localScale;
 
-        Debug.Log("werwerwer");
-
         objectsView.transform.position = item.Position;
         objectsView.transform.eulerAngles = item.Rotation;
         objectsView.transform.localScale = Vector3.zero;
@@ -38,10 +36,10 @@ public partial class UniverseView {
 
             var range = UnityEngine.Random.Range(0.1f, 0.5f);
 
-            Observable.Timer(TimeSpan.FromMilliseconds((range) * 1000)).Subscribe(_ =>
+/*            Observable.Timer(TimeSpan.FromMilliseconds((range) * 1000)).Subscribe(_ =>
             {
                 GenericAudioSource.instance.PlayPop();
-            });
+            });*/
 
             t.setDelay(range);
         }
@@ -71,6 +69,8 @@ public partial class UniverseView {
     {
         base.Bind();
     }
+
+    
 
     public void AddGravityAffectedObject(Rigidbody2D body)
     {

@@ -89,6 +89,7 @@ public abstract class PlayerControllerBase : Controller {
     [Inject] public LevelRootController LevelRootController {get;set;}
     [Inject] public TryEntryController TryEntryController {get;set;}
     [Inject] public ZoneController ZoneController {get;set;}
+    [Inject] public PickupableController PickupableController {get;set;}
     public abstract void InitializePlayer(PlayerViewModel player);
     
     public override ViewModel CreateEmpty() {
@@ -122,6 +123,9 @@ public abstract class PlayerControllerBase : Controller {
     }
     
     public virtual void Dock(PlayerViewModel player, DockDescriptor arg) {
+    }
+    
+    public virtual void ItemPickedUp(PlayerViewModel player, PickupableViewModel arg) {
     }
 }
 
@@ -221,6 +225,9 @@ public abstract class UniverseControllerBase : Controller {
     }
     
     public virtual void Save(UniverseViewModel universe) {
+    }
+    
+    public virtual void Reset(UniverseViewModel universe) {
     }
 }
 
@@ -590,5 +597,77 @@ public abstract class WinZoneControllerBase : ZoneController {
     public override void Initialize(ViewModel viewModel) {
         base.Initialize(viewModel);
         this.InitializeWinZone(((WinZoneViewModel)(viewModel)));
+    }
+}
+
+public abstract class PickupableControllerBase : UniverseObjectController {
+    
+    [Inject] public PlayerController PlayerController {get;set;}
+    public abstract void InitializePickupable(PickupableViewModel pickupable);
+    
+    public virtual PickupableViewModel CreatePickupable() {
+        return ((PickupableViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializePickupable(((PickupableViewModel)(viewModel)));
+    }
+    
+    public virtual void PickUp(PickupableViewModel pickupable) {
+    }
+}
+
+public abstract class ScorePointControllerBase : PickupableController {
+    
+    public abstract void InitializeScorePoint(ScorePointViewModel scorePoint);
+    
+    public override ViewModel CreateEmpty() {
+        return new ScorePointViewModel(this);
+    }
+    
+    public virtual ScorePointViewModel CreateScorePoint() {
+        return ((ScorePointViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializeScorePoint(((ScorePointViewModel)(viewModel)));
+    }
+}
+
+public abstract class PowerUpPickupableControllerBase : PickupableController {
+    
+    public abstract void InitializePowerUpPickupable(PowerUpPickupableViewModel powerUpPickupable);
+    
+    public override ViewModel CreateEmpty() {
+        return new PowerUpPickupableViewModel(this);
+    }
+    
+    public virtual PowerUpPickupableViewModel CreatePowerUpPickupable() {
+        return ((PowerUpPickupableViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializePowerUpPickupable(((PowerUpPickupableViewModel)(viewModel)));
+    }
+}
+
+public abstract class AcceleratorPowerUpControllerBase : PowerUpPickupableController {
+    
+    public abstract void InitializeAcceleratorPowerUp(AcceleratorPowerUpViewModel acceleratorPowerUp);
+    
+    public override ViewModel CreateEmpty() {
+        return new AcceleratorPowerUpViewModel(this);
+    }
+    
+    public virtual AcceleratorPowerUpViewModel CreateAcceleratorPowerUp() {
+        return ((AcceleratorPowerUpViewModel)(this.Create()));
+    }
+    
+    public override void Initialize(ViewModel viewModel) {
+        base.Initialize(viewModel);
+        this.InitializeAcceleratorPowerUp(((AcceleratorPowerUpViewModel)(viewModel)));
     }
 }

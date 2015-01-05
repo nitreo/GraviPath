@@ -49,17 +49,18 @@ public class LevelRootController : LevelRootControllerBase {
         
         if (levelRoot.Player != null)
         {
-            Debug.Log("sdfsdf");
             ExecuteCommand(levelRoot.Player.Reset);
-                       
-            if (!saveAttempt && levelRoot.Attempts.Count > 0)
+
+            var lastTry = levelRoot.Attempts.LastOrDefault<TryEntryViewModel>();
+            if (lastTry != null && (!saveAttempt || lastTry.PathLength < 5) )
             {
-                var lastAttempt = levelRoot.Attempts.Last<TryEntryViewModel>();
-                levelRoot.Attempts.Remove(lastAttempt);
+                levelRoot.Attempts.Remove(lastTry);
             }
-            
+             
             AllocateTryEntry(levelRoot);
         }
+        if(levelRoot.Universe!=null)
+        this.ExecuteCommand(levelRoot.Universe.Reset);
     }
 
 

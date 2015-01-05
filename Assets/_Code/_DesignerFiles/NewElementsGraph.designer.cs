@@ -408,6 +408,8 @@ public class PlayerViewModelBase : ViewModel {
     
     protected CommandWithSenderAndArgument<PlayerViewModel, DockDescriptor> _Dock;
     
+    protected CommandWithSenderAndArgument<PlayerViewModel, PickupableViewModel> _ItemPickedUp;
+    
     public PlayerViewModelBase(PlayerControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
     }
@@ -580,6 +582,15 @@ public partial class PlayerViewModel : PlayerViewModelBase {
         }
     }
     
+    public virtual CommandWithSenderAndArgument<PlayerViewModel, PickupableViewModel> ItemPickedUp {
+        get {
+            return _ItemPickedUp;
+        }
+        set {
+            _ItemPickedUp = value;
+        }
+    }
+    
     public virtual LevelRootViewModel ParentLevelRoot {
         get {
             return this._ParentLevelRoot;
@@ -607,6 +618,7 @@ public partial class PlayerViewModel : PlayerViewModelBase {
         this.Crash = new CommandWithSender<PlayerViewModel>(this, player.Crash);
         this.ZoneReached = new CommandWithSenderAndArgument<PlayerViewModel, ZoneViewModel>(this, player.ZoneReached);
         this.Dock = new CommandWithSenderAndArgument<PlayerViewModel, DockDescriptor>(this, player.Dock);
+        this.ItemPickedUp = new CommandWithSenderAndArgument<PlayerViewModel, PickupableViewModel>(this, player.ItemPickedUp);
     }
     
     public override void Write(ISerializerStream stream) {
@@ -649,6 +661,7 @@ public partial class PlayerViewModel : PlayerViewModelBase {
         list.Add(new ViewModelCommandInfo("Crash", Crash) { ParameterType = typeof(void) });
         list.Add(new ViewModelCommandInfo("ZoneReached", ZoneReached) { ParameterType = typeof(ZoneViewModel) });
         list.Add(new ViewModelCommandInfo("Dock", Dock) { ParameterType = typeof(DockDescriptor) });
+        list.Add(new ViewModelCommandInfo("ItemPickedUp", ItemPickedUp) { ParameterType = typeof(PickupableViewModel) });
     }
 }
 
@@ -1045,6 +1058,8 @@ public class UniverseViewModelBase : ViewModel {
     
     protected CommandWithSender<UniverseViewModel> _Save;
     
+    protected CommandWithSender<UniverseViewModel> _Reset;
+    
     public UniverseViewModelBase(UniverseControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
     }
@@ -1151,6 +1166,15 @@ public partial class UniverseViewModel : UniverseViewModelBase {
         }
     }
     
+    public virtual CommandWithSender<UniverseViewModel> Reset {
+        get {
+            return _Reset;
+        }
+        set {
+            _Reset = value;
+        }
+    }
+    
     public virtual MenuRootViewModel ParentMenuRoot {
         get {
             return this._ParentMenuRoot;
@@ -1182,6 +1206,7 @@ public partial class UniverseViewModel : UniverseViewModelBase {
         var universe = controller as UniverseControllerBase;
         this.Load = new CommandWithSenderAndArgument<UniverseViewModel, String>(this, universe.Load);
         this.Save = new CommandWithSender<UniverseViewModel>(this, universe.Save);
+        this.Reset = new CommandWithSender<UniverseViewModel>(this, universe.Reset);
     }
     
     public override void Write(ISerializerStream stream) {
@@ -1220,6 +1245,7 @@ if (stream.DeepSerialize) {
         base.FillCommands(list);;
         list.Add(new ViewModelCommandInfo("Load", Load) { ParameterType = typeof(String) });
         list.Add(new ViewModelCommandInfo("Save", Save) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("Reset", Reset) { ParameterType = typeof(void) });
     }
     
     protected override void ObjectsCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) {
@@ -2523,6 +2549,256 @@ public partial class WinZoneViewModel : WinZoneViewModelBase {
     }
 }
 
+[DiagramInfoAttribute("GraviPath")]
+public class PickupableViewModelBase : UniverseObjectViewModel {
+    
+    public P<Boolean> _IsActiveProperty;
+    
+    protected CommandWithSender<PickupableViewModel> _PickUp;
+    
+    public PickupableViewModelBase(PickupableControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public PickupableViewModelBase() : 
+            base() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        _IsActiveProperty = new P<Boolean>(this, "IsActive");
+    }
+}
+
+public partial class PickupableViewModel : PickupableViewModelBase {
+    
+    private PlayerViewModel _ParentPlayer;
+    
+    public PickupableViewModel(PickupableControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public PickupableViewModel() : 
+            base() {
+    }
+    
+    public virtual P<Boolean> IsActiveProperty {
+        get {
+            return this._IsActiveProperty;
+        }
+    }
+    
+    public virtual Boolean IsActive {
+        get {
+            return _IsActiveProperty.Value;
+        }
+        set {
+            _IsActiveProperty.Value = value;
+        }
+    }
+    
+    public virtual CommandWithSender<PickupableViewModel> PickUp {
+        get {
+            return _PickUp;
+        }
+        set {
+            _PickUp = value;
+        }
+    }
+    
+    public virtual PlayerViewModel ParentPlayer {
+        get {
+            return this._ParentPlayer;
+        }
+        set {
+            _ParentPlayer = value;
+        }
+    }
+    
+    protected override void WireCommands(Controller controller) {
+        base.WireCommands(controller);
+        var pickupable = controller as PickupableControllerBase;
+        this.PickUp = new CommandWithSender<PickupableViewModel>(this, pickupable.PickUp);
+    }
+    
+    public override void Write(ISerializerStream stream) {
+		base.Write(stream);
+        stream.SerializeBool("IsActive", this.IsActive);
+    }
+    
+    public override void Read(ISerializerStream stream) {
+		base.Read(stream);
+        		this.IsActive = stream.DeserializeBool("IsActive");;
+    }
+    
+    public override void Unbind() {
+        base.Unbind();
+    }
+    
+    protected override void FillProperties(List<ViewModelPropertyInfo> list) {
+        base.FillProperties(list);;
+        list.Add(new ViewModelPropertyInfo(_IsActiveProperty, false, false, false));
+    }
+    
+    protected override void FillCommands(List<ViewModelCommandInfo> list) {
+        base.FillCommands(list);;
+        list.Add(new ViewModelCommandInfo("PickUp", PickUp) { ParameterType = typeof(void) });
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public class ScorePointViewModelBase : PickupableViewModel {
+    
+    public ScorePointViewModelBase(ScorePointControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public ScorePointViewModelBase() : 
+            base() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+}
+
+public partial class ScorePointViewModel : ScorePointViewModelBase {
+    
+    public ScorePointViewModel(ScorePointControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public ScorePointViewModel() : 
+            base() {
+    }
+    
+    protected override void WireCommands(Controller controller) {
+        base.WireCommands(controller);
+    }
+    
+    public override void Write(ISerializerStream stream) {
+		base.Write(stream);
+    }
+    
+    public override void Read(ISerializerStream stream) {
+		base.Read(stream);
+    }
+    
+    public override void Unbind() {
+        base.Unbind();
+    }
+    
+    protected override void FillProperties(List<ViewModelPropertyInfo> list) {
+        base.FillProperties(list);;
+    }
+    
+    protected override void FillCommands(List<ViewModelCommandInfo> list) {
+        base.FillCommands(list);;
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public class PowerUpPickupableViewModelBase : PickupableViewModel {
+    
+    public PowerUpPickupableViewModelBase(PowerUpPickupableControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public PowerUpPickupableViewModelBase() : 
+            base() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+}
+
+public partial class PowerUpPickupableViewModel : PowerUpPickupableViewModelBase {
+    
+    public PowerUpPickupableViewModel(PowerUpPickupableControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public PowerUpPickupableViewModel() : 
+            base() {
+    }
+    
+    protected override void WireCommands(Controller controller) {
+        base.WireCommands(controller);
+    }
+    
+    public override void Write(ISerializerStream stream) {
+		base.Write(stream);
+    }
+    
+    public override void Read(ISerializerStream stream) {
+		base.Read(stream);
+    }
+    
+    public override void Unbind() {
+        base.Unbind();
+    }
+    
+    protected override void FillProperties(List<ViewModelPropertyInfo> list) {
+        base.FillProperties(list);;
+    }
+    
+    protected override void FillCommands(List<ViewModelCommandInfo> list) {
+        base.FillCommands(list);;
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public class AcceleratorPowerUpViewModelBase : PowerUpPickupableViewModel {
+    
+    public AcceleratorPowerUpViewModelBase(AcceleratorPowerUpControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public AcceleratorPowerUpViewModelBase() : 
+            base() {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+}
+
+public partial class AcceleratorPowerUpViewModel : AcceleratorPowerUpViewModelBase {
+    
+    public AcceleratorPowerUpViewModel(AcceleratorPowerUpControllerBase controller, bool initialize = true) : 
+            base(controller, initialize) {
+    }
+    
+    public AcceleratorPowerUpViewModel() : 
+            base() {
+    }
+    
+    protected override void WireCommands(Controller controller) {
+        base.WireCommands(controller);
+    }
+    
+    public override void Write(ISerializerStream stream) {
+		base.Write(stream);
+    }
+    
+    public override void Read(ISerializerStream stream) {
+		base.Read(stream);
+    }
+    
+    public override void Unbind() {
+        base.Unbind();
+    }
+    
+    protected override void FillProperties(List<ViewModelPropertyInfo> list) {
+        base.FillProperties(list);;
+    }
+    
+    protected override void FillCommands(List<ViewModelCommandInfo> list) {
+        base.FillCommands(list);;
+    }
+}
+
 public enum UniverseObjectType {
     
     Planet1,
@@ -2540,6 +2816,10 @@ public enum UniverseObjectType {
     StartZone,
     
     WinZone,
+    
+    Star,
+    
+    Accelerator,
 }
 
 public enum UniverseListUpdateType {

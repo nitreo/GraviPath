@@ -33,7 +33,6 @@ public partial class PlayerSpaceShipView
         NormalArt.SetActive(false);
         CrashedArt.SetActive(true);
         
-        //�������������� �����
         rigidbody2D.isKinematic = true;
         transform.position = LastCollisionPoint;
 
@@ -115,30 +114,6 @@ public partial class PlayerSpaceShipView
             }).DisposeWhenChanged(Player.IsControllableProperty)
             .DisposeWith(this);
 
-        
-        /*
-        var dempedVelocity = new Vector3(rigidbody2D.velocity.x, rigidbody2D.velocity.y,0);
-        
-
-        Observable.EveryUpdate()
-            .TakeWhile(_ => !(Vector3.Distance(transform.position, desc.Position) < 0.05) || !(transform.eulerAngles == Vector3.zero))
-            .Subscribe(_ =>
-            {
-                dempedVelocity = Vector3.Lerp(dempedVelocity, Vector2.zero, Time.deltaTime);
-                rigidbody2D.velocity = (dempedVelocity + desc.Position - transform.position);
-                if(transform.up != Vector3.up)
-                rigidbody2D.angularVelocity = -Vector3.Angle(Vector3.up, transform.up);
-            }, _ =>
-            {
-                UnityEngine.Debug.Log("Stopped");
-                rigidbody2D.Sleep();
-            }).DisposeWhenChanged(Player.IsControllableProperty)
-            .DisposeWith(this);
-*/
-
-
-        //Do something to dock
-
     }
 
     public override void Bind()
@@ -154,7 +129,7 @@ public partial class PlayerSpaceShipView
             if (!Player.IsControllable)
             {
                 //TODO: Fix the lagging on low velocity
-                transform.up = rigidbody2D.velocity;
+                transform.up = rigidbody2D.velocity.normalized;
             }
         }).DisposeWith(this);
 
@@ -164,12 +139,12 @@ public partial class PlayerSpaceShipView
         base.IsControllableChanged(value);
         if (value)
         {
-            this.ShipController
+            ShipController
                 .Direction
                 .Subscribe(InputDirectionChanged)
                 .DisposeWhenChanged(Player.IsControllableProperty);
 
-            this.ShipController
+            ShipController
                 .Acceleration
                 .Subscribe(InputAccelrationChanged)
                 .DisposeWhenChanged(Player.IsControllableProperty);
@@ -178,6 +153,8 @@ public partial class PlayerSpaceShipView
         }
         else
         {
+
+            //Handle gravitational objects
             this.BindComponentCollision2DWith<GravityObject>(CollisionEventType.Enter, (obj, col) =>
             {
                 LastCollidedGravityObject = obj;
@@ -185,11 +162,22 @@ public partial class PlayerSpaceShipView
                 ExecuteCrash();
             }).DisposeWhenChanged(Player.IsControllableProperty);
 
+            //Handle zones
             this.BindViewTrigger2DWith<ZoneView>(CollisionEventType.Enter, (obj) =>
             {
                 ExecuteZoneReached(obj.Zone);
             }).DisposeWhenChanged(Player.IsControllableProperty); ;
+            
+            //Handle pickupables
+            this.BindViewTrigger2DWith<PickupableView>(CollisionEventType.Enter, (obj) =>
+            {
+                ExecuteItemPickedUp(obj.Pickupable);
+                obj.ExecutePickUp();
+            }).DisposeWhenChanged(Player.IsControllableProperty); ;
+
+
             ignoreControllers.RestoreControllerType(ControllerType.GravityController);
+            
         }
     }
 

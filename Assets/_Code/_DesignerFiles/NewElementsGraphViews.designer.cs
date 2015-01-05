@@ -198,6 +198,10 @@ public abstract class PlayerViewBase : ViewBase {
     public virtual void ExecuteDock(DockDescriptor arg) {
         this.ExecuteCommand(Player.Dock, arg);
     }
+    
+    public virtual void ExecuteItemPickedUp(PickupableViewModel pickupable) {
+        this.ExecuteCommand(Player.ItemPickedUp, pickupable);
+    }
 }
 
 [DiagramInfoAttribute("GraviPath")]
@@ -365,6 +369,10 @@ public abstract class UniverseViewBase : ViewBase {
     
     public virtual void ExecuteSave() {
         this.ExecuteCommand(Universe.Save);
+    }
+    
+    public virtual void ExecuteReset() {
+        this.ExecuteCommand(Universe.Reset);
     }
 }
 
@@ -943,6 +951,124 @@ public abstract class WinZoneViewBase : ZoneViewBase {
     
     public override ViewModel CreateModel() {
         return this.RequestViewModel(GameManager.Container.Resolve<WinZoneController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class PickupableViewBase : UniverseObjectViewBase {
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Boolean _IsActive;
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(PickupableViewModel);
+        }
+    }
+    
+    public PickupableViewModel Pickupable {
+        get {
+            return ((PickupableViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<PickupableController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+        PickupableViewModel pickupable = ((PickupableViewModel)(viewModel));
+        pickupable.IsActive = this._IsActive;
+    }
+    
+    public virtual void ExecutePickUp() {
+        this.ExecuteCommand(Pickupable.PickUp);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class ScorePointViewBase : PickupableViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(ScorePointViewModel);
+        }
+    }
+    
+    public ScorePointViewModel ScorePoint {
+        get {
+            return ((ScorePointViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<ScorePointController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class PowerUpPickupableViewBase : PickupableViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(PowerUpPickupableViewModel);
+        }
+    }
+    
+    public PowerUpPickupableViewModel PowerUpPickupable {
+        get {
+            return ((PowerUpPickupableViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<PowerUpPickupableController>());
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+[DiagramInfoAttribute("GraviPath")]
+public abstract class AcceleratorPowerUpViewBase : PowerUpPickupableViewBase {
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(AcceleratorPowerUpViewModel);
+        }
+    }
+    
+    public AcceleratorPowerUpViewModel AcceleratorPowerUp {
+        get {
+            return ((AcceleratorPowerUpViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<AcceleratorPowerUpController>());
     }
     
     protected override void InitializeViewModel(ViewModel viewModel) {
@@ -2036,6 +2162,127 @@ public class LevelRootGUIViewViewBase : LevelRootViewBase {
 public partial class LevelRootGUIView : LevelRootGUIViewViewBase {
 }
 
+public class PickupableViewViewBase : UniverseObjectView {
+    
+    [UFToggleGroup("IsActive")]
+    [UnityEngine.HideInInspector()]
+    [UFRequireInstanceMethod("IsActiveChanged")]
+    public bool _BindIsActive = true;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Boolean _IsActive;
+    
+    public PickupableViewModel Pickupable {
+        get {
+            return ((PickupableViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(PickupableViewModel);
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<PickupableController>());
+    }
+    
+    /// Subscribes to the property and is notified anytime the value changes.
+    public virtual void IsActiveChanged(Boolean value) {
+    }
+    
+    public override void Bind() {
+        base.Bind();
+        if (this._BindIsActive) {
+            this.BindProperty(Pickupable._IsActiveProperty, this.IsActiveChanged);
+        }
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+        PickupableViewModel pickupable = ((PickupableViewModel)(viewModel));
+        pickupable.IsActive = this._IsActive;
+    }
+    
+    public virtual void ExecutePickUp() {
+        this.ExecuteCommand(Pickupable.PickUp);
+    }
+}
+
+public abstract partial class PickupableView : PickupableViewViewBase {
+}
+
+public class PowerUpPickupableViewViewBase : PickupableView {
+    
+    public PowerUpPickupableViewModel PowerUpPickupable {
+        get {
+            return ((PowerUpPickupableViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(PowerUpPickupableViewModel);
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<PowerUpPickupableController>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+public partial class PowerUpPickupableView : PowerUpPickupableViewViewBase {
+}
+
+public class ScorePointViewViewBase : PickupableView {
+    
+    public ScorePointViewModel ScorePoint {
+        get {
+            return ((ScorePointViewModel)(this.ViewModelObject));
+        }
+        set {
+            this.ViewModelObject = value;
+        }
+    }
+    
+    public override System.Type ViewModelType {
+        get {
+            return typeof(ScorePointViewModel);
+        }
+    }
+    
+    public override ViewModel CreateModel() {
+        return this.RequestViewModel(GameManager.Container.Resolve<ScorePointController>());
+    }
+    
+    public override void Bind() {
+        base.Bind();
+    }
+    
+    protected override void InitializeViewModel(ViewModel viewModel) {
+        base.InitializeViewModel(viewModel);
+    }
+}
+
+public partial class ScorePointView : ScorePointViewViewBase {
+}
+
 public partial class ShipController : ViewComponent {
     
     public virtual PlayerViewModel Player {
@@ -2070,6 +2317,10 @@ public partial class ShipController : ViewComponent {
     
     public virtual void ExecuteDock(DockDescriptor arg) {
         this.View.ExecuteCommand(Player.Dock, arg);
+    }
+    
+    public virtual void ExecuteItemPickedUp(PickupableViewModel pickupable) {
+        this.View.ExecuteCommand(Player.ItemPickedUp, pickupable);
     }
 }
 

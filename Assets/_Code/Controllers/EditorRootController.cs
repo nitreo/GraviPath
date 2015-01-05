@@ -13,6 +13,8 @@ public class EditorRootController : EditorRootControllerBase
     [Inject] public SimpleAsteroid4Controller SimpleAsteroid4Controller;
     [Inject] public StartZoneController StartZoneController;
     [Inject] public WinZoneController WinZoneController;
+    [Inject] public ScorePointController ScorePointController;
+    [Inject] public AcceleratorPowerUpController AcceleratorPowerUpController;
 
     public override void InitializeEditorRoot(EditorRootViewModel editorRoot)
     {
@@ -113,6 +115,13 @@ public class EditorRootController : EditorRootControllerBase
             case UniverseObjectType.WinZone:
                 uObject = WinZoneController.CreateWinZone();
                 break;
+            case UniverseObjectType.Star:
+                uObject = ScorePointController.CreateScorePoint();
+                break;
+            case UniverseObjectType.Accelerator:
+                uObject = AcceleratorPowerUpController.CreateAcceleratorPowerUp();
+                break;
+
             default:
                 throw new ArgumentOutOfRangeException();
         }

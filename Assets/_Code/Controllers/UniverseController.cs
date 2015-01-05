@@ -54,4 +54,13 @@ public class UniverseController : UniverseControllerBase
         base.Load(universe, arg);
        // universe.LoadUniverse(arg);
     }
+
+    public override void Reset(UniverseViewModel universe)
+    {
+        base.Reset(universe);
+        universe.Objects.ForEach(x =>
+        {
+            ExecuteCommand(x.Reset);
+        });
+    }
 }

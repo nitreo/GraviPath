@@ -6,4 +6,8 @@ using UnityEngine;
 
 
 public partial class UniverseObjectViewModel {
+    public override void Bind()
+    {
+        base.Bind();
+    }
 }

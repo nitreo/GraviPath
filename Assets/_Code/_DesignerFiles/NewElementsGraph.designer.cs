@@ -1054,11 +1054,9 @@ public class UniverseViewModelBase : ViewModel {
     
     public ModelCollection<UniverseObjectViewModel> _ObjectsProperty;
     
-    protected CommandWithSenderAndArgument<UniverseViewModel, String> _Load;
+    protected CommandWithSender<UniverseViewModel> _Reset;
     
     protected CommandWithSender<UniverseViewModel> _Save;
-    
-    protected CommandWithSender<UniverseViewModel> _Reset;
     
     public UniverseViewModelBase(UniverseControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
@@ -1148,12 +1146,12 @@ public partial class UniverseViewModel : UniverseViewModelBase {
         }
     }
     
-    public virtual CommandWithSenderAndArgument<UniverseViewModel, String> Load {
+    public virtual CommandWithSender<UniverseViewModel> Reset {
         get {
-            return _Load;
+            return _Reset;
         }
         set {
-            _Load = value;
+            _Reset = value;
         }
     }
     
@@ -1163,15 +1161,6 @@ public partial class UniverseViewModel : UniverseViewModelBase {
         }
         set {
             _Save = value;
-        }
-    }
-    
-    public virtual CommandWithSender<UniverseViewModel> Reset {
-        get {
-            return _Reset;
-        }
-        set {
-            _Reset = value;
         }
     }
     
@@ -1204,9 +1193,8 @@ public partial class UniverseViewModel : UniverseViewModelBase {
     
     protected override void WireCommands(Controller controller) {
         var universe = controller as UniverseControllerBase;
-        this.Load = new CommandWithSenderAndArgument<UniverseViewModel, String>(this, universe.Load);
-        this.Save = new CommandWithSender<UniverseViewModel>(this, universe.Save);
         this.Reset = new CommandWithSender<UniverseViewModel>(this, universe.Reset);
+        this.Save = new CommandWithSender<UniverseViewModel>(this, universe.Save);
     }
     
     public override void Write(ISerializerStream stream) {
@@ -1243,9 +1231,8 @@ if (stream.DeepSerialize) {
     
     protected override void FillCommands(List<ViewModelCommandInfo> list) {
         base.FillCommands(list);;
-        list.Add(new ViewModelCommandInfo("Load", Load) { ParameterType = typeof(String) });
-        list.Add(new ViewModelCommandInfo("Save", Save) { ParameterType = typeof(void) });
         list.Add(new ViewModelCommandInfo("Reset", Reset) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("Save", Save) { ParameterType = typeof(void) });
     }
     
     protected override void ObjectsCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) {
@@ -1256,13 +1243,23 @@ if (stream.DeepSerialize) {
 [DiagramInfoAttribute("GraviPath")]
 public class UniverseObjectViewModelBase : ViewModel {
     
+    public P<Vector3> _StartPositionProperty;
+    
+    public P<Vector3> _StartRotationProperty;
+    
+    public P<Vector3> _StartScaleProperty;
+    
     public P<Vector3> _PositionProperty;
     
     public P<Vector3> _RotationProperty;
     
+    public P<Vector3> _ScaleProperty;
+    
     public P<Boolean> _IsEditableProperty;
     
     protected CommandWithSender<UniverseObjectViewModel> _Reset;
+    
+    protected CommandWithSender<UniverseObjectViewModel> _Save;
     
     public UniverseObjectViewModelBase(UniverseObjectControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
@@ -1274,8 +1271,12 @@ public class UniverseObjectViewModelBase : ViewModel {
     
     public override void Bind() {
         base.Bind();
+        _StartPositionProperty = new P<Vector3>(this, "StartPosition");
+        _StartRotationProperty = new P<Vector3>(this, "StartRotation");
+        _StartScaleProperty = new P<Vector3>(this, "StartScale");
         _PositionProperty = new P<Vector3>(this, "Position");
         _RotationProperty = new P<Vector3>(this, "Rotation");
+        _ScaleProperty = new P<Vector3>(this, "Scale");
         _IsEditableProperty = new P<Boolean>(this, "IsEditable");
     }
 }
@@ -1290,6 +1291,51 @@ public partial class UniverseObjectViewModel : UniverseObjectViewModelBase {
     
     public UniverseObjectViewModel() : 
             base() {
+    }
+    
+    public virtual P<Vector3> StartPositionProperty {
+        get {
+            return this._StartPositionProperty;
+        }
+    }
+    
+    public virtual Vector3 StartPosition {
+        get {
+            return _StartPositionProperty.Value;
+        }
+        set {
+            _StartPositionProperty.Value = value;
+        }
+    }
+    
+    public virtual P<Vector3> StartRotationProperty {
+        get {
+            return this._StartRotationProperty;
+        }
+    }
+    
+    public virtual Vector3 StartRotation {
+        get {
+            return _StartRotationProperty.Value;
+        }
+        set {
+            _StartRotationProperty.Value = value;
+        }
+    }
+    
+    public virtual P<Vector3> StartScaleProperty {
+        get {
+            return this._StartScaleProperty;
+        }
+    }
+    
+    public virtual Vector3 StartScale {
+        get {
+            return _StartScaleProperty.Value;
+        }
+        set {
+            _StartScaleProperty.Value = value;
+        }
     }
     
     public virtual P<Vector3> PositionProperty {
@@ -1322,6 +1368,21 @@ public partial class UniverseObjectViewModel : UniverseObjectViewModelBase {
         }
     }
     
+    public virtual P<Vector3> ScaleProperty {
+        get {
+            return this._ScaleProperty;
+        }
+    }
+    
+    public virtual Vector3 Scale {
+        get {
+            return _ScaleProperty.Value;
+        }
+        set {
+            _ScaleProperty.Value = value;
+        }
+    }
+    
     public virtual P<Boolean> IsEditableProperty {
         get {
             return this._IsEditableProperty;
@@ -1346,6 +1407,15 @@ public partial class UniverseObjectViewModel : UniverseObjectViewModelBase {
         }
     }
     
+    public virtual CommandWithSender<UniverseObjectViewModel> Save {
+        get {
+            return _Save;
+        }
+        set {
+            _Save = value;
+        }
+    }
+    
     public virtual UniverseViewModel ParentUniverse {
         get {
             return this._ParentUniverse;
@@ -1358,19 +1428,28 @@ public partial class UniverseObjectViewModel : UniverseObjectViewModelBase {
     protected override void WireCommands(Controller controller) {
         var universeObject = controller as UniverseObjectControllerBase;
         this.Reset = new CommandWithSender<UniverseObjectViewModel>(this, universeObject.Reset);
+        this.Save = new CommandWithSender<UniverseObjectViewModel>(this, universeObject.Save);
     }
     
     public override void Write(ISerializerStream stream) {
 		base.Write(stream);
+        stream.SerializeVector3("StartPosition", this.StartPosition);
+        stream.SerializeVector3("StartRotation", this.StartRotation);
+        stream.SerializeVector3("StartScale", this.StartScale);
         stream.SerializeVector3("Position", this.Position);
         stream.SerializeVector3("Rotation", this.Rotation);
+        stream.SerializeVector3("Scale", this.Scale);
         stream.SerializeBool("IsEditable", this.IsEditable);
     }
     
     public override void Read(ISerializerStream stream) {
 		base.Read(stream);
+        		this.StartPosition = stream.DeserializeVector3("StartPosition");;
+        		this.StartRotation = stream.DeserializeVector3("StartRotation");;
+        		this.StartScale = stream.DeserializeVector3("StartScale");;
         		this.Position = stream.DeserializeVector3("Position");;
         		this.Rotation = stream.DeserializeVector3("Rotation");;
+        		this.Scale = stream.DeserializeVector3("Scale");;
         		this.IsEditable = stream.DeserializeBool("IsEditable");;
     }
     
@@ -1380,14 +1459,19 @@ public partial class UniverseObjectViewModel : UniverseObjectViewModelBase {
     
     protected override void FillProperties(List<ViewModelPropertyInfo> list) {
         base.FillProperties(list);;
+        list.Add(new ViewModelPropertyInfo(_StartPositionProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_StartRotationProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_StartScaleProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_PositionProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_RotationProperty, false, false, false));
+        list.Add(new ViewModelPropertyInfo(_ScaleProperty, false, false, false));
         list.Add(new ViewModelPropertyInfo(_IsEditableProperty, false, false, false));
     }
     
     protected override void FillCommands(List<ViewModelCommandInfo> list) {
         base.FillCommands(list);;
         list.Add(new ViewModelCommandInfo("Reset", Reset) { ParameterType = typeof(void) });
+        list.Add(new ViewModelCommandInfo("Save", Save) { ParameterType = typeof(void) });
     }
 }
 

@@ -32,35 +32,26 @@ public class UniverseController : UniverseControllerBase
     public UniverseViewModel CreateInitialUniverse()
     {
         var startZone = StartZoneController.CreateStartZone();
-        startZone.Position = Vector3.zero;
-        startZone.Rotation = Vector3.zero;
-
+            startZone.StartPosition = Vector3.zero;
+            startZone.StartRotation = Vector3.zero;
+        
         var universe = CreateUniverse();
-
+        
         universe.Objects.Add(startZone);
+        
         return universe;
 
-    }
-
-
-    public override void Save(UniverseViewModel universe)
-    {
-        base.Save(universe);
-     //   universe.SaveUniverse();
-    }
-
-    public override void Load(UniverseViewModel universe, string arg)
-    {
-        base.Load(universe, arg);
-       // universe.LoadUniverse(arg);
     }
 
     public override void Reset(UniverseViewModel universe)
     {
         base.Reset(universe);
-        universe.Objects.ForEach(x =>
-        {
-            ExecuteCommand(x.Reset);
-        });
+        universe.Objects.ForEach(x => { ExecuteCommand(x.Reset); });
+    }
+
+    public override void Save(UniverseViewModel universe)
+    {
+        base.Save(universe);
+        universe.Objects.ForEach(x => { ExecuteCommand(x.Save); });        
     }
 }

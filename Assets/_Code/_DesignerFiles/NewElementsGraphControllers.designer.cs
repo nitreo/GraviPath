@@ -221,13 +221,10 @@ public abstract class UniverseControllerBase : Controller {
         this.InitializeUniverse(((UniverseViewModel)(viewModel)));
     }
     
-    public virtual void Load(UniverseViewModel universe, String arg) {
+    public virtual void Reset(UniverseViewModel universe) {
     }
     
     public virtual void Save(UniverseViewModel universe) {
-    }
-    
-    public virtual void Reset(UniverseViewModel universe) {
     }
 }
 
@@ -253,6 +250,9 @@ public abstract class UniverseObjectControllerBase : Controller {
     }
     
     public virtual void Reset(UniverseObjectViewModel universeObject) {
+    }
+    
+    public virtual void Save(UniverseObjectViewModel universeObject) {
     }
 }
 

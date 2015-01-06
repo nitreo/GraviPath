@@ -20,57 +20,33 @@ public partial class UniverseView {
     /// This binding will add or remove views based on an element/viewmodel collection.
     public override ViewBase CreateObjectsView(UniverseObjectViewModel item)
     {
-        var objectsView = base.CreateObjectsView(item);
-        var scaleCache = objectsView.transform.localScale;
-
-        objectsView.transform.position = item.Position;
-        objectsView.transform.eulerAngles = item.Rotation;
-        objectsView.transform.localScale = Vector3.zero;
+        var objectsView = base.CreateObjectsView(item) as UniverseObjectView;
 
 
-        //TODO: Move tweening and sound logic from here.
-        var t = LeanTween.scale(objectsView.gameObject, scaleCache, 0.8f)
-            .setEase(LeanTweenType.easeOutElastic);
-        if (!Universe.IsEditable)
-        {
+        //Scale fix, against the objects of the first generation
+        if (item.StartScale == Vector3.zero) item.StartScale = objectsView.transform.localScale;
 
-            var range = UnityEngine.Random.Range(0.1f, 0.5f);
+        //Reset bitch everything. (transition from prefab state to saved entity state)
+        objectsView.ExecuteCommand(item.Reset);
 
-/*            Observable.Timer(TimeSpan.FromMilliseconds((range) * 1000)).Subscribe(_ =>
-            {
-                GenericAudioSource.instance.PlayPop();
-            });*/
-
-            t.setDelay(range);
-        }
-
-        //TODO: Move it somewhere else?
-        if (item is GravityObjectViewModel)
-        {
-            var gravController = objectsView.GetComponent<GravityController2DExt>();
-            if (gravController != null) GravityObjects.Add(gravController);
-        }
+        objectsView.PopEffect();
 
         return objectsView;
     }
 
-    /// This binding will add or remove views based on an element/viewmodel collection.
     public override void ObjectsAdded(ViewBase item) {
         base.ObjectsAdded(item);
+        if (item.ViewModelObject is GravityObjectViewModel)
+        {
+            var gravController = item.GetComponent<GravityController2DExt>();
+            if (gravController != null) GravityObjects.Add(gravController);
+        }
     }
     
-    /// This binding will add or remove views based on an element/vienLwmodel collection.
     public override void ObjectsRemoved(ViewBase item) {
         base.ObjectsRemoved(item);
         Destroy(item.gameObject);
     }
-
-    public override void Bind()
-    {
-        base.Bind();
-    }
-
-    
 
     public void AddGravityAffectedObject(Rigidbody2D body)
     {

@@ -363,21 +363,29 @@ public abstract class UniverseViewBase : ViewBase {
         universe.IsEditable = this._IsEditable;
     }
     
-    public virtual void ExecuteLoad(String arg) {
-        this.ExecuteCommand(Universe.Load, arg);
+    public virtual void ExecuteReset() {
+        this.ExecuteCommand(Universe.Reset);
     }
     
     public virtual void ExecuteSave() {
         this.ExecuteCommand(Universe.Save);
     }
-    
-    public virtual void ExecuteReset() {
-        this.ExecuteCommand(Universe.Reset);
-    }
 }
 
 [DiagramInfoAttribute("GraviPath")]
 public abstract class UniverseObjectViewBase : ViewBase {
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Vector3 _StartPosition;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Vector3 _StartRotation;
+    
+    [UFGroup("View Model Properties")]
+    [UnityEngine.HideInInspector()]
+    public Vector3 _StartScale;
     
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
@@ -404,11 +412,18 @@ public abstract class UniverseObjectViewBase : ViewBase {
     
     protected override void InitializeViewModel(ViewModel viewModel) {
         UniverseObjectViewModel universeObject = ((UniverseObjectViewModel)(viewModel));
+        universeObject.StartPosition = this._StartPosition;
+        universeObject.StartRotation = this._StartRotation;
+        universeObject.StartScale = this._StartScale;
         universeObject.IsEditable = this._IsEditable;
     }
     
     public virtual void ExecuteReset() {
         this.ExecuteCommand(UniverseObject.Reset);
+    }
+    
+    public virtual void ExecuteSave() {
+        this.ExecuteCommand(UniverseObject.Save);
     }
 }
 
@@ -1427,6 +1442,8 @@ public class UniverseObjectViewViewBase : UniverseObjectViewBase {
     
     private IDisposable _RotationDisposable;
     
+    private IDisposable _ScaleDisposable;
+    
     [UFToggleGroup("Reset")]
     [UnityEngine.HideInInspector()]
     public bool _BindReset = true;
@@ -1474,10 +1491,24 @@ public class UniverseObjectViewViewBase : UniverseObjectViewBase {
         return this.UpdateAsObservable().Select(p => CalculateRotation());
     }
     
+    public virtual void ResetScale() {
+        if (_ScaleDisposable != null) _ScaleDisposable.Dispose();
+        _ScaleDisposable = GetScaleObservable().Subscribe(UniverseObject._ScaleProperty).DisposeWith(this);
+    }
+    
+    protected virtual Vector3 CalculateScale() {
+        return default(Vector3);
+    }
+    
+    protected virtual UniRx.IObservable<Vector3> GetScaleObservable() {
+        return this.UpdateAsObservable().Select(p => CalculateScale());
+    }
+    
     public override void Bind() {
         base.Bind();
         ResetPosition();
         ResetRotation();
+        ResetScale();
         if (this._BindReset) {
             this.BindCommandExecuted(UniverseObject.Reset, ResetExecuted);
         }

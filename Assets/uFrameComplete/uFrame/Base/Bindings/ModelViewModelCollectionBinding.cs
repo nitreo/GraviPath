@@ -214,7 +214,7 @@ public class ModelViewModelCollectionBinding : Binding
             }
         }
     }
-    public override void    Bind()
+    public override void Bind()
     {
         base.Bind();
 
@@ -256,7 +256,6 @@ public class ModelViewModelCollectionBinding : Binding
                 }
             }
         }
-
         Collection.CollectionChanged += CollectionOnChanged;
         if (!_viewFirst && IsImmediate)
         {

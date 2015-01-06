@@ -16,6 +16,30 @@ public partial class UniverseObjectView
     private GameObject _handles;
     private GameObject _editor;
 
+    public virtual GameObject GetEditorPrototype()
+    {
+        return Resources.Load<GameObject>("UniverseObjectEditorUI");
+    }
+
+
+
+    public void PopEffect()
+    {
+        transform.localScale = Vector3.zero;
+        var t = LeanTween.scale(gameObject, UniverseObject.StartScale, 0.8f)
+            .setEase(LeanTweenType.easeOutElastic);
+        
+        if (!UniverseObject.IsEditable)
+        {
+            var range = UnityEngine.Random.Range(0.1f, 0.5f);
+            /* Observable.Timer(TimeSpan.FromMilliseconds((range) * 1000)).Subscribe(_ =>
+            {
+                GenericAudioSource.instance.PlayPop();
+            });*/
+            t.setDelay(range);
+        }
+    }
+
     #region Properties
 
     private GameObject Editor
@@ -40,28 +64,23 @@ public partial class UniverseObjectView
 
     #endregion
 
-    public override void Awake()
-    {
-        base.Awake();
+    #region Bindings
+    public override void ResetExecuted() {
+        base.ResetExecuted();
+        transform.position = UniverseObject.StartPosition;
+        transform.eulerAngles = UniverseObject.StartRotation;
+        transform.localScale = UniverseObject.StartScale;
     }
 
-    /// Subscribes to the property and is notified anytime the value changes.
     public override void IsEditableChanged(Boolean value)
     {
         base.IsEditableChanged(value);
         Handles.SetActive(value);
     }
 
+    #endregion
 
-    public virtual GameObject GetEditorPrototype()
-    {
-        return Resources.Load<GameObject>("UniverseObjectEditorUI");
-    }
-
-    /// Invokes ResetExecuted when the Reset command is executed.
-    public override void ResetExecuted() {
-        base.ResetExecuted();
-    }
+    #region Observables
 
     protected override IObservable<Vector3> GetPositionObservable()
     {
@@ -72,4 +91,12 @@ public partial class UniverseObjectView
     {
         return RotationAsObservable.Select(q=>q.eulerAngles);
     }
+
+    protected override IObservable<Vector3> GetScaleObservable()
+    {
+        return ScaleAsObservable;
+    }
+
+    #endregion
 }
+

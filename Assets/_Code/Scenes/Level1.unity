@@ -1537,7 +1537,7 @@ MonoBehaviour:
   Offset: {x: 0, y: 0}
   CameraSpeed: 4
   VelocityBasedSize: 0
-  MinimumSize: 4
+  MinimumSize: 7
   SizeVelocityFactor: .25
   SizeChangeSpeed: 2
 --- !u!1 &1504359946

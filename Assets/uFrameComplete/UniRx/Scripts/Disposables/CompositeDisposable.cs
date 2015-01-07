@@ -214,7 +214,7 @@ namespace UniRx
         /// Copies the disposables contained in the CompositeDisposable to an array, starting at a particular array index.
         /// </summary>
         /// <param name="array">Array to copy the contained disposables to.</param>
-        /// <param name="arrayIndex">Target index at which to copy the first disposable of the group.</param>
+        /// <param name="arrayIndex">LocalTarget index at which to copy the first disposable of the group.</param>
         /// <exception cref="ArgumentNullException"><paramref name="array"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than zero. -or - <paramref name="arrayIndex"/> is larger than or equal to the array length.</exception>
         public void CopyTo(IDisposable[] array, int arrayIndex)

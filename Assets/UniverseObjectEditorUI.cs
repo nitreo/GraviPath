@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 public class UniverseObjectEditorUI : MonoBehaviour {
 
 
+
+    [RXDivider("My header", "My subtitle")] 
     public EventTrigger RotateHandle;
     public EventTrigger DragHandle;
     private RectTransform _thisCanvas;

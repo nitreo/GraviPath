@@ -133,6 +133,17 @@ public partial class PlayerSpaceShipView
             }
         }).DisposeWith(this);
 
+
+        Observable.EveryUpdate()
+            .Where(_=>Input.GetKeyDown(KeyCode.UpArrow))
+            .Subscribe(_ =>
+            {
+                rigidbody2D.AddForce(transform.up,ForceMode2D.Impulse); 
+            });
+
+
+
+
     }
 
     public override void IsControllableChanged(Boolean value) {

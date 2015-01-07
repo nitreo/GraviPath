@@ -150,6 +150,9 @@ public abstract class TryEntryControllerBase : Controller {
     public override void Initialize(ViewModel viewModel) {
         this.InitializeTryEntry(((TryEntryViewModel)(viewModel)));
     }
+    
+    public virtual void Reset(TryEntryViewModel tryEntry) {
+    }
 }
 
 public abstract class EditorRootControllerBase : Controller {

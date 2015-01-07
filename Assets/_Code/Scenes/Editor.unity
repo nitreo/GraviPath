@@ -3901,7 +3901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectType: 8
-  DragSprite: {fileID: 21300000, guid: 91e5024b0e8f6fb4ba73be81787674ab, type: 3}
+  DragSprite: {fileID: 21300000, guid: 72a9ed4ec18a347429cbd0b016c7ea93, type: 3}
 --- !u!114 &1577754414
 MonoBehaviour:
   m_ObjectHideFlags: 0

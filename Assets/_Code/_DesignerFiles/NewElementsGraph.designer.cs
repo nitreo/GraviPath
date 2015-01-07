@@ -674,6 +674,8 @@ public class TryEntryViewModelBase : ViewModel {
     
     public P<Single> _PathLengthProperty;
     
+    protected CommandWithSender<TryEntryViewModel> _Reset;
+    
     public TryEntryViewModelBase(TryEntryControllerBase controller, bool initialize = true) : 
             base(controller, initialize) {
     }
@@ -748,6 +750,15 @@ public partial class TryEntryViewModel : TryEntryViewModelBase {
         }
     }
     
+    public virtual CommandWithSender<TryEntryViewModel> Reset {
+        get {
+            return _Reset;
+        }
+        set {
+            _Reset = value;
+        }
+    }
+    
     public virtual LevelRootViewModel ParentLevelRoot {
         get {
             return this._ParentLevelRoot;
@@ -758,6 +769,8 @@ public partial class TryEntryViewModel : TryEntryViewModelBase {
     }
     
     protected override void WireCommands(Controller controller) {
+        var tryEntry = controller as TryEntryControllerBase;
+        this.Reset = new CommandWithSender<TryEntryViewModel>(this, tryEntry.Reset);
     }
     
     public override void Write(ISerializerStream stream) {
@@ -787,6 +800,7 @@ public partial class TryEntryViewModel : TryEntryViewModelBase {
     
     protected override void FillCommands(List<ViewModelCommandInfo> list) {
         base.FillCommands(list);;
+        list.Add(new ViewModelCommandInfo("Reset", Reset) { ParameterType = typeof(void) });
     }
 }
 

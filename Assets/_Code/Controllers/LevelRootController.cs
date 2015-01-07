@@ -10,7 +10,8 @@ public class LevelRootController : LevelRootControllerBase {
     
     public override void InitializeLevelRoot(LevelRootViewModel levelRoot)
     {
-
+        if (levelRoot.Initialized == true) return;
+        levelRoot.Initialized = true;
         levelRoot.PlayerProperty
             .Where(p=>p!=null)
             .Subscribe(p=>NewPlayerSet(levelRoot,p))
@@ -40,13 +41,14 @@ public class LevelRootController : LevelRootControllerBase {
         levelRoot.Attempts.Add(tryEntryViewModel);
         tryEntryViewModel.Target = levelRoot.Player;
         levelRoot.CurrentTryEntry = tryEntryViewModel;
+        ExecuteCommand(tryEntryViewModel.Reset);
     }
 
 
     public override void Restart(LevelRootViewModel levelRoot, bool saveAttempt)
     {
         base.Restart(levelRoot, saveAttempt);
-        
+        levelRoot.BonusScore = 0;
         if (levelRoot.Player != null)
         {
             ExecuteCommand(levelRoot.Player.Reset);

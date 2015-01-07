@@ -16,4 +16,6 @@ public partial class LevelRootViewModel {
         score += BonusScore;
         return score;
     }
+
+    public bool Initialized { get; set; }
 }

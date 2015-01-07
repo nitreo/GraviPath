@@ -35,5 +35,13 @@ public class PlayerController : PlayerControllerBase {
         player.IsControllable = true;
     }
 
+    public override void ItemPickedUp(PlayerViewModel player, PickupableViewModel item)
+    {
+        base.ItemPickedUp(player, item);
 
+        if (item is ScorePointViewModel)
+        {
+            player.ParentLevelRoot.BonusScore += 100;
+        }
+    }
 }

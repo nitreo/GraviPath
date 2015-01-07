@@ -239,6 +239,10 @@ public abstract class TryEntryViewBase : ViewBase {
         tryEntry.Number = this._Number;
         tryEntry.Target = this._Target == null ? null : this._Target.ViewModelObject as PlayerViewModel;
     }
+    
+    public virtual void ExecuteReset() {
+        this.ExecuteCommand(TryEntry.Reset);
+    }
 }
 
 [DiagramInfoAttribute("GraviPath")]
@@ -1231,6 +1235,10 @@ public partial class PlayerGUIView : PlayerGUIViewViewBase {
 
 public class LevelRootViewViewBase : LevelRootViewBase {
     
+    [UnityEngine.SerializeField()]
+    [UnityEngine.HideInInspector()]
+    private CameraController _CameraController;
+    
     [UFToggleGroup("Restart")]
     [UnityEngine.HideInInspector()]
     public bool _BindRestart = true;
@@ -1262,6 +1270,15 @@ public class LevelRootViewViewBase : LevelRootViewBase {
     [UFToggleGroup("Universe")]
     [UnityEngine.HideInInspector()]
     public bool _BindUniverse = true;
+    
+    public virtual CameraController CameraController {
+        get {
+            return _CameraController ?? (_CameraController = this.gameObject.EnsureComponent<CameraController>());
+        }
+        set {
+            this._CameraController = value;
+        }
+    }
     
     public override ViewModel CreateModel() {
         return this.RequestViewModel(GameManager.Container.Resolve<LevelRootController>());
@@ -1334,12 +1351,20 @@ public class TryEntryViewViewBase : TryEntryViewBase {
     [UnityEngine.HideInInspector()]
     public bool _BindTarget = true;
     
+    [UFToggleGroup("Reset")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindReset = true;
+    
     public override ViewModel CreateModel() {
         return this.RequestViewModel(GameManager.Container.Resolve<TryEntryController>());
     }
     
     /// Subscribes to the property and is notified anytime the value changes.
     public virtual void TargetChanged(PlayerViewModel value) {
+    }
+    
+    /// Invokes ResetExecuted when the Reset command is executed.
+    public virtual void ResetExecuted() {
     }
     
     public virtual void ResetPathLength() {
@@ -1360,6 +1385,9 @@ public class TryEntryViewViewBase : TryEntryViewBase {
         ResetPathLength();
         if (this._BindTarget) {
             this.BindProperty(TryEntry._TargetProperty, this.TargetChanged);
+        }
+        if (this._BindReset) {
+            this.BindCommandExecuted(TryEntry.Reset, ResetExecuted);
         }
     }
 }
@@ -2200,6 +2228,10 @@ public class PickupableViewViewBase : UniverseObjectView {
     [UFRequireInstanceMethod("IsActiveChanged")]
     public bool _BindIsActive = true;
     
+    [UFToggleGroup("PickUp")]
+    [UnityEngine.HideInInspector()]
+    public bool _BindPickUp = true;
+    
     [UFGroup("View Model Properties")]
     [UnityEngine.HideInInspector()]
     public Boolean _IsActive;
@@ -2227,10 +2259,17 @@ public class PickupableViewViewBase : UniverseObjectView {
     public virtual void IsActiveChanged(Boolean value) {
     }
     
+    /// Invokes PickUpExecuted when the PickUp command is executed.
+    public virtual void PickUpExecuted() {
+    }
+    
     public override void Bind() {
         base.Bind();
         if (this._BindIsActive) {
             this.BindProperty(Pickupable._IsActiveProperty, this.IsActiveChanged);
+        }
+        if (this._BindPickUp) {
+            this.BindCommandExecuted(Pickupable.PickUp, PickUpExecuted);
         }
     }
     
@@ -2359,4 +2398,28 @@ public partial class InputShipController : ShipController {
 }
 
 public partial class AnotherShipController : ShipController {
+}
+
+public partial class CameraController : ViewComponent {
+    
+    public virtual LevelRootViewModel LevelRoot {
+        get {
+            return ((LevelRootViewModel)(this.View.ViewModelObject));
+        }
+    }
+    
+    public virtual void ExecuteToMenu() {
+        this.View.ExecuteCommand(LevelRoot.ToMenu);
+    }
+    
+    public virtual void ExecuteRestart(Boolean arg) {
+        this.View.ExecuteCommand(LevelRoot.Restart, arg);
+    }
+    
+    public virtual void ExecuteLoadUniverse(UniverseViewModel universe) {
+        this.View.ExecuteCommand(LevelRoot.LoadUniverse, universe);
+    }
+}
+
+public partial class BasicCameraController : CameraController {
 }

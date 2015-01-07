@@ -5,7 +5,7 @@ namespace Invert.MVVM
 using System;
 
 /// <summary>
-/// A class that contains a binding from a ViewModel to a Target
+/// A class that contains a binding from a ViewModel to a LocalTarget
 /// </summary>
 public class ModelPropertyBinding : Binding, ITwoWayBinding
 {

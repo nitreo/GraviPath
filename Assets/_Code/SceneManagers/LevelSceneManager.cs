@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using UniRx;
+using UnityEngine;
 
 
 // <summary>
@@ -26,6 +27,7 @@ public class LevelSceneManager : LevelSceneManagerBase {
     // </summary>
     public override System.Collections.IEnumerator Load(UpdateProgressDelegate progress) {
         // Use the controllers to create the game.
+
         yield break;
     }
     
@@ -34,7 +36,6 @@ public class LevelSceneManager : LevelSceneManagerBase {
     // be a good place to use the generated Controller properties on this class to invoke some gameplay logic initialization
     // </summary>
     public override void OnLoaded() {
-        
         LevelRootController.ExecuteCommand(LevelRoot.LoadUniverse, _LevelSceneManagerSettings.UniverseToPlay);
         base.OnLoaded();
     }

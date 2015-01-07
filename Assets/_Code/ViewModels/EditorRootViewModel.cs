@@ -14,5 +14,5 @@ public partial class EditorRootViewModel {
             AvailableUniverses.Remove(uni);
     }
 
-
+    public bool Initialized { get; set; }
 }

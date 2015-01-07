@@ -9,6 +9,7 @@ using UnityEngine;
 public class MenuRootController : MenuRootControllerBase {
     
     public override void InitializeMenuRoot(MenuRootViewModel menuRoot) {
+        Debug.Log("init");
     }
 
 

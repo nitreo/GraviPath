@@ -47,3 +47,11 @@ TagManager:
     userID: 1
     uniqueID: 750744219
     locked: 0
+  - name: UILayer
+    userID: 2
+    uniqueID: 418285823
+    locked: 0
+  - name: Gameplay
+    userID: 3
+    uniqueID: 3453308045
+    locked: 0

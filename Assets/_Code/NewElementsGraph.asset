@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Name: NewElementsGraph
   m_EditorClassIdentifier: 
   _jsonData: '{"Name":"NewElementsGraph", "Version":"1.51", "Identifier":"98145860-0fd4-4f2c-8425-4f7476920893",
-    "FilterState":{"_CLRType":"FilterState", "FilterStack":[ "UniverseSystem", "UniverseObject"
-    ]}, "Settings":{"_CLRType":"ElementDiagramSettings", "SnapSize":"10", "Snap":"true",
-    "CodePathStrategyName":"Default", "GridLinesColor":{"r":"0.271", "g":"0.271",
-    "b":"0.271", "a":"1"}, "GridLinesColorSecondary":{"r":"0.169", "g":"0.169", "b":"0.169",
-    "a":"1"}, "AssociationLinkColor":{"r":"1", "g":"1", "b":"1", "a":"1"}, "DefinitionLinkColor":{"r":"0",
-    "g":"1", "b":"1", "a":"1"}, "InheritanceLinkColor":{"r":"0", "g":"1", "b":"0",
-    "a":"1"}, "SceneManagerLinkColor":{"r":"0.5", "g":"0.5", "b":"0.5", "a":"1"},
-    "SubSystemLinkColor":{"r":"0.5", "g":"0.5", "b":"0.5", "a":"1"}, "TransitionLinkColor":{"r":"1",
+    "FilterState":{"_CLRType":"FilterState", "FilterStack":[  ]}, "Settings":{"_CLRType":"ElementDiagramSettings",
+    "SnapSize":"10", "Snap":"true", "CodePathStrategyName":"Default", "GridLinesColor":{"r":"0.271",
+    "g":"0.271", "b":"0.271", "a":"1"}, "GridLinesColorSecondary":{"r":"0.169", "g":"0.169",
+    "b":"0.169", "a":"1"}, "AssociationLinkColor":{"r":"1", "g":"1", "b":"1", "a":"1"},
+    "DefinitionLinkColor":{"r":"0", "g":"1", "b":"1", "a":"1"}, "InheritanceLinkColor":{"r":"0",
+    "g":"1", "b":"0", "a":"1"}, "SceneManagerLinkColor":{"r":"0.5", "g":"0.5", "b":"0.5",
+    "a":"1"}, "SubSystemLinkColor":{"r":"0.5", "g":"0.5", "b":"0.5", "a":"1"}, "TransitionLinkColor":{"r":"1",
     "g":"0.9215686", "b":"0.01568628", "a":"1"}, "ViewLinkColor":{"r":"0", "g":"0",
     "b":"1", "a":"1"}, "RootNamespace":""}, "PositionData":{"_CLRType":"FilterPositionData",
     "a7f6c33e-3aae-41c9-9319-aaf052341979":{"7954a8ff-dbd5-40ed-a1c9-619f745d79d6":{"x":"917.3579",

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using UniRx;
 
@@ -17,6 +18,11 @@ public class EditorRootController : EditorRootControllerBase
 
     public override void InitializeEditorRoot(EditorRootViewModel editorRoot)
     {
+        if (editorRoot.Initialized == true) return;
+        editorRoot.Initialized = true;
+        
+        UnityEngine.Debug.Log("Initializing "+editorRoot.Identifier);
+
         editorRoot.NewUniverseDataProperty.Where(editor => editor != null)
             .Subscribe(editor => { NewUniverseEditorChanged(editorRoot, editor); });
         editorRoot.AddUniverseObjectSubEditorProperty.Where(editor => editor != null)
@@ -34,6 +40,7 @@ public class EditorRootController : EditorRootControllerBase
     private void AddUniverseObjectEditorChanged(EditorRootViewModel editorRoot,
         AddUniverseObjectSubEditorViewModel editor)
     {
+        
         editorRoot.AddUniverseObjectSubEditor.Add.Subscribe(desc =>
         {
             //WHY DO I HAVE TO USE PARAMETER HERE insdeat of desc ????? HUH
@@ -145,5 +152,6 @@ public class EditorRootController : EditorRootControllerBase
 
         uObject.StartPosition = uObjectDescriptor.Position;
         editorRoot.CurrentUniverse.Objects.Add(uObject);
+        UnityEngine.Debug.Log("haaaaaaard");
     }
 }

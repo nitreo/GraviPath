@@ -236,6 +236,8 @@ public abstract class SceneManager : ViewContainer, ITypeResolver
     /// <returns>A new view model or the view-model with the identifier specified found in the scene context.</returns>
     public ViewModel RequestViewModel(ViewBase viewBase, Controller controller)
     {
+
+
         if (viewBase.InjectView)
         {
             Container.Inject(viewBase);
@@ -260,6 +262,7 @@ public abstract class SceneManager : ViewContainer, ITypeResolver
                     string.IsNullOrEmpty(viewBase.Identifier) ? null : viewBase.Identifier);
                 // Register it under the generic view-model type
                 Container.RegisterInstance<ViewModel>(contextViewModel, viewBase.Identifier);
+                
             }
             else
             {
@@ -270,9 +273,11 @@ public abstract class SceneManager : ViewContainer, ITypeResolver
         // If we found a view-model
         if (contextViewModel != null)
         {
+
             // If the view needs to be overriden it will initialize with the inspector values
             if (viewBase.OverrideViewModel)
             {
+
                 viewBase.InitializeData(contextViewModel);
             }
         }

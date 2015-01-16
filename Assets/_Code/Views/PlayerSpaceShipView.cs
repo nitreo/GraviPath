@@ -30,6 +30,8 @@ public partial class PlayerSpaceShipView
     public override void OnCrashed() {
         base.OnCrashed();
 
+        //Camera.main.ShakeOrtho(0.5f);
+
         NormalArt.SetActive(false);
         CrashedArt.SetActive(true);
         

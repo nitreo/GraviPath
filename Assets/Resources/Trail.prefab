@@ -24,7 +24,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.14865005, y: -8.99845219, z: 0}
+  m_LocalPosition: {x: 2.5692234, y: -7.29397535, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -49,7 +49,9 @@ MonoBehaviour:
   _Number: 0
   _Target: {fileID: 0}
   _BindTarget: 1
+  _BindReset: 1
   Cross: {fileID: 100000, guid: cd017866e1a86b243a4473353e886bc6, type: 2}
+  lineMaterial: {fileID: 2100000, guid: 70090150cf250d34eb3c8085c7c9aa65, type: 2}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1

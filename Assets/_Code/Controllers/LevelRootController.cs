@@ -54,7 +54,7 @@ public class LevelRootController : LevelRootControllerBase {
             ExecuteCommand(levelRoot.Player.Reset);
 
             var lastTry = levelRoot.Attempts.LastOrDefault<TryEntryViewModel>();
-            if (lastTry != null && (!saveAttempt || lastTry.PathLength < 5) )
+            if (lastTry != null && (!saveAttempt || lastTry.PathLength < 1) )
             {
                 levelRoot.Attempts.Remove(lastTry);
             }
@@ -68,6 +68,12 @@ public class LevelRootController : LevelRootControllerBase {
 
     public override void LoadUniverse(LevelRootViewModel levelRoot, UniverseViewModel arg)
     {
+
+        foreach (var attempt in levelRoot.Attempts.ToList())
+        {
+            levelRoot.Attempts.Remove(attempt);
+        }
+
         if (arg == null)
         {
             arg = UniverseController.CreateInitialUniverse();
@@ -78,5 +84,6 @@ public class LevelRootController : LevelRootControllerBase {
         arg.IsEditable = false;
         levelRoot.Universe = arg;
         ExecuteCommand(levelRoot.Restart,false);
+    
     }
 }

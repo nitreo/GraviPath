@@ -33,3 +33,26 @@ public class GeneralCameraShake : MonoBehaviour {
 	}
 
 }
+
+
+public static class LTCameraExtensions
+{
+
+    public static void ShakeOrtho(this Camera camera, float time)
+    {
+
+        LTDescr tween1;
+        LTDescr tween2;
+
+        tween1 = LeanTween.moveLocal(camera.gameObject, new Vector3(0,0.6f,0), 0.2f)
+            .setEase(LeanTweenType.easeShake)
+            .setDelay(0.05f);
+        tween2 = LeanTween.moveLocal(camera.gameObject, new Vector3(0.6f,0,0), 0.2f)
+            .setEase(LeanTweenType.easeShake)
+            .setDelay(0.05f);
+        
+       
+        
+    }
+
+}

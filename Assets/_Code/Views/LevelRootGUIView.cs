@@ -15,8 +15,7 @@ public partial class LevelRootGUIView {
     
     public override void ScoreChanged(Int32 value) {
         base.ScoreChanged(value);
-        if (value <= 4) ScoreText.text = "Score: " + 0;
-        else ScoreText.text = "Score: " + value;
+        ScoreText.text = "Score: " + value;
     }
 
     public override void Bind()

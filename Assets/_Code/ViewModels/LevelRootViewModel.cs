@@ -11,7 +11,7 @@ public partial class LevelRootViewModel {
         var score = 0;
         if (CurrentTryEntry != null)
         {
-            score += (int)(CurrentTryEntry.PathLength)*2;
+            score += (int)(CurrentTryEntry.PathLength);
         }
         score += BonusScore;
         return score;
